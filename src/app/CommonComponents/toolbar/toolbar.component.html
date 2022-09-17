@@ -1,0 +1,19 @@
+<nz-header>
+  <div class="logo">
+    <img
+      style="width: 100%; height: 100%; object-fit: contain; top: 0px"
+      src="https://www.torreon.gob.mx/img/logo2022.png"
+    />
+  </div>
+  <ul nz-menu nzMode="horizontal" style="float: right">
+    <li nz-menu-item>Ofertas de Trabajos</li>
+    <li nz-menu-item>Solicitudes</li>
+    <li nz-menu-item>Ofertar Trabajo</li>
+    <li nz-menu-item routerLink="login" *ngIf="(user$ | async) === null; else loggedIn">
+      Iniciar Sesion
+    </li>
+    <ng-template #loggedIn>
+      <p>Christian Alvarez</p>
+    </ng-template>
+  </ul>
+</nz-header>

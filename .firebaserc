@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "bolsadetrabajo-trc": {
+      "hosting": {
+        "BolsaDeTrabajo": [
+          "bolsadetrabajo-trc"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "bolsadetrabajo-trc"
+  }
+}

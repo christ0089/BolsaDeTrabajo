@@ -1,1 +1,21 @@
-<p>job-listing works!</p>
+<nz-layout>
+  <app-toolbar></app-toolbar>
+
+  <nz-layout>
+    <nz-content>
+      <div nz-row nzJustify="center" style="padding: 20px">
+        <div nz-col nzSpan="8" style="padding: 10px; background: wheat" >
+          <app-job-item *ngFor="let job of (jobListing$ |async)" [job]="job">
+
+          </app-job-item>
+        </div>
+        <div nz-col nzSpan="1" style="padding: 10px"></div>
+        <div nz-col nzSpan="12" style="padding: 10px">
+          <h1>Community Manager</h1>
+          <h3>RedMarkettng</h3>
+          <h3>TRC, Coahuila</h3>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

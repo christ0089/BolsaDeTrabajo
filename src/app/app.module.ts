@@ -7,13 +7,38 @@ import { JobListingComponent } from './Pages/job-listing/job-listing.component';
 import { JobApplicationComponent } from './Pages/job-application/job-application.component';
 import { JobStatusComponent } from './Pages/job-status/job-status.component';
 import { JobFavoritesComponent } from './Pages/job-favorites/job-favorites.component';
-import { EmpleeListingsComponent } from './AdminPages/emplee-listings/emplee-listings.component';
 import { EmployeeListingComponent } from './AdminPages/employee-listing/employee-listing.component';
 import { EmployerDescriptionComponent } from './AdminPages/employer-description/employer-description.component';
 import { JobItemComponent } from './CommonComponents/job-item/job-item.component';
 import { JobDescriptionComponent } from './CommonComponents/job-description/job-description.component';
 import { UserToolbarComponent } from './CommonComponents/user-toolbar/user-toolbar.component';
 import { AdminToolbarComponent } from './CommonComponents/admin-toolbar/admin-toolbar.component';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import {
+  provideAnalytics,
+  getAnalytics,
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideFunctions, getFunctions } from '@angular/fire/functions';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToolbarComponent } from './CommonComponents/toolbar/toolbar.component';
+
+import { NgZorroAntdModule } from './ng-zorro.module';
+import { ChipsComponent } from './CommonComponents/chips/chips.component';
+
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -22,19 +47,30 @@ import { AdminToolbarComponent } from './CommonComponents/admin-toolbar/admin-to
     JobApplicationComponent,
     JobStatusComponent,
     JobFavoritesComponent,
-    EmpleeListingsComponent,
     EmployeeListingComponent,
     EmployerDescriptionComponent,
     JobItemComponent,
     JobDescriptionComponent,
     UserToolbarComponent,
-    AdminToolbarComponent
+    AdminToolbarComponent,
+    ChipsComponent
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAnalytics(() => getAnalytics()),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NgZorroAntdModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ScreenTrackingService, UserTrackingService, { provide: NZ_I18N, useValue: en_US }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

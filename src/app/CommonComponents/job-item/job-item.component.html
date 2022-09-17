@@ -1,1 +1,4 @@
-<p>job-item works!</p>
+<nz-card *ngIf="job" [nzTitle]="job.name" style="margin-bottom: 10px">
+  <h3>{{ job.employer }}</h3>
+  <h3>TRC, Coahuila</h3>
+</nz-card>
