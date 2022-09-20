@@ -18,11 +18,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { ComponentModule } from 'src/app/CommonComponents/components.module';
 import { NgZorroAntdModule } from 'src/app/ng-zorro.module';
+import { RegistrationComponent } from 'src/app/CommonComponents/registration/registration.component';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
     path: '',
     component: AuthComponent,
+  },
+  {
+    path: 'register',
+    component: RegistrationComponent,
   },
 ];
 
@@ -40,12 +46,13 @@ const routes: Routes = [
     MatProgressBarModule,
     MatTabsModule,
     MatButtonModule,
+    MatIconModule,
     ComponentModule,
     MatInputModule,
     MatGridListModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [AuthComponent, LoginComponent],
+  declarations: [AuthComponent, LoginComponent, RegistrationComponent],
   providers: [AuthService],
 })
 export class AuthModule {}

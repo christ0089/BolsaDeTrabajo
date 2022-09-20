@@ -1,10 +1,8 @@
-
 <div class="auth_container">
   <mat-grid-list [cols]="isMobile ? 1 : 2">
     <mat-grid-tile>
       <mat-tab-group [selectedIndex]="selectedTab" style="min-width: 400px">
         <mat-tab label="Login"><login></login> </mat-tab>
-        <!-- <mat-tab label="Registro"><register  (resgister)="registerComplete()"></register></mat-tab> -->
       </mat-tab-group>
     </mat-grid-tile>
     <mat-grid-tile *ngIf="isMobile == false"

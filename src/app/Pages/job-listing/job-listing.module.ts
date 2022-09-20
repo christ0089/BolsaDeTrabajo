@@ -10,6 +10,9 @@ import { NgZorroAntdModule } from 'src/app/ng-zorro.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentModule } from 'src/app/CommonComponents/components.module';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [JobItemComponent, JobListingComponent],
@@ -19,6 +22,11 @@ import { ComponentModule } from 'src/app/CommonComponents/components.module';
     MatChipsModule,
     MatButtonModule,
     NgZorroAntdModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule,
+    MatIconModule,
     ComponentModule
   ],
 })

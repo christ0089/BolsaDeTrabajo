@@ -1,1 +1,115 @@
-<p>registration works!</p>
+<div class="login">
+  <div id="recaptcha-container"></div>
+  <form
+    [formGroup]="registrationForm"
+    style="width: 400px; margin-left: auto; margin-right: auto"
+  >
+    <button mat-icon-button routerLink="/auth">
+      <mat-icon>arrow-backward</mat-icon>
+    </button>
+
+    <img
+      style="width: 100%; height: 200px; object-fit: contain;"
+      src="https://www.torreon.gob.mx/img/logo2022.png"
+    />
+    <h2>Registro</h2>
+    <div class="form-group">
+      <mat-form-field>
+        <input
+          type="name"
+          matInput
+          placeholder="Nombre"
+          formControlName="fname"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['fname'].errors }"
+        />
+      </mat-form-field>
+      <div *ngIf="submitted && f['fname'].errors" class="invalid-feedback">
+        <div *ngIf="f['fname'].errors['required']">El nombre es requerido</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input
+          type="lname"
+          matInput
+          placeholder="Apellidos"
+          formControlName="lname"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['lname'].errors }"
+        />
+      </mat-form-field>
+      <div *ngIf="submitted && f['lname'].errors" class="invalid-feedback">
+        <div *ngIf="f['lname'].errors['required']">Los apellidos son requeridos</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input
+          type="email"
+          matInput
+          placeholder="Correo Electrónico"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+        />
+      </mat-form-field>
+      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+        <div *ngIf="f['email'].errors['required']">El correo es requerido</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input
+          type="password"
+          matInput
+          placeholder="Contraseña"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        />
+      </mat-form-field>
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        <div *ngIf="f['password'].errors['required']">
+          La contraseña es requerida
+        </div>
+        <div *ngIf="f['password'].errors['minlength']">
+          La contraseña es requerida
+        </div>
+      </div>
+    </div>
+    <div style="display: inline-flex;">
+      <mat-form-field style="max-width: 150px;">
+        <mat-icon matPrefix style="margin: 0px 20px;">phone</mat-icon>
+        <mat-select
+          formControlName="contry_code"
+          [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+        >
+          <mat-option></mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          type="phone"
+          matInput
+          placeholder="Telefono"
+          formControlName="phone"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+        />
+       
+      </mat-form-field>
+    </div>
+   
+    <div class="form-group">
+      <button
+        id="sign-in-button"
+        mat-flat-button
+        style="width: calc(100% - 30px)"
+        (click)="register()"
+      >
+        Registrar
+      </button>
+    </div>
+  </form>
+</div>

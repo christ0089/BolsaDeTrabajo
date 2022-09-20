@@ -1,3 +1,8 @@
+<mat-form-field class="search-form" appearance="fill">
+  <mat-label>Buscar</mat-label>
+  <input matInput placeholder="Buscar" [formControl]="searchForm" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
 <div nz-row nzJustify="center" style="padding: 20px">
   <div nz-col nzSpan="8" style="padding: 10px; background: white">
     <app-job-item
@@ -26,6 +31,9 @@
       </h3>
       <button mat-button (click)="openApplication(selectedJob)" color="primary">
         Postularse
+      </button>
+      <button mat-icon-button (click)="saveToFavorite(selectedJob)" color="primary">
+        <mat-icon>favorite-outline</mat-icon>
       </button>
     </div>
 

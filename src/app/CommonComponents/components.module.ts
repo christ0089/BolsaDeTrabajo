@@ -56,7 +56,6 @@ import { EmployerRegistrationComponent } from './employer-registration/employer-
     LocationComponent,
     ChipsComponent,
     GeoQuestionComponent,
-    RegistrationComponent,
     EmployerRegistrationComponent,
   ],
   providers: [],
