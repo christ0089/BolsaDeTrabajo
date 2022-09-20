@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentModule } from 'src/app/CommonComponents/components.module';
 import { QuestionControlService } from 'src/app/Shared/QuestionsService/question-control-service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [JobApplicationComponent],
@@ -16,7 +17,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     FormsModule,
     CommonModule,
     ComponentModule,
+    MatButtonModule,
     MatProgressBarModule,
+  
     JobApplicationRoutingModule,
   ],
   providers: [QuestionControlService],

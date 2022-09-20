@@ -25,6 +25,8 @@ import { NgZorroAntdModule } from '../ng-zorro.module';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { RegistrationComponent } from './registration/registration.component';
+import { EmployerRegistrationComponent } from './employer-registration/employer-registration.component';
 
 @NgModule({
   imports: [
@@ -54,6 +56,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
     LocationComponent,
     ChipsComponent,
     GeoQuestionComponent,
+    RegistrationComponent,
+    EmployerRegistrationComponent,
   ],
   providers: [],
   exports: [DynamicFormQuestionComponent, ChipsComponent],

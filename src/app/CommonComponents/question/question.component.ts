@@ -29,11 +29,11 @@ export class DynamicFormQuestionComponent {
   fileChange(event: any) {
     const file: File = event.target.files[0];
 
-    var mimeType = event.target.files[0].type;
+    // var mimeType = event.target.files[0].type;
 
-    if (mimeType.match(/image\/*/) == null) {
-      return;
-    }
+    // if (mimeType.match(/image\/*/) == null) {
+    //   return;
+    // }
 
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);

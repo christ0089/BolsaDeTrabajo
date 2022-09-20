@@ -54,7 +54,7 @@ export const experience_questionaire = () => {
     subtitle: null,
     questions: [
       new TextboxQuestion({
-        key: 'company_title',
+        key: 'prev_position',
         label: 'Título del empleo',
         value: 0,
         disabled: false,
@@ -63,7 +63,7 @@ export const experience_questionaire = () => {
         verfication: false,
       }),
       new TextboxQuestion({
-        key: 'company',
+        key: 'prev_employer',
         label: 'Empresa',
         value: 0,
         disabled: false,
@@ -86,7 +86,7 @@ export const application_questionaire = () => {
         value: '',
         disabled: false,
         order: 0,
-        options: [{ key: 'uploaded', value: false }],
+        options: [{ key: 'uploaded', value: false }, {key: "file_type", value: "pdf"}],
         required: true,
         verfication: false,
       }),

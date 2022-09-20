@@ -4,6 +4,7 @@
       *ngFor="let job of jobListing$ | async"
       [job]="job"
       (click)="selectJob(job)"
+      class="animate"
     >
     </app-job-item>
   </div>
@@ -14,6 +15,7 @@
     style="padding: 20px"
     style="background: white; padding: 10px"
     *ngIf="selectedJob$ | async; let selectedJob"
+    class="animate"
   >
     <div>
       <h1>{{ selectedJob.name }}</h1>

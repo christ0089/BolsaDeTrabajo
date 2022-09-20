@@ -1,17 +1,27 @@
 <mat-progress-bar
   *ngIf="forms"
-  style="margin: 20px; width: calc(100% - 40px);"
+  style="margin: 20px; width: calc(100% - 40px)"
   mode="determinate"
   [value]="((idx + 1) / forms.length) * 100"
 ></mat-progress-bar>
-<p *ngIf="forms" style="margin: 20px 0px; text-align: right; width: calc(100% - 40px);">{{ (idx + 1) }} de {{ forms.length }}</p>
-<div style="display: inline-flex; width: 100%" *ngIf="forms">
+<p
+  *ngIf="forms"
+  style="margin: 20px 0px; text-align: right; width: calc(100% - 40px)"
+>
+  {{ idx + 1 }} de {{ forms.length }}
+</p>
+<div style="display: inline-flex; width: 100%;" *ngIf="forms">
   <div style="width: 50%">
-    <form [formGroup]="forms[idx]" *ngIf="questions != null">
+    <form
+      [formGroup]="forms[idx]"
+      *ngIf="questions != null"
+      style="padding: 20px"
+    >
       <div
         class="form-row"
         style="width: 100%; height: 100%; margin-left: auto; margin-right: auto"
       >
+        <h2>{{ questions[idx].title }}</h2>
         <app-question
           *ngFor="let q of questions[idx].questions"
           [question]="q"
@@ -19,8 +29,27 @@
           [idx]="0"
         >
         </app-question>
+        <button
+          mat-button
+          style="float: right"
+          color="primary"
+          *ngIf="idx >= forms.length; else finish"
+        >
+          Finalizar
+        </button>
+        <ng-template #finish>
+          <button
+            mat-button
+            style="float: right"
+            color="primary"
+            (click)="idx = idx + 1"
+          >
+            Siguiente
+          </button>
+        </ng-template>
       </div>
     </form>
   </div>
-  <div style="width: 50%"></div>
+  <div style="width: 50%">
+  </div>
 </div>
