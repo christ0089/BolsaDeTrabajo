@@ -1,5 +1,5 @@
+import { Timestamp } from '@firebase/firestore';
 import { IEmployer } from './employer';
-import { IUserData } from './user';
 
 export interface IRequirements {
   [name: string]: string;
@@ -20,18 +20,19 @@ export type WorkHoursTypes = "8_horus" | "10_hours" | "12_hours" | "morning_shif
  export type BonusTypes = "productivity_bonus" | "punctuality_bonus" | "monthly_bonus" | "yearly_bonus" | "quarter_bonus";
 
 export interface IJobPosition {
+  id: string;
   name: string;
   employer: IEmployer;
   description: String;
   requirements: IRequirements[];
-  createdDate: any;
+  createdAt: Timestamp;
   address: IAddress;
   payment_expectation: number[];
   position_type: PositionType;
   workhours_type: WorkHoursTypes[];
   bonus_type?: BonusTypes[];
   benefits: string[];
-  bonueses: string[];
+  bonuses: string[];
   compensations: string[];
   remote? : boolean;
   tags: string[]

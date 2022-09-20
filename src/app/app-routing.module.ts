@@ -1,8 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { JobListingComponent } from './Pages/job-listing/job-listing.component';
 
-const routes: Routes = [{ path: '', component: JobListingComponent }];
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () =>
+      import('./Pages/job-listing/job-listing.module').then(
+        (m) => m.JobListingModule
+      ),
+  },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./Pages/auth/auth.module').then(
+        (m) => m.AuthModule
+      ),
+  },
+
+  {
+    path: 'job_application/:id',
+    loadChildren: () =>
+      import('./Pages/job-application/job-application.module').then(
+        (m) => m.JobApplicationModule
+      ),
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

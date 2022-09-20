@@ -1,0 +1,48 @@
+<h2>Ubicacion</h2>
+<div style="width: 100%; height: 100%" *ngIf="location">
+  <div style="display: inline-flex; width: 100%; height: 100%">
+    <div style="width: 65%; height: 100%">
+      <div id="containerMap">
+        <div #mapbox id="mapbox" class="fadeIn"></div>
+      </div>
+    </div>
+    <div
+      style="
+        background: white;
+        height: calc(400px - 40px);
+        overflow-y: scroll;
+        padding: 20px 20px;
+        width: 35%;
+        display: block;
+      "
+    >
+      <button mat-button color="primary" style="width: 100%" (click)="save()">
+        Guardar
+      </button>
+      <div>
+          <form [formGroup]="form" *ngIf="questions != null">
+            <div
+              class="form-row"
+              style="
+                max-width: 400px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+  
+                padding: 10px;
+              "
+            >
+              <h3>{{ questions.title }}</h3>
+              <app-question
+                *ngFor="let q of questions.questions"
+                [question]="q"
+                [form]="form"
+                [idx]="0"
+                (geoLocation)="locationSelected($event)"
+              >
+              </app-question>
+            </div>
+          </form>
+    </div>
+  </div>
+</div>

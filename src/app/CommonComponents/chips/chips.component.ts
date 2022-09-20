@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export interface IElement {
   icon: string;
-  name: string;
+  elements: string[];
 }
 
 @Component({

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IJobPosition } from 'src/app/Models/job_postition';
+import { IElement } from '../chips/chips.component';
 
 @Component({
   selector: 'app-job-item',
@@ -8,13 +9,25 @@ import { IJobPosition } from 'src/app/Models/job_postition';
 })
 export class JobItemComponent implements OnInit {
   @Input('job') job: IJobPosition | null = null;
+
+  elements: IElement[] = [
+    {
+      icon: 'money',
+      elements: [],
+    }, {
+      icon: 'time',
+      elements: []
+    }, {
+      icon: 'work',
+      elements: []
+    }
+  ];
   constructor() {}
 
   ngOnInit(): void {}
 
   ngOnChanges() {
     if (this.job) {
-      
     }
   }
 }
