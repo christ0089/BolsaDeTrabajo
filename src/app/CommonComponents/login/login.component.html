@@ -1,7 +1,11 @@
 <div class="login">
+  <img
+    style="width: 100%; height: 200px; object-fit: contain"
+    src="https://www.torreon.gob.mx/img/logo2022.png"
+  />
   <h2>Iniciar Sesión</h2>
-  <div id="recaptcha-container" ></div>
-  <form [formGroup]="loginForm" >
+  <div id="recaptcha-container"></div>
+  <form [formGroup]="loginForm">
     <div class="form-group">
       <mat-form-field>
         <input
@@ -29,18 +33,34 @@
         />
       </mat-form-field>
       <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">La contraseña es requerida</div>
+        <div *ngIf="f['password'].errors['required']">
+          La contraseña es requerida
+        </div>
         <div *ngIf="f['password'].errors['minlength']">
           La contraseña es requerida
         </div>
       </div>
     </div>
     <div class="form-group">
-      <button id="sign-in-button" mat-flat-button style="width: 100%" (click)="login()">Iniciar Sesion</button>
+      <button
+        id="sign-in-button"
+        mat-flat-button
+        style="width: 100%"
+        (click)="login()"
+      >
+        Iniciar Sesion
+      </button>
     </div>
   </form>
 
-  <div class="form-group" style="margin-top: 10px;">
-    <button  mat-button style="width: 100%" routerLink="register">Registrar</button>
+  <div class="form-group" style="margin-top: 10px">
+    <button
+      mat-button
+      style="width: 100%"
+      routerLink="register"
+      color="primary"
+    >
+      Registrar
+    </button>
   </div>
 </div>

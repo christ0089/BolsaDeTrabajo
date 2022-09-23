@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
 import { IUserData } from 'src/app/Models/user';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
@@ -11,7 +12,18 @@ import { AuthService } from 'src/app/Shared/Auth/auth.service';
 export class ToolbarComponent {
   user$: Observable<IUserData | null> = EMPTY;
 
-  constructor(private readonly authService: AuthService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {
     this.user$ = this.authService.userDataObs$;
   }
+
+  logout() {
+    this.authService.signOut().then(() => {
+      this.router.navigate(["/"])
+    });
+  }
+
+
 }

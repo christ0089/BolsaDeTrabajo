@@ -1,1 +1,9 @@
-<p>employee-listing works!</p>
+<h2>Aplicaciones de Trabajo</h2>
+<mat-list>
+  <app-job-item
+    *ngFor="let job of jobListing$ | async"
+    [job]="job"
+    class="animate"
+  >
+  </app-job-item>
+</mat-list>

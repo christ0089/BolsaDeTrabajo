@@ -1,4 +1,3 @@
-
 import { TextboxQuestion } from 'src/app/Models/Forms/textbox';
 import { UploadFileQuestion } from 'src/app/Models/Forms/upload_file';
 import { IQuestion } from 'src/app/Models/question';
@@ -86,14 +85,17 @@ export const application_questionaire = () => {
         value: '',
         disabled: false,
         order: 0,
-        options: [{ key: 'uploaded', value: false }, {key: "file_type", value: "pdf"}],
+        options: [
+          { key: 'uploaded', value: false },
+          { key: 'file_type', value: 'pdf' },
+          { key: 'file_name', value: '' },
+        ],
         required: true,
         verfication: false,
       }),
     ],
   };
 };
-
 
 export const employee_questionaires = (): IQuestion[] => {
   const questions = [application_questionaire(), experience_questionaire()];

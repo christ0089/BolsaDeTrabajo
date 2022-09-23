@@ -2,35 +2,35 @@ export type Role = 'admin' | 'operator' | 'employeer';
 
 export interface IUserData {
   uid: string;
-  name: string;
-  last_names: string;
+  fname: string;
+  lname: string;
   email: string;
   user_role: Role;
 }
 
 export class User implements IUserData {
   uid!: string;
-  name!: string;
-  last_names!: string;
+  fname!: string;
+  lname!: string;
   email!: string;
   user_role!: Role;
 
   constructor(
     uid: string,
-    name: string,
-    last_names: string,
+    lname: string,
+    fname: string,
     email: string,
     user_role: Role
   ) {
     this.uid = uid;
-    this.name = name;
-    this.last_names = last_names;
+    this.fname = fname;
+    this.lname = lname;
     this.email = email;
     this.user_role = user_role;
   }
 
   get fullName() {
-    return this.name + this.last_names;
+    return this.fname + this.lname;
   }
 
   get isAdmin() {

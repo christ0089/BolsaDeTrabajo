@@ -16,12 +16,18 @@ const routes: Routes = [
         (m) => m.AuthModule
       ),
   },
-
   {
     path: 'job_application/:id',
     loadChildren: () =>
       import('./Pages/job-application/job-application.module').then(
         (m) => m.JobApplicationModule
+      ),
+  },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./AdminPages/employeer/employeer.module').then(
+        (m) => m.EmployeerModule
       ),
   },
 ];

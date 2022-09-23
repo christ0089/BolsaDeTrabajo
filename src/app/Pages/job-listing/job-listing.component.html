@@ -24,7 +24,7 @@
   >
     <div>
       <h1>{{ selectedJob.name }}</h1>
-      <h3>{{ selectedJob.employer }}</h3>
+      <h3>{{ selectedJob.employer.company_name }}</h3>
       <h3>
         TRC, Coahuila • {{ selectedJob.payment_expectation[0] | currency }} a
         {{ selectedJob.payment_expectation[1] | currency }} / por mes

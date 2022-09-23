@@ -133,26 +133,60 @@
       style="width: 100%; display: block; margin: 10px"
     >
       <div *ngIf="question.value != ''; else template">
-        <img
-          *ngIf="question.options[1].value == 'img'"
-          [src]="question.value"
-          style="
-            width: 100%;
-            min-width: 200px;
-            max-height: 300px;
-            height: fit-content;
-            object-fit: contain;
-          "
-        />
+        <div>
+          <img
+            *ngIf="question.options[1].value == 'img'"
+            [src]="question.value"
+            style="
+              width: 100%;
+              min-width: 200px;
+              max-height: 300px;
+              height: fit-content;
+              object-fit: contain;
+            "
+          />
+          <button mat-raised-button (click)="uploader.click()" color="primary">
+            Subir
+          </button>
+          <button
+            mat-button
+            (click)="download()"
+            color="accent"
+          >
+            Descargar
+          </button>
+        </div>
+
         <div *ngIf="question.options[1].value == 'pdf'">
-          <mat-list-item>
-            <mat-icon mat-list-icon>file</mat-icon>
-            <p mat-line>{{ question.value }}</p>
-          </mat-list-item>
+          <mat-list>
+            <mat-list-item>
+              <mat-icon mat-list-icon>description</mat-icon>
+              <div mat-line>{{ question.options[2].value }}</div>
+            </mat-list-item>
+          </mat-list>
         </div>
       </div>
       <ng-template #template>
-        <div style="width: 100%; height: 150px; border: 2px dashed lightgray">
+        <div *ngIf="question.options[1].value == 'pdf'">
+          <mat-list>
+            <mat-list-item (click)="uploader.click()">
+              <mat-icon mat-list-icon>description</mat-icon>
+              <div mat-line>{{ question.label }}</div>
+            </mat-list-item>
+          </mat-list>
+          <button
+            mat-button
+            (click)="download()"
+            *ngIf="question.options[0].value === true"
+            color="accent"
+          >
+            Descargar
+          </button>
+        </div>
+        <div
+          *ngIf="question.options[1].value == 'img'"
+          style="width: 100%; height: 150px; border: 2px dashed lightgray"
+        >
           <h4
             style="
               text-align: center;
@@ -163,6 +197,18 @@
           >
             {{ question.label }}
           </h4>
+
+          <button mat-raised-button (click)="uploader.click()" color="primary">
+            Subir
+          </button>
+          <button
+            mat-button
+            (click)="download()"
+            *ngIf="question.options[0].value === true"
+            color="accent"
+          >
+            Descargar
+          </button>
         </div>
       </ng-template>
       <input
@@ -172,17 +218,6 @@
         [formControlName]="question.key"
         [id]="question.key"
       />
-      <button mat-raised-button (click)="uploader.click()" color="primary">
-        Subir
-      </button>
-      <button
-        mat-button
-        (click)="download()"
-        *ngIf="question.options[0].value === true"
-        color="accent"
-      >
-        Descargar
-      </button>
     </div>
   </div>
   <!-- 

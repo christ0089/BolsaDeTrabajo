@@ -1,26 +1,31 @@
-import { Component, Input, Output } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
-import { QuestionBase } from "src/app/Models/Forms/question-base";
-import { EventEmitter } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { Component, Input, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { QuestionBase } from 'src/app/Models/Forms/question-base';
+import { EventEmitter } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DatePipe } from '@angular/common';
-import { AddressComponents } from "src/app/Shared/Mapbox/mapbox.service";
+import { AddressComponents } from 'src/app/Shared/Mapbox/mapbox.service';
+
+export interface IFileUpload {
+  file: File;
+  question_key: string;
+  question_index: number;
+}
 
 @Component({
-  selector: "app-question",
-  styleUrls: ["question.component.scss"],
-  templateUrl: "./question.component.html",
+  selector: 'app-question',
+  styleUrls: ['question.component.scss'],
+  templateUrl: './question.component.html',
 })
 export class DynamicFormQuestionComponent {
   @Input() question!: QuestionBase<string | number | boolean | Date>;
   @Input() form!: FormGroup;
   @Input() idx: number = 0;
 
-  @Output() fileUpload = new EventEmitter<File>();
+  @Output() fileUpload = new EventEmitter<IFileUpload>();
   @Output() document_state = new EventEmitter<any>();
   @Output() geoLocation = new EventEmitter<AddressComponents[]>();
-
 
   get isValid() {
     return (this.form as FormGroup).controls[this.question.key].valid;
@@ -39,19 +44,18 @@ export class DynamicFormQuestionComponent {
     reader.readAsDataURL(event.target.files[0]);
 
     reader.onload = (_event) => {
-      const png =  (reader.result as string)
+      const png = reader.result as string;
       this.question.value = png;
       this.form.controls[this.question.key].setValue(png);
-      
-    }
-    this.fileUpload.emit(file);
-  }
 
+      this.question.options[2].value = file.name;
+    };
+    this.fileUpload.emit({ file: file, question_key: this.question.key, question_index: this.idx });
+  }
 
   compareObjects(o1: any, o2: any): boolean {
     return o1 === o2;
   }
-
 
   locationSelected(item: AddressComponents[]) {
     this.geoLocation.emit(item);
@@ -60,6 +64,4 @@ export class DynamicFormQuestionComponent {
   download() {
     window.open(this.question.value as string);
   }
-
-
 }

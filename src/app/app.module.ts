@@ -23,13 +23,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgZorroAntdModule } from './ng-zorro.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { ToolbarComponent } from './CommonComponents/toolbar/toolbar.component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from './Shared/Auth/auth.service';
+import { QuestionControlService } from './Shared/QuestionsService/question-control-service';
+import { MapboxService } from './Shared/Mapbox/mapbox.service';
+import { ScriptService } from './Shared/Script/script.service';
 
 registerLocaleData(en);
 
@@ -51,12 +57,19 @@ registerLocaleData(en);
     NzGridModule,
     NzI18nModule,
     NzMenuModule,
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
     NzListModule,
     BrowserAnimationsModule
   ],
   providers: [
     ScreenTrackingService,
     UserTrackingService,
+    AuthService,
+    ScriptService,
+    QuestionControlService,
+    MapboxService,
     { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],

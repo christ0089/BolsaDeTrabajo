@@ -60,8 +60,8 @@ export class LocationComponent implements OnInit, OnChanges {
   constructor(private qcs: QuestionControlService) {}
 
   ngOnInit(): void {
-    this.questions = this.qcs.employerLocationQuestionaire();
-    this.form = this.qcs.toFormGroup(this.questions.questions);
+   // this.questions = this.qcs.employerLocationQuestionaire();
+   /// this.form = this.qcs.toFormGroup(this.questions.questions);
   }
 
   ngOnChanges() {

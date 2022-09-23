@@ -1,5 +1,6 @@
 import { Injectable, Optional } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { doc, Firestore } from '@angular/fire/firestore';
 import {
   ApplicationVerifier,
   signInWithEmailAndPassword,
@@ -9,6 +10,7 @@ import {
   User,
   UserCredential,
 } from '@firebase/auth';
+import { collection, setDoc } from '@firebase/firestore';
 import { authState } from 'rxfire/auth';
 import {
   BehaviorSubject,
@@ -36,7 +38,8 @@ export class AuthService {
 
   constructor(
     private readonly auth: Auth,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly afs: Firestore
   ) {
     this.auth$ = authState(this.auth).pipe(
       takeUntil(this.destroy$),
@@ -118,13 +121,29 @@ export class AuthService {
   }
 
   signOut() {
-    return signOut(this.auth);
+    return signOut(this.auth).then(() => {
+      this.userData$.next(null);
+    });
   }
 
-  async registerFn(user: any) {
-    createUserWithEmailAndPassword(this.auth, user.email, user.password).then(
-      (userData) => {}
-    );
+  async registerUser(user_registration: any, user_data: any) {
+    return createUserWithEmailAndPassword(
+      this.auth,
+      user_registration.email,
+      user_registration.password
+    ).then((user) => {
+      const docRef = doc(this.afs, `users/${user.user.uid}`);
+      return setDoc(
+        docRef,
+        {
+          ...user_data,
+          email: user_registration.email,
+        },
+        {
+          merge: true,
+        }
+      );
+    });
   }
 
   phoneAuth(phone: string, captcha: ApplicationVerifier) {

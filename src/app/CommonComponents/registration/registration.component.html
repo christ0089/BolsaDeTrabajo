@@ -9,7 +9,7 @@
     </button>
 
     <img
-      style="width: 100%; height: 200px; object-fit: contain;"
+      style="width: 100%; height: 200px; object-fit: contain"
       src="https://www.torreon.gob.mx/img/logo2022.png"
     />
     <h2>Registro</h2>
@@ -40,7 +40,9 @@
         />
       </mat-form-field>
       <div *ngIf="submitted && f['lname'].errors" class="invalid-feedback">
-        <div *ngIf="f['lname'].errors['required']">Los apellidos son requeridos</div>
+        <div *ngIf="f['lname'].errors['required']">
+          Los apellidos son requeridos
+        </div>
       </div>
     </div>
     <div class="form-group">
@@ -78,14 +80,16 @@
         </div>
       </div>
     </div>
-    <div style="display: inline-flex;">
-      <mat-form-field style="max-width: 150px;">
-        <mat-icon matPrefix style="margin: 0px 20px;">phone</mat-icon>
+    <div style="display: inline-flex">
+      <mat-form-field style="max-width: 150px">
+        <mat-icon matPrefix style="margin: 0px 20px">phone</mat-icon>
         <mat-select
           formControlName="contry_code"
           [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
         >
-          <mat-option></mat-option>
+          <mat-option *ngFor="let country of countryJson"
+            >{{ country.dial_code }} {{ country.code }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
@@ -97,10 +101,9 @@
           class="form-control"
           [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
         />
-       
       </mat-form-field>
     </div>
-   
+
     <div class="form-group">
       <button
         id="sign-in-button"
@@ -111,5 +114,14 @@
         Registrar
       </button>
     </div>
+    <button
+      id="sign-in-button"
+      mat-flat-button
+      style="width: calc(100% - 30px); margin-top: 10px;"
+      routerLink="/auth"
+      color="primary"
+    >
+      Regresar
+    </button>
   </form>
 </div>

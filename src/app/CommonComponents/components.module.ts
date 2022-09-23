@@ -20,13 +20,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ChipsComponent } from './chips/chips.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { NgZorroAntdModule } from '../ng-zorro.module';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { RegistrationComponent } from './registration/registration.component';
-import { EmployerRegistrationComponent } from './employer-registration/employer-registration.component';
+import { JobItemComponent } from './job-item/job-item.component';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @NgModule({
   imports: [
@@ -48,17 +46,18 @@ import { EmployerRegistrationComponent } from './employer-registration/employer-
     MatListModule,
     MatDatepickerModule,
     NzMenuModule,
+    NzCardModule,
     NzPageHeaderModule,
-    NzLayoutModule
+    NzLayoutModule,
   ],
   declarations: [
     DynamicFormQuestionComponent,
     LocationComponent,
     ChipsComponent,
+    JobItemComponent,
     GeoQuestionComponent,
-    EmployerRegistrationComponent,
   ],
   providers: [],
-  exports: [DynamicFormQuestionComponent, ChipsComponent],
+  exports: [DynamicFormQuestionComponent, JobItemComponent, ChipsComponent],
 })
 export class ComponentModule {}

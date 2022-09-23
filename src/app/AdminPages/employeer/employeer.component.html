@@ -1,0 +1,48 @@
+<div nz-row nzJustify="center" style="padding: 20px">
+  <div
+    nz-col
+    nzSpan="4"
+    style="padding: 10px; background: white; height: fit-content"
+  >
+    <div *ngIf="employeer$ | async; let employeer">
+      <div *ngIf="employeer.length > 0">
+        <img
+          style="
+            width: 100%;
+            max-width: 200px;
+            height: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            object-fit: contain;
+          "
+          [src]="employeer[0].company_img"
+        />
+        <h2 style="text-align: center">{{ employeer[0].company_name }}</h2>
+      </div>
+    </div>
+    <mat-list *ngFor="let route of availableRoutes">
+      <mat-list-item [routerLink]="route.path">
+        <button mat-button>{{ route.name }}</button>
+      </mat-list-item>
+      <mat-list-item routerLink="applicants">
+        <button mat-button>Mis Aplicantes</button>
+      </mat-list-item>
+      <mat-list-item routerLink="job_applications">
+        <button mat-button>Mis Solicitantes</button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div nz-col nzSpan="1" style="padding: 10px"></div>
+  <div
+    nz-col
+    nzSpan="12"
+    style="
+      padding: 10px;
+      background: white;
+      height: calc(100vh - 120px);
+      overflow-y: scroll;
+    "
+  >
+    <router-outlet></router-outlet>
+  </div>
+</div>

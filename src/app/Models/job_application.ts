@@ -1,3 +1,4 @@
+import { Timestamp } from '@firebase/firestore';
 import { IUserData } from './user';
 
 export interface IExtraQuestions {
@@ -16,9 +17,6 @@ export interface IPrevEmployer {
 }
 
 export interface IJobApplication {
-  personal_info: IUserData;
-  cv_url: string;
-  extra_questions: IExtraQuestions[];
-  extra_documents: IExtraDocuments[];
-  preve_employer: IPrevEmployer;
+  personal_data: IUserData;
+  createdAt: Timestamp;
 }

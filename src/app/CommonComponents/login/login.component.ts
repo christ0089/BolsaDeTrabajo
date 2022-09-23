@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   login() {
     const user = this.loginForm.value;
     this.auth.emailAuth(user.email, user.password).then(() => {
-      this.router.navigateByUrl("/home")
+      this.router.navigateByUrl("/")
     }).catch((e) => {
       this.snackbar
       .open(e.message)

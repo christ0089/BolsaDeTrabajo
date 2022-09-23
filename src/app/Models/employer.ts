@@ -1,13 +1,17 @@
 import { IAddress } from './job_postition';
 
+export type EmployeeRange = "1 a 10" | "10 a 25" | "30 a 100" | "100+";
+
 export type Industry = ''; //TODO: List All industry types;
 export interface IEmployer {
-  name: string;
-  active: boolean;
-  description: string;
-  prof_img: string;
-  address: IAddress;
+  id: string;
+  company_img: string;
+  company_name: string;
   contact_phone: string;
   contact_email: string;
+  active: boolean;
+  description: string;
+  address: IAddress;
   industry: string;
+  employee_rage: EmployeeRange
 }

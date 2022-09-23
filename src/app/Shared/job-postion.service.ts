@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
+import { collectionData, doc, Firestore } from '@angular/fire/firestore';
 import {
   collection,
   DocumentData,
   QueryDocumentSnapshot,
+  setDoc,
+  Timestamp,
 } from '@firebase/firestore';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { IJobPosition } from '../Models/job_postition';
@@ -54,4 +56,22 @@ export class JobPostionService {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+
+  favoriteJobPosition(job_id: string, favorite: boolean) {
+    const doc_ref = doc(
+      this.afs,
+      `users/${this.authService.userData$.value?.uid}/job_applications/${job_id}`
+    );
+    return setDoc(
+      doc_ref,
+      {
+        addedOn: Timestamp.now(),
+        active: favorite
+      },
+      {
+        merge: true,
+      }
+    );
+  }
+
 }

@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore, query, where } from '@angular/fire/firestore';
-import { collection } from '@firebase/firestore';
+import { collectionData, Firestore } from '@angular/fire/firestore';
+import { collection, query, where } from '@firebase/firestore';
 import { BehaviorSubject, switchMap } from 'rxjs';
-import { IJobPosition } from 'src/app/Models/job_postition';
+import { IJobApplication } from 'src/app/Models/job_application';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
 @Component({
-  selector: 'app-employee-listing',
-  templateUrl: './employee-listing.component.html',
-  styleUrls: ['./employee-listing.component.sass'],
+  selector: 'app-employee-applications',
+  templateUrl: './employee-applications.component.html',
+  styleUrls: ['./employee-applications.component.sass'],
 })
-export class EmployeeListingComponent implements OnInit {
-  jobListing$: BehaviorSubject<IJobPosition[]> = new BehaviorSubject<
-    IJobPosition[]
+export class EmployeeApplicationsComponent implements OnInit {
+  jobApplications$: BehaviorSubject<IJobApplication[]> = new BehaviorSubject<
+    IJobApplication[]
   >([]);
+
   constructor(
     private readonly afs: Firestore,
     private readonly auth: AuthService,
@@ -26,8 +27,8 @@ export class EmployeeListingComponent implements OnInit {
         switchMap((e) => {
           const collectionRef = collection(
             this.afs,
-            `job_listing`
-          ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
+            `employeers/${e[0].id}/job_applications`
+          ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
 
           const q = query(collectionRef, where('employer.id', '==', e[0].id));
 
@@ -35,7 +36,7 @@ export class EmployeeListingComponent implements OnInit {
         })
       )
       .subscribe((j) => {
-        this.jobListing$.next(j);
+        this.jobApplications$.next(j);
       });
   }
 
