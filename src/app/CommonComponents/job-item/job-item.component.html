@@ -11,4 +11,8 @@
   <p style="max-height: 200px; text-overflow: ellipsis; overflow: hidden">
     {{ job.description }}
   </p>
+  <div *ngIf="editJob">
+    <button mat-button color="primary" (click)="editJobForm()">Editar</button>
+    <button mat-button color="warn" (click)="removeJob()">Borrar</button>
+  </div>
 </nz-card>

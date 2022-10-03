@@ -20,10 +20,11 @@ export type WorkHoursTypes = "8_horus" | "10_hours" | "12_hours" | "morning_shif
  export type BonusTypes = "productivity_bonus" | "punctuality_bonus" | "monthly_bonus" | "yearly_bonus" | "quarter_bonus";
 
 export interface IJobPosition {
-  id: string;
+  id?: string;
   name: string;
+  applied: boolean;
   employer: IEmployer;
-  description: String;
+  description: string;
   requirements: IRequirements[];
   createdAt: Timestamp;
   address: IAddress;
@@ -32,7 +33,6 @@ export interface IJobPosition {
   workhours_type: WorkHoursTypes[];
   bonus_type?: BonusTypes[];
   benefits: string[];
-  bonuses: string[];
   compensations: string[];
   remote? : boolean;
   tags: string[]

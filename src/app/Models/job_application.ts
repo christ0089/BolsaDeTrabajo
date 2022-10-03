@@ -18,5 +18,7 @@ export interface IPrevEmployer {
 
 export interface IJobApplication {
   personal_data: IUserData;
+  id: string;
+  formData: any;
   createdAt: Timestamp;
 }

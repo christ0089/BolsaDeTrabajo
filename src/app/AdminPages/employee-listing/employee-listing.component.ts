@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore, query, where } from '@angular/fire/firestore';
-import { collection } from '@firebase/firestore';
+import {
+  collectionData,
+  Firestore,
+  query,
+  where,
+} from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
+import { collection, deleteDoc, doc } from '@firebase/firestore';
+import { filter } from 'd3';
 import { BehaviorSubject, switchMap } from 'rxjs';
+import { JobPositionFormComponent } from 'src/app/EmployeerComponents/job-position-form/job-position-form.component';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
@@ -18,12 +26,15 @@ export class EmployeeListingComponent implements OnInit {
   >([]);
   constructor(
     private readonly afs: Firestore,
-    private readonly auth: AuthService,
+    private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
     this.employeerService.employeers$
       .pipe(
         switchMap((e) => {
+          if (e.length == 0) {
+            return [];
+          }
           const collectionRef = collection(
             this.afs,
             `job_listing`
@@ -35,9 +46,38 @@ export class EmployeeListingComponent implements OnInit {
         })
       )
       .subscribe((j) => {
+        console.log(j);
         this.jobListing$.next(j);
       });
   }
 
   ngOnInit(): void {}
+
+  jobApplication(job_postition: IJobPosition | null = null) {
+    const dialogRef = this.matDialog.open(JobPositionFormComponent, {
+      width: '800px',
+      maxWidth: '1200px',
+      height: '80%',
+      data: { ...job_postition },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // if (!data.complimentData) {
+      //   this.removeCompliment(i);
+      // } else {
+      //   const compliment = data.complimenData;
+      //   if (this.currProd.complimentData) {
+      //     this.currProd.complimentData.push(compliment);
+      //   } else {
+      //     this.currProd.complimentData = [compliment];
+      //   }
+      // }
+      console.log('The dialog was closed');
+    });
+  }
+
+  deleteJobApplication(job_postition: IJobPosition) {
+    const docRef = doc(this.afs, `job_listing/${job_postition.id}`);
+    deleteDoc(docRef);
+  }
 }

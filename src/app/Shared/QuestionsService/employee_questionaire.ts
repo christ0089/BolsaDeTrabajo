@@ -2,14 +2,23 @@ import { TextboxQuestion } from 'src/app/Models/Forms/textbox';
 import { UploadFileQuestion } from 'src/app/Models/Forms/upload_file';
 import { IQuestion } from 'src/app/Models/question';
 
-export const user_registration_questionaire = () => {
+export const user_info_questionaire = () => {
   return {
-    title: 'Registro',
+    title: 'Tu Informacion',
     subtitle: '',
     questions: [
       new TextboxQuestion({
-        key: 'name',
+        key: 'fname',
         label: 'Nombre',
+        value: '',
+        disabled: false,
+        order: 0,
+        options: [],
+        verfication: false,
+      }),
+      new TextboxQuestion({
+        key: 'lname',
+        label: 'Apellidos',
         value: '',
         disabled: false,
         order: 0,
@@ -29,20 +38,11 @@ export const user_registration_questionaire = () => {
         key: 'email',
         label: 'Correo',
         value: 0,
-        disabled: false,
+        disabled: true,
         order: 0,
         options: [],
         verfication: false,
-      }),
-      new TextboxQuestion({
-        key: 'email',
-        label: 'Correo',
-        value: 0,
-        disabled: false,
-        order: 0,
-        options: [],
-        verfication: false,
-      }),
+      })
     ],
   };
 };

@@ -18,11 +18,14 @@
     <ng-template #loggedIn>
       <li nz-menu-item *ngIf="user$ | async; let user">
         <button mat-button [matMenuTriggerFor]="menu">
-          <mat-icon>account_circle </mat-icon> {{user.fname }} {{user.lname}}
+          <mat-icon>account_circle </mat-icon> {{ user.fname }} {{ user.lname }}
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>Cuenta</button>
-          <button mat-menu-item color="warn" (click)="logout()">Cerrar Sesion</button>
+          <button mat-menu-item routerLink="/user_info">Cuenta</button>
+          <button mat-menu-item routerLink="/user_applications">Aplicaciones de Trabajo</button>
+          <button mat-menu-item color="primary" (click)="logout()">
+            Cerrar Sesion
+          </button>
         </mat-menu>
       </li>
     </ng-template>

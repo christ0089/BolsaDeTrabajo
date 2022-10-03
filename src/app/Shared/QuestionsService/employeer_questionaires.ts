@@ -1,5 +1,8 @@
 import { Validators } from '@angular/forms';
+import { CheckboxQuestion } from 'src/app/Models/Forms/checkbox';
 import { GeolocationQuestion } from 'src/app/Models/Forms/geolocation';
+import { RadioQuestion } from 'src/app/Models/Forms/radio';
+import { TextArea } from 'src/app/Models/Forms/textarea';
 import { TextboxQuestion } from 'src/app/Models/Forms/textbox';
 import { UploadFileQuestion } from 'src/app/Models/Forms/upload_file';
 import { IQuestion } from 'src/app/Models/question';
@@ -114,6 +117,222 @@ export const employer_location = (): IQuestion => {
       }),
     ],
   };
+};
+
+export const job_application_general_info_questionaire = () => {
+  return {
+    title: 'Informacion de la posicion',
+    subtitle: null,
+    questions: [
+      new TextboxQuestion({
+        key: 'name',
+        label: 'Nombre de la posicion',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+        validators: [Validators.maxLength(40)],
+      }),
+      new TextboxQuestion({
+        key: 'description',
+        label: 'Descripcion',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+        validators: [Validators.maxLength(5000)],
+      }),
+      new TextboxQuestion({
+        key: 'payment_expectation_min',
+        label: 'Pago Minimo',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+      }),
+      new TextboxQuestion({
+        key: 'payment_expectation_max',
+        label: 'Pago Maximo',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+        validators: [Validators.maxLength(40)],
+      }),
+      new RadioQuestion({
+        key: 'payment_expectation_max',
+        label: 'Pago Maximo',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+        validators: [Validators.maxLength(40)],
+      }),
+    ],
+  };
+};
+
+export const position_type = () => {
+  return {
+    title: 'Tipo de Posicion',
+    subtitle: null,
+    questions: [
+      new RadioQuestion({
+        key: 'position_type',
+        label: '',
+        value: '',
+        required: true,
+        order: 0,
+        options: [
+          {
+            key: 'Medio Tiempo',
+            value: 'half_time',
+          },
+          {
+            key: 'Tiempo Completo',
+            value: 'full_time',
+          },
+          {
+            key: 'Pasantia',
+            value: 'internship',
+          },
+          {
+            key: 'Temporal',
+            value: 'tempory',
+          },
+          {
+            key: 'Practicas',
+            value: 'apprenticeship',
+          },
+        ],
+        verfication: false
+      }),
+    ],
+  };
+};
+
+export const work_hours_type = () => {
+  return {
+    title: 'Jornadas de Trabajo',
+    subtitle: null,
+    questions: [
+      new CheckboxQuestion({
+        key: '8_hours',
+        label: '8 horas',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: '10_hours',
+        label: '10 horas',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: '12_hours',
+        label: '12 horas',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'morning_shift',
+        label: 'Tempo Diurno',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'morning_shift',
+        label: 'Tiempo Nocturno',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'includes_holidays',
+        label: 'Incluye Festivos',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'includes_weekends',
+        label: 'Incluye Fin de Semana',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'flexible',
+        label: 'Horario Flexible',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+    ],
+  };
+};
+
+export const bonus_type = () => {
+  return {
+    title: 'Tipo de Bonos',
+    subtitle: null,
+    questions: [
+      new CheckboxQuestion({
+        key: 'productivity_bonus',
+        label: 'Bono de Productividad',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'punctuality_bonus',
+        label: 'Bono de Puntualidad',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'monthly_bonus',
+        label: 'Bono Mensual',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'yearly_bonus',
+        label: 'Bono Anual',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'quarter_bonus',
+        label: 'Bono Bimestral',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+    ],
+  };
+};
+
+export const job_application = (): IQuestion[] => {
+  const questions = [
+    job_application_general_info_questionaire(),
+    position_type(),
+    work_hours_type(),
+    bonus_type()
+  ];
+  return questions;
 };
 
 export const employer_questionaires = (): IQuestion[] => {

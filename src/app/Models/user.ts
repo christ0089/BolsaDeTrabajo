@@ -5,6 +5,8 @@ export interface IUserData {
   fname: string;
   lname: string;
   email: string;
+  phone: string;
+  country_code?: string;
   user_role: Role;
 }
 
@@ -13,6 +15,7 @@ export class User implements IUserData {
   fname!: string;
   lname!: string;
   email!: string;
+  phone!: string;
   user_role!: Role;
 
   constructor(
@@ -20,6 +23,7 @@ export class User implements IUserData {
     lname: string,
     fname: string,
     email: string,
+    phone: string,
     user_role: Role
   ) {
     this.uid = uid;
@@ -27,6 +31,7 @@ export class User implements IUserData {
     this.lname = lname;
     this.email = email;
     this.user_role = user_role;
+    this.phone! = phone;
   }
 
   get fullName() {

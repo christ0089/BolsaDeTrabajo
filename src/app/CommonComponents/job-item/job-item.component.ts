@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { IElement } from '../chips/chips.component';
 
@@ -9,18 +9,24 @@ import { IElement } from '../chips/chips.component';
 })
 export class JobItemComponent implements OnInit {
   @Input('job') job: IJobPosition | null = null;
+  @Input('edit') editJob: boolean = false;
+
+  @Output('edit_job') editJobEvent: EventEmitter<IJobPosition> = new EventEmitter<IJobPosition>();
+  @Output('delete_job') deleteJobEvent: EventEmitter<IJobPosition> = new EventEmitter<IJobPosition>();
 
   elements: IElement[] = [
     {
       icon: 'money',
       elements: [],
-    }, {
+    },
+    {
       icon: 'time',
-      elements: []
-    }, {
+      elements: [],
+    },
+    {
       icon: 'work',
-      elements: []
-    }
+      elements: [],
+    },
   ];
   constructor() {}
 
@@ -28,6 +34,18 @@ export class JobItemComponent implements OnInit {
 
   ngOnChanges() {
     if (this.job) {
+    }
+  }
+
+  editJobForm() {
+    if (this.job) {
+      this.editJobEvent.emit(this.job);
+    }
+  }
+
+  removeJob() {
+    if (this.job) {
+      this.deleteJobEvent.emit(this.job);
     }
   }
 }

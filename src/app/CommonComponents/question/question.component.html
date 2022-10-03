@@ -112,6 +112,7 @@
           class="radio-button"
           *ngFor="let option of question.options"
           [value]="option.value"
+          [checked]="question.value == option.key"
           color="primary"
           style="display: inline-block; margin: 10px"
         >
@@ -123,7 +124,7 @@
       *ngSwitchCase="'checkbox_options'"
       style="width: calc(100% - 20px); display: inline-block; margin: 10px"
     >
-      <mat-checkbox [formControlName]="question.key">
+      <mat-checkbox [formControlName]="question.key" [checked]="question.value === true">
         {{ question.label }}
       </mat-checkbox>
     </div>

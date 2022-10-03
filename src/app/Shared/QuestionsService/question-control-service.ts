@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionBase } from 'src/app/Models/Forms/question-base';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { employer_location, employer_questionaires,  } from './employeer_questionaires';
-import { employee_questionaires } from './employee_questionaire';
+import { employer_location, employer_questionaires, job_application,  } from './employeer_questionaires';
+import { employee_questionaires, user_info_questionaire } from './employee_questionaire';
 
 @Injectable()
 export class QuestionControlService {
@@ -89,6 +89,14 @@ export class QuestionControlService {
     return employer_questionaires();
   }
 
+  employerNewJobPosition() {
+    return job_application();
+  }
+
+  employeeUserInfo() {
+    return user_info_questionaire();
+  }
+ 
   employeeApplicationQuestionair() {
     return employee_questionaires();
   }

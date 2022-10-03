@@ -36,6 +36,7 @@ import { AuthService } from './Shared/Auth/auth.service';
 import { QuestionControlService } from './Shared/QuestionsService/question-control-service';
 import { MapboxService } from './Shared/Mapbox/mapbox.service';
 import { ScriptService } from './Shared/Script/script.service';
+import { ListPostionService } from './Shared/list-postion.service';
 
 registerLocaleData(en);
 
@@ -69,6 +70,7 @@ registerLocaleData(en);
     AuthService,
     ScriptService,
     QuestionControlService,
+    ListPostionService,
     MapboxService,
     { provide: NZ_I18N, useValue: en_US },
   ],

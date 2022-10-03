@@ -1,22 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDrawer } from '@angular/material/sidenav';
-import { collection, query, where } from '@firebase/firestore';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { collection } from '@firebase/firestore';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
 import { IJobApplication } from 'src/app/Models/job_application';
-import { JobApplicationComponent } from 'src/app/Pages/job-application/job-application.component';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
-import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
 @Component({
-  selector: 'app-employee-applications',
-  templateUrl: './employee-applications.component.html',
-  styleUrls: ['./employee-applications.component.sass'],
+  selector: 'app-user-job-applications',
+  templateUrl: './user-job-applications.component.html',
+  styleUrls: ['./user-job-applications.component.sass'],
 })
-export class EmployeeApplicationsComponent implements OnInit {
+export class UserJobApplicationsComponent implements OnInit {
   jobApplications$: BehaviorSubject<IJobApplication[]> = new BehaviorSubject<
     IJobApplication[]
   >([]);
@@ -28,19 +25,15 @@ export class EmployeeApplicationsComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly afs: Firestore,
     private readonly auth: AuthService,
-    private readonly employeerService: EmployeerService
   ) {
-    this.employeerService.employeers$
+    this.auth.userDataObs$
       .pipe(
         switchMap((e) => {
           const collectionRef = collection(
             this.afs,
-            `employeers/${e[0].id}/job_applications`
+            `users/${e?.uid}/job_applications`
           ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
-
-          const q = query(collectionRef, where('employer.id', '==', e[0].id));
-
-          return collectionData(q, { idField: 'id' });
+          return collectionData(collectionRef, { idField: 'id' });
         })
       )
       .subscribe((j) => {

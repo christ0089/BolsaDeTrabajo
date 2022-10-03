@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, EMPTY, Observable, tap } from 'rxjs';
+import { html } from 'd3-fetch';
+import { BehaviorSubject, combineLatest, EMPTY, Observable, tap } from 'rxjs';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { JobPostionService } from 'src/app/Shared/job-postion.service';
+import { ListPostionService } from 'src/app/Shared/list-postion.service';
 
 @Component({
   selector: 'app-job-listing',
@@ -21,12 +23,25 @@ export class JobListingComponent implements OnInit {
 
   constructor(
     private readonly jobService: JobPostionService,
+    private readonly jobApplied: ListPostionService,
     private readonly router: Router
   ) {
-    this.jobService.jobListing$
+    combineLatest([
+      this.jobService.jobListing$,
+      this.jobApplied.jobApplications$,
+    ])
       .pipe(
-        tap((j) => {
-          this.jobListing$.next(j);
+        tap(([jobListing, appliedJob]) => {
+          jobListing.forEach((j) => {
+            j.applied = false;
+            appliedJob.forEach((b) => {
+              if (b.id == j.id) {
+                j.applied = true;
+              } 
+            });
+          });
+          console.log(jobListing);
+          this.jobListing$.next(jobListing);
         })
       )
       .subscribe();
@@ -60,7 +75,7 @@ export class JobListingComponent implements OnInit {
     this.selectedJob$.next(job);
   }
 
-  openApplication(job: IJobPosition) {
+  openApplication(job: IJobPosition): void {
     this.router.navigate([`/job_application/${job.id}`], {
       state: {
         job,
@@ -68,5 +83,5 @@ export class JobListingComponent implements OnInit {
     });
   }
 
-  saveToFavorite(job: IJobPosition) {}
+  saveToFavorite(job: IJobPosition): void {}
 }

@@ -9,9 +9,11 @@
       {{ job_application.personal_data.fname }}
       {{ job_application.personal_data.lname }}
 
-
-      Creado el: {{job_application.createdAt.toDate()| date }}
-      <button mat-button>Ver Applicación</button>
+      Creado el: {{ job_application.createdAt.toDate() | date }}
+      <span class="example-spacer"></span>
+      <button mat-button (click)="selectJob(job_application)">
+        Ver Applicación
+      </button>
     </div>
   </mat-list-item>
 </mat-list>

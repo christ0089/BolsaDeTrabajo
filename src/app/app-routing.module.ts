@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from './Guards/admin.guard';
+import { EmployerGuard } from './Guards/employer.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +19,20 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'user_applications',
+    loadChildren: () =>
+      import('./Pages/user-job-applications/user-job-applications.module').then(
+        (m) => m.UserJobApplicationsModule
+      ),
+  },
+  {
+    path: 'user_info',
+    loadChildren: () =>
+      import('./Pages/user-info/user-info.module').then(
+        (m) => m.UserInfoModule
+      ),
+  },
+  {
     path: 'job_application/:id',
     loadChildren: () =>
       import('./Pages/job-application/job-application.module').then(
@@ -25,6 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [EmployerGuard],
     loadChildren: () =>
       import('./AdminPages/employeer/employeer.module').then(
         (m) => m.EmployeerModule
