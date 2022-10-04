@@ -94,5 +94,7 @@ export class JobApplicationComponent implements OnInit {
     ).then(() => {
       //TODO: Application Complete Page;
     });
+
+    
   }
 }

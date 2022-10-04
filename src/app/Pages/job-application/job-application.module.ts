@@ -19,7 +19,6 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
     ComponentModule,
     MatButtonModule,
     MatProgressBarModule,
-  
     JobApplicationRoutingModule,
   ],
   providers: [QuestionControlService],

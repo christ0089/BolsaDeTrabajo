@@ -25,6 +25,10 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { JobItemComponent } from './job-item/job-item.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { ApplicationInfoComponent } from '../EmployeerComponents/application-info/application-info.component';
+import { EmployerInfoFormComponent } from '../EmployeerComponents/employer-info-form/employer-info-form.component';
+import { JobPositionFormComponent } from '../EmployeerComponents/job-position-form/job-position-form.component';
+import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-question.component';
 
 @NgModule({
   imports: [
@@ -56,8 +60,12 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     ChipsComponent,
     JobItemComponent,
     GeoQuestionComponent,
+    ApplicationInfoComponent,
+    EmployerInfoFormComponent,
+    JobPositionFormComponent,
+    NewQuestionComponent,
   ],
   providers: [],
-  exports: [DynamicFormQuestionComponent, JobItemComponent, ChipsComponent],
+  exports: [JobItemComponent, DynamicFormQuestionComponent, ChipsComponent],
 })
 export class ComponentModule {}

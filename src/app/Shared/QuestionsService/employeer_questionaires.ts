@@ -325,6 +325,36 @@ export const bonus_type = () => {
   };
 };
 
+export const benefits = () => {
+  return {
+    title: 'Tipo de Beneficios',
+    subtitle: null,
+    questions: [
+      new CheckboxQuestion({
+        key: 'health_insurance',
+        label: 'Seguro Medico',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'dental_insurance',
+        label: 'Seguro Dental',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+      new CheckboxQuestion({
+        key: 'vales_despensas',
+        label: 'Vales de Despensas',
+        value: '',
+        required: false,
+        order: 0,
+      }),
+    ],
+  };
+}
+
 export const job_application = (): IQuestion[] => {
   const questions = [
     job_application_general_info_questionaire(),
