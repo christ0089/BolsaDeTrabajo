@@ -42,13 +42,11 @@ export class JobListingComponent implements OnInit {
             });
           });
 
-          console.log(favoriteJob);
-
           jobListing.forEach((j) => {
             j.applied = false;
             favoriteJob.forEach((b) => {
               if (b.id == j.id) {
-                j.favorite = true;
+                j.favorite = b.active;
               }
             });
           });

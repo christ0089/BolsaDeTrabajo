@@ -17,7 +17,7 @@ export class EmployeerRegistrationComponent implements OnInit {
   }
 
   save() {
-    this
+    
   }
 
 }

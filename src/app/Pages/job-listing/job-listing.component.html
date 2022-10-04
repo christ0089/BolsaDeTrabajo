@@ -28,7 +28,7 @@
       <h1>{{ selectedJob.name }}</h1>
       <h3>{{ selectedJob.employer.company_name }}</h3>
       <h3>
-        TRC, Coahuila • {{ selectedJob.payment_expectation[0] | currency }} a
+        {{selectedJob.address.street}} • {{ selectedJob.payment_expectation[0] | currency }} a
         {{ selectedJob.payment_expectation[1] | currency }} / por mes
       </h3>
       <button mat-button (click)="openApplication(selectedJob)" color="primary" *ngIf="selectedJob.applied === false; else applied">
@@ -36,7 +36,10 @@
       </button>
       <ng-template #applied>Ya Aplicaste!</ng-template>
       <button mat-icon-button (click)="saveToFavorite(selectedJob)" *ngIf="selectedJob.favorite; else addToFavorite" color="primary">
-        <mat-icon>favorite</mat-icon>
+        <mat-icon *ngIf="selectedJob.favorite == true; else falseFav">favorite</mat-icon>
+        <ng-template #falseFav>
+          <mat-icon  class="material-icons-outlined">favorite_outline</mat-icon>
+        </ng-template>
       </button>
       <ng-template #addToFavorite>
         <button mat-icon-button (click)="saveToFavorite(selectedJob)" color="primary">

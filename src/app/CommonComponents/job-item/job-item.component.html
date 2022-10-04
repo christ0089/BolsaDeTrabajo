@@ -1,6 +1,6 @@
 <nz-card *ngIf="job" [nzTitle]="job.name" style="margin-bottom: 10px">
   <h3>{{ job.employer.company_name }}</h3>
-  <h3>TRC, Coahuila</h3>
+  <h3>{{job.address.street}}</h3>
   <div
     style="width: 100%; height: 1px; background: lightgrey; margin-bottom: 20px"
   ></div>
