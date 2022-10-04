@@ -48,7 +48,8 @@ export class EmployerInfoFormComponent implements OnInit {
   constructor(
     private qcs: QuestionControlService,
     private afs: Firestore,
-    private readonly employeerService: EmployeerService
+    private readonly employeerService: EmployeerService,
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +97,9 @@ export class EmployerInfoFormComponent implements OnInit {
 
     const formData = this.forms.flatMap((f) => f.value);
     const employeer = Object.assign({}, ...formData);
-    employeer.owner = ['TJRD6whBURNyz7QKEr1RhGF9Qd02'];
+
+    const uid = this.authService.userData$.value?.uid;
+    employeer.owner = [uid];
 
     if (this.edit && this.e.length > 0) {
       const docRef = doc(this.afs, `employeers/${this.e[0].id}`);
@@ -116,6 +119,7 @@ export class EmployerInfoFormComponent implements OnInit {
 
     await addDoc(docBeforeRef, {
       ...employeer,
+      status: "pending"
     });
   }
 }

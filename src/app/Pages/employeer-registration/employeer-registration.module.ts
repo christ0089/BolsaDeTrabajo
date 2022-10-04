@@ -4,8 +4,7 @@ import { CommonModule } from '@angular/common';
 import { EmployeerRegistrationRoutingModule } from './employeer-registration-routing.module';
 import { EmployeerRegistrationComponent } from './employeer-registration.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmployerInfoFormComponent } from 'src/app/EmployeerComponents/employer-info-form/employer-info-form.component';
-import { EmployeerComponentModule } from 'src/app/EmployeerComponents/employeer.components.module';
+import { ComponentModule } from 'src/app/CommonComponents/components.module';
 
 
 @NgModule({
@@ -17,7 +16,7 @@ import { EmployeerComponentModule } from 'src/app/EmployeerComponents/employeer.
     ReactiveFormsModule,
     FormsModule,
     EmployeerRegistrationRoutingModule,
-    EmployeerComponentModule
+    ComponentModule
   ]
 })
 export class EmployeerRegistrationModule { }

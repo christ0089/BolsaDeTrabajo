@@ -60,7 +60,7 @@ export class JobPostionService {
   favoriteJobPosition(job_id: string, favorite: boolean) {
     const doc_ref = doc(
       this.afs,
-      `users/${this.authService.userData$.value?.uid}/job_applications/${job_id}`
+      `users/${this.authService.userData$.value?.uid}/saved_job_appplications/${job_id}`
     );
     return setDoc(
       doc_ref,

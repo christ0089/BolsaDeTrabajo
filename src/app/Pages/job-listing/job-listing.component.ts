@@ -37,7 +37,7 @@ export class JobListingComponent implements OnInit {
             appliedJob.forEach((b) => {
               if (b.id == j.id) {
                 j.applied = true;
-              } 
+              }
             });
           });
           console.log(jobListing);
@@ -83,5 +83,9 @@ export class JobListingComponent implements OnInit {
     });
   }
 
-  saveToFavorite(job: IJobPosition): void {}
+  saveToFavorite(job: IJobPosition): void {
+    const job_id = job.id || '';
+    const favorite = job.favorite == true ? false : true;
+    this.jobService.favoriteJobPosition(job_id, favorite);
+  }
 }

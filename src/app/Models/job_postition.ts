@@ -23,6 +23,7 @@ export interface IJobPosition {
   id?: string;
   name: string;
   applied: boolean;
+  favorite?: boolean;
   employer: IEmployer;
   description: string;
   requirements: IRequirements[];

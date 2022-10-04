@@ -1,6 +1,6 @@
 import { IAddress } from './job_postition';
 
-export type EmployeeRange = "1 a 10" | "10 a 25" | "30 a 100" | "100+";
+export type EmployeeRange = '1 a 10' | '10 a 25' | '30 a 100' | '100+';
 
 export type Industry = ''; //TODO: List All industry types;
 export interface IEmployer {
@@ -13,5 +13,6 @@ export interface IEmployer {
   description: string;
   address: IAddress;
   industry: string;
-  employee_rage: EmployeeRange
+  employee_rage: EmployeeRange;
+  status: 'pending' | 'approved';
 }

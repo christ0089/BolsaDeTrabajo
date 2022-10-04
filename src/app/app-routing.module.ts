@@ -40,6 +40,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'employeer_registration',
+    loadChildren: () =>
+      import('./Pages/employeer-registration/employeer-registration.module').then(
+        (m) => m.EmployeerRegistrationModule
+      ),
+  },
+  {
     path: 'admin',
     canActivate: [EmployerGuard],
     loadChildren: () =>

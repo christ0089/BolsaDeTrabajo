@@ -66,6 +66,16 @@ import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-qu
     NewQuestionComponent,
   ],
   providers: [],
-  exports: [JobItemComponent, DynamicFormQuestionComponent, ChipsComponent],
+  exports: [
+    DynamicFormQuestionComponent,
+    LocationComponent,
+    ChipsComponent,
+    JobItemComponent,
+    GeoQuestionComponent,
+    ApplicationInfoComponent,
+    EmployerInfoFormComponent,
+    JobPositionFormComponent,
+    NewQuestionComponent,
+  ],
 })
 export class ComponentModule {}
