@@ -39,4 +39,10 @@ export interface IJobPosition {
   tags: string[]
 }
 
+export interface IFavorite {
+  active : boolean;
+  addedOn: Timestamp;
+  id: string;
+}
+
 

@@ -15,7 +15,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { IJobPosition } from '../Models/job_postition';
+import { IFavorite, IJobPosition } from '../Models/job_postition';
 import { AuthService } from './Auth/auth.service';
 
 export const genericConverter = <T>() => ({
@@ -34,6 +34,9 @@ export const genericConverter = <T>() => ({
 export class JobPostionService {
   jobListing$: BehaviorSubject<IJobPosition[]> = new BehaviorSubject<
     IJobPosition[]
+  >([]);
+  favoriteJobListing$: BehaviorSubject<IFavorite[]> = new BehaviorSubject<
+    IFavorite[]
   >([]);
 
   filterKeys$ = new BehaviorSubject<any>(null);
@@ -62,13 +65,15 @@ export class JobPostionService {
         const collectionRef = collection(
           this.afs,
           `users/${user.uid}/saved_job_appplications`
-        ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
+        ).withConverter<IFavorite>(genericConverter<IFavorite>());
 
         return collectionData(collectionRef, { idField: 'id' }).pipe(
           takeUntil(this.destroy$)
         );
       })
-    );
+    ).subscribe((j) => {
+      this.favoriteJobListing$.next(j);
+    });
   }
 
   get jobList(): Observable<IJobPosition[]> {

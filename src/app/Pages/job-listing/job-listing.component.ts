@@ -29,14 +29,26 @@ export class JobListingComponent implements OnInit {
     combineLatest([
       this.jobService.jobListing$,
       this.jobApplied.jobApplications$,
+      this.jobService.favoriteJobListing$
     ])
       .pipe(
-        tap(([jobListing, appliedJob]) => {
+        tap(([jobListing, appliedJob, favoriteJob]) => {
           jobListing.forEach((j) => {
             j.applied = false;
             appliedJob.forEach((b) => {
               if (b.id == j.id) {
                 j.applied = true;
+              }
+            });
+          });
+
+          console.log(favoriteJob);
+
+          jobListing.forEach((j) => {
+            j.applied = false;
+            favoriteJob.forEach((b) => {
+              if (b.id == j.id) {
+                j.favorite = true;
               }
             });
           });
