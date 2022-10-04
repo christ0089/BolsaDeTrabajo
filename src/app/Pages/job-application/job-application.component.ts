@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { collection, Firestore } from '@angular/fire/firestore';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { addDoc, doc, getDoc, setDoc, Timestamp } from '@firebase/firestore';
 import { firstValueFrom } from 'rxjs';
 import { QuestionBase } from 'src/app/Models/Forms/question-base';
@@ -22,10 +24,13 @@ export class JobApplicationComponent implements OnInit {
   job!: IJobPosition;
   idx: number = 0;
   constructor(
-    private qcs: QuestionControlService,
     private afs: Firestore,
+    private functions: Functions,
     private activeRoute: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
     private auth: AuthService,
+    private qcs: QuestionControlService,
     private storageService: StorageService
   ) {
     firstValueFrom(this.activeRoute.paramMap).then((params) => {
@@ -77,24 +82,33 @@ export class JobApplicationComponent implements OnInit {
       return m.value;
     });
 
-    const collectionRef = collection(
-      this.afs,
-      // `users/${this.auth.userData$.value?.uid || "any" }/user_applications/${this.job_id}`
-      `employeers/5thk7FT7wGMOEPNTQyLy/job_applications`
-    );
-
-    addDoc(
-      collectionRef,
-      {
+    const jobApplicationFuntion = httpsCallable(this.functions, 'applicationUserCreate'); 
+    
+    jobApplicationFuntion({
+      jobApplication: {
         formData : questions,
         personal_data: this.auth.userData$.value,
         createdAt: Timestamp.now(),
         employer: this.job.employer
-      }
-    ).then(() => {
-      //TODO: Application Complete Page;
+      },
+      employer: this.job.employer
+    }).then(() => {
+      this.snackBar.open('Se guardo la applicacion con exito', 'cerrar', {
+        politeness: 'assertive',
+        verticalPosition: "top",
+        horizontalPosition: "right",
+        panelClass: ["green-snackbar"],
+        duration: 2000,
+      });
+      this.router.navigate(["user_applications"])
+    }).catch(() => {
+      this.snackBar.open('No se guardo la applicacion', 'cerrar', {
+        politeness: 'assertive',
+        verticalPosition: "top",
+        horizontalPosition: "right",
+        panelClass: ["red-snackbar"],
+        duration: 2000,
+      });
     });
-
-    
   }
 }

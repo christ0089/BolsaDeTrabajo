@@ -23,6 +23,7 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item routerLink="/user_info">Cuenta</button>
           <button mat-menu-item routerLink="/user_applications">Aplicaciones de Trabajo</button>
+          <button mat-menu-item *ngIf="user.user_role === 'admin'" routerLink="/administration">Adminstracion de Empresas</button>
           <button mat-menu-item color="primary" (click)="logout()">
             Cerrar Sesion
           </button>

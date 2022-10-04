@@ -16,7 +16,7 @@ export const applicationUserCreate = functions.https.onCall((data, context) => {
   }
 
   const uid = context.auth?.uid;
-  const { job_application, employeer } = data;
+  const { jobApplication, employer } = data;
 
   let docRef = admin
     .firestore()
@@ -24,21 +24,21 @@ export const applicationUserCreate = functions.https.onCall((data, context) => {
     .doc();
 
   let id = docRef.id;
-  if (job_application.id) {
-    id = job_application.id;
+  if (jobApplication.id) {
+    id = jobApplication.id;
     docRef = admin
       .firestore()
       .collection(`users/${uid}/job_applications`)
       .doc(id);
   }
 
-  docRef.set(job_application);
+  docRef.set(jobApplication);
 
   admin
     .firestore()
-    .collection(`employeers/${employeer.id}/job_applications`)
+    .collection(`employeers/${employer.id}/job_applications`)
     .doc(id)
-    .set(job_application, {
+    .set(jobApplication, {
       merge: true,
     });
 });
@@ -50,20 +50,22 @@ export const applicationUserDelete = functions.https.onCall(
     }
 
     const uid = context.auth?.uid;
-    const { employeer_id, job_application_id } = data;
+    const { employeerId, jobApplicationId } = data;
 
     await admin
       .firestore()
       .collection(`users/${uid}/job_applications`)
-      .doc(job_application_id)
+      .doc(jobApplicationId)
       .delete();
 
     await admin
       .firestore()
-      .collection(`employeers/${employeer_id}/job_applications`)
-      .doc(job_application_id)
+      .collection(`employeers/${employeerId}/job_applications`)
+      .doc(jobApplicationId)
       .delete();
   }
-)
+);
 
-export const userPromotion = functions.https.onCall((data, context) => {});
+export const userPromotion = functions.https.onCall((data, context) => {
+  
+});

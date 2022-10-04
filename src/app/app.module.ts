@@ -37,6 +37,7 @@ import { QuestionControlService } from './Shared/QuestionsService/question-contr
 import { MapboxService } from './Shared/Mapbox/mapbox.service';
 import { ScriptService } from './Shared/Script/script.service';
 import { ListPostionService } from './Shared/list-postion.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 registerLocaleData(en);
 
@@ -61,6 +62,7 @@ registerLocaleData(en);
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatSnackBarModule,
     NzListModule,
     BrowserAnimationsModule
   ],
