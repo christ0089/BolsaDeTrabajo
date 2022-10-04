@@ -18,6 +18,13 @@ export class EmployeerComponent implements OnInit {
       name: 'Mi Empresa',
       path: 'company',
     },
+    {
+      name: "Mis Oferta de Trabajo",
+      path: 'applicants'
+    }, {
+      name: "Mis Solicitantes",
+      path: "job_applications"
+    }
   ];
 
   constructor(private employeerService: EmployeerService) {

@@ -1,0 +1,27 @@
+<div nz-row nzJustify="center" style="padding: 20px">
+    <div
+      nz-col
+      nzSpan="4"
+      style="padding: 10px; background: white; height: fit-content"
+    >
+      <mat-list *ngFor="let route of availableRoutes">
+        <mat-list-item [routerLink]="route.path">
+          <button mat-button>{{ route.name }}</button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div nz-col nzSpan="1" style="padding: 10px"></div>
+    <div
+      nz-col
+      nzSpan="12"
+      style="
+        padding: 10px;
+        background: white;
+        height: calc(100vh - 120px);
+        overflow-y: scroll;
+      "
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  

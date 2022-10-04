@@ -7,7 +7,14 @@ import {
   setDoc,
   Timestamp,
 } from '@firebase/firestore';
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import { map } from 'd3-array';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { IJobPosition } from '../Models/job_postition';
 import { AuthService } from './Auth/auth.service';
 
@@ -46,6 +53,22 @@ export class JobPostionService {
       .subscribe((job) => {
         this.jobListing$.next(job);
       });
+
+    this.authService.userData$.pipe(
+      switchMap((user) => {
+        if (!user) {
+          return [];
+        }
+        const collectionRef = collection(
+          this.afs,
+          `users/${user.uid}/saved_job_appplications`
+        ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
+
+        return collectionData(collectionRef, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$)
+        );
+      })
+    );
   }
 
   get jobList(): Observable<IJobPosition[]> {
@@ -66,12 +89,11 @@ export class JobPostionService {
       doc_ref,
       {
         addedOn: Timestamp.now(),
-        active: favorite
+        active: favorite,
       },
       {
         merge: true,
       }
     );
   }
-
 }

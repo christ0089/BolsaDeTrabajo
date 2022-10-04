@@ -1,1 +1,19 @@
-<p>user-roles works!</p>
+<h2>Roles de Usario</h2>
+
+<mat-list>
+  <mat-list-item role="listitem" *ngFor="let user of users$ | async">
+    <div>
+      {{ user.fname }}
+      {{ user.lname }}
+
+      <span>Rol el: {{ user.user_role }}</span>
+      <span class="example-spacer"></span>
+      <button mat-button (click)="changeRole(user)">
+        Cambiar Rol
+      </button>
+      <button mat-button (click)="deactivateAccount(user)">
+        Desactivar Cuenta
+      </button>
+    </div>
+  </mat-list-item>
+</mat-list>

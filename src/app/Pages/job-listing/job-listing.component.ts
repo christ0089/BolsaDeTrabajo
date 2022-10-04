@@ -40,7 +40,6 @@ export class JobListingComponent implements OnInit {
               }
             });
           });
-          console.log(jobListing);
           this.jobListing$.next(jobListing);
         })
       )

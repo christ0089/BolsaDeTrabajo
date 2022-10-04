@@ -41,7 +41,9 @@ export class EmployerInfoFormComponent implements OnInit {
     zip: '',
     coords: null,
   };
-  edit = false;
+
+  @Input()edit = false;
+  @Input()newBusiness = false;
 
   e!: IEmployer[];
 
@@ -61,6 +63,9 @@ export class EmployerInfoFormComponent implements OnInit {
       this.forms.push(questions);
     });
 
+    if (this.newBusiness) {
+      return;
+    }
     if (this.employeerService.employeers$.value.length > 0) {
       this.edit = true;
       const e = this.employeerService.employeers$.value;
@@ -121,5 +126,15 @@ export class EmployerInfoFormComponent implements OnInit {
       ...employeer,
       status: "pending"
     });
+  }
+
+  get isValid() {
+    let isvalid = true;
+    this.forms.forEach((f) => {
+      if (f.valid == false) {
+        isvalid = false;
+      }
+    });
+    return isvalid;
   }
 }

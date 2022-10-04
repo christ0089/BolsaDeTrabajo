@@ -35,9 +35,15 @@
         Postularse
       </button>
       <ng-template #applied>Ya Aplicaste!</ng-template>
-      <button mat-icon-button (click)="saveToFavorite(selectedJob)" color="primary">
-        <mat-icon>favorite-outline</mat-icon>
+      <button mat-icon-button (click)="saveToFavorite(selectedJob)" *ngIf="selectedJob.favorite; else addToFavorite" color="primary">
+        <mat-icon>favorite</mat-icon>
       </button>
+      <ng-template #addToFavorite>
+        <button mat-icon-button (click)="saveToFavorite(selectedJob)" color="primary">
+          <mat-icon class="material-icons-outlined">favorite_outline</mat-icon>
+        </button>
+      </ng-template>
+
     </div>
 
     <div style="max-height: 400px; overflow-y: scroll; margin-top: 15px">
