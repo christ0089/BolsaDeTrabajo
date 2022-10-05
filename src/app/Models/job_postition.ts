@@ -46,3 +46,82 @@ export interface IFavorite {
 }
 
 
+export class JobPosition implements IJobPosition {
+  id!: string;
+  applied: boolean = false;
+  remote!: boolean;
+  name: string;
+  employer: IEmployer;
+  description: string;
+  requirements: IRequirements[];
+  createdAt: Timestamp;
+  address: IAddress;
+  payment_expectation: number[];
+  position_type: PositionType;
+  workhours_type: WorkHoursTypes[];
+  bonus_type: BonusTypes[];
+  benefits: string[];
+  compensations: string[];
+  tags: string[];
+
+  constructor(
+    name: string,
+    description: string,
+    payment_expectation: number[],
+    employer: IEmployer,
+    address: IAddress,
+    position_type: PositionType,
+    workhours_type: WorkHoursTypes[] = [],
+    bonus_type: BonusTypes[] = [],
+    benefits: string[] = [],
+    createdAt: Timestamp = Timestamp.now(),
+    tags: string[] = [],
+    compensations: string[] = [],
+    requirements: IRequirements[] = []
+  ) {
+    this.name = name;
+    this.employer = employer;
+    this.description = description;
+    this.requirements = requirements;
+    this.createdAt = createdAt;
+    this.address = address;
+    this.description = description;
+    this.bonus_type = bonus_type || [];
+    this.payment_expectation = payment_expectation;
+    this.tags = tags || [];
+    this.benefits = benefits || [];
+    this.compensations = compensations || [];
+    this.workhours_type = workhours_type;
+    this.position_type = position_type;
+  }
+
+  get positionInfo() {
+    const work_hours_type = this.workhours_type.map((w) => {
+      return { [w]: true };
+    });
+    const benefits = this.benefits.map((w) => {
+      return { [w]: true };
+    });
+
+    const bonus_type = this.bonus_type.map((w) => {
+      return { [w]: true };
+    });
+
+    console.log(bonus_type);
+    return [
+      {
+        name: this.name,
+        description: this.description,
+        payment_expectation_min: this.payment_expectation[0],
+        payment_expectation_max: this.payment_expectation[1],
+      },
+      {
+        position_type: this.position_type,
+      },
+      ...work_hours_type,
+      ...bonus_type,
+      ...benefits,
+    ];
+  }
+}
+

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { html } from 'd3-fetch';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, tap } from 'rxjs';
 import { IJobPosition } from 'src/app/Models/job_postition';
+import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { JobPostionService } from 'src/app/Shared/job-postion.service';
 import { ListPostionService } from 'src/app/Shared/list-postion.service';
 
@@ -24,6 +25,7 @@ export class JobListingComponent implements OnInit {
   constructor(
     private readonly jobService: JobPostionService,
     private readonly jobApplied: ListPostionService,
+    private readonly auth: AuthService,
     private readonly router: Router
   ) {
     combineLatest([
@@ -33,6 +35,10 @@ export class JobListingComponent implements OnInit {
     ])
       .pipe(
         tap(([jobListing, appliedJob, favoriteJob]) => {
+          console.log(jobListing)
+          console.log(appliedJob)
+          console.log(favoriteJob)
+
           jobListing.forEach((j) => {
             j.applied = false;
             appliedJob.forEach((b) => {
@@ -53,7 +59,7 @@ export class JobListingComponent implements OnInit {
           this.jobListing$.next(jobListing);
         })
       )
-      .subscribe();
+      .subscribe(console.log);
 
     this.searchForm.valueChanges.subscribe((userInput) => {
       this.searchJob(userInput);
@@ -93,6 +99,10 @@ export class JobListingComponent implements OnInit {
   }
 
   saveToFavorite(job: IJobPosition): void {
+    if (this.auth.isLoggedIn) {
+      this.router.navigate(['/auth']);
+      return;
+    }
     const job_id = job.id || '';
     const favorite = job.favorite == true ? false : true;
     this.jobService.favoriteJobPosition(job_id, favorite);

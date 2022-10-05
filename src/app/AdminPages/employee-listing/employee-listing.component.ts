@@ -29,10 +29,10 @@ export class EmployeeListingComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
-    this.employeerService.employeers$
+    this.employeerService.selectedEmployeer$
       .pipe(
         switchMap((e) => {
-          if (e.length == 0) {
+          if (!e) {
             return [];
           }
           const collectionRef = collection(
@@ -40,7 +40,7 @@ export class EmployeeListingComponent implements OnInit {
             `job_listing`
           ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
 
-          const q = query(collectionRef, where('employer.id', '==', e[0].id));
+          const q = query(collectionRef, where('employer.id', '==', e.id));
 
           return collectionData(q, { idField: 'id' });
         })

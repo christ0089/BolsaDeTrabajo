@@ -21,34 +21,15 @@
         <div *ngIf="f['email'].errors['required']">El correo es requerido</div>
       </div>
     </div>
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          type="password"
-          matInput
-          placeholder="Contraseña"
-          formControlName="password"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">
-          La contraseña es requerida
-        </div>
-        <div *ngIf="f['password'].errors['minlength']">
-          La contraseña es requerida
-        </div>
-      </div>
-    </div>
+
     <div class="form-group">
       <button
         id="sign-in-button"
         mat-flat-button
         style="width: 100%"
-        (click)="login()"
+        (click)="pwdVerfifyPassword()"
       >
-        Iniciar Sesion
+        Enviar Correo 
       </button>
     </div>
   </form>
@@ -57,21 +38,10 @@
     <button
       mat-button
       style="width: 100%"
-      routerLink="register"
+      routerLink="/auth"
       color="primary"
     >
-      Registrar
-    </button>
-  </div>
-
-  <div class="form-group" style="margin-top: 10px">
-    <button
-      mat-button
-      style="width: 100%"
-      routerLink="password_reset"
-      color="primary"
-    >
-      Perdiste tu contraseña? 
+      Regresar
     </button>
   </div>
 </div>

@@ -12,7 +12,7 @@ import { EmployeerService } from 'src/app/Shared/employeer.service';
 export class EmployeerComponent implements OnInit {
 
 
-  employeer$: Observable<IEmployer[]> = EMPTY;
+  employeer$: Observable<IEmployer | null> = EMPTY;
   availableRoutes = [
     {
       name: 'Mi Empresa',
@@ -28,7 +28,7 @@ export class EmployeerComponent implements OnInit {
   ];
 
   constructor(private employeerService: EmployeerService) {
-    this.employeer$ = this.employeerService.employeers$.asObservable()
+    this.employeer$ = this.employeerService.selectedEmployeer$.asObservable()
   }
   ngOnInit(): void {}
 }

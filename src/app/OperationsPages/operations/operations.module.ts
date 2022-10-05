@@ -6,6 +6,8 @@ import { OperationsComponent } from './operations.component';
 import { MatListModule } from '@angular/material/list';
 import { UserRolesComponent } from '../user-roles/user-roles.component';
 import { ReportedApplicationsComponent } from '../reported-applications/reported-applications.component';
+import { MatButtonModule } from '@angular/material/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { ReportedApplicationsComponent } from '../reported-applications/reported
   ],
   imports: [
     CommonModule,
+    NzGridModule,
     MatListModule,
+    MatButtonModule,
     OperationsRoutingModule
   ]
 })

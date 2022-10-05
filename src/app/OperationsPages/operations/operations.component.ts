@@ -17,7 +17,7 @@ export class OperationsComponent implements OnInit {
     },
     {
       name: 'Adminstracion de Roles',
-      path: 'job_applications',
+      path: 'user_roles',
     },
   ];
   constructor() {}

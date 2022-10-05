@@ -29,6 +29,7 @@ import { ApplicationInfoComponent } from '../EmployeerComponents/application-inf
 import { EmployerInfoFormComponent } from '../EmployeerComponents/employer-info-form/employer-info-form.component';
 import { JobPositionFormComponent } from '../EmployeerComponents/job-position-form/job-position-form.component';
 import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-question.component';
+import { EmployeerComponent } from './employeer-dropdown/employeer.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-qu
     JobItemComponent,
     GeoQuestionComponent,
     ApplicationInfoComponent,
+    EmployeerComponent,
     EmployerInfoFormComponent,
     JobPositionFormComponent,
     NewQuestionComponent,
@@ -72,6 +74,7 @@ import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-qu
     ChipsComponent,
     JobItemComponent,
     GeoQuestionComponent,
+    EmployeerComponent,
     ApplicationInfoComponent,
     EmployerInfoFormComponent,
     JobPositionFormComponent,

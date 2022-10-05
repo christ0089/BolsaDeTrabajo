@@ -5,7 +5,7 @@
     style="padding: 10px; background: white; height: fit-content"
   >
     <div *ngIf="employeer$ | async; let employeer">
-      <div *ngIf="employeer.length > 0">
+      <div *ngIf="employeer !== null">
         <img
           style="
             width: 100%;
@@ -15,11 +15,14 @@
             margin-right: auto;
             object-fit: contain;
           "
-          [src]="employeer[0].company_img"
+          [src]="employeer.company_img"
         />
-        <h2 style="text-align: center">{{ employeer[0].company_name }}</h2>
+        <h2 style="text-align: center">{{ employeer.company_name }}</h2>
       </div>
     </div>
+    <app-employeer-select>
+      
+    </app-employeer-select>
     <mat-list *ngFor="let route of availableRoutes">
       <mat-list-item [routerLink]="route.path">
         <button mat-button>{{ route.name }}</button>

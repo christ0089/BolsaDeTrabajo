@@ -3,7 +3,7 @@ import { collectionData, Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
 import { collection, query, where } from '@firebase/firestore';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
 import { IJobApplication } from 'src/app/Models/job_application';
 import { JobApplicationComponent } from 'src/app/Pages/job-application/job-application.component';
@@ -30,20 +30,26 @@ export class EmployeeApplicationsComponent implements OnInit {
     private readonly auth: AuthService,
     private readonly employeerService: EmployeerService
   ) {
-    this.employeerService.employeers$
+    this.employeerService.selectedEmployeer$
       .pipe(
         switchMap((e) => {
+          if (!e) {
+            return of(null);
+          }
           const collectionRef = collection(
             this.afs,
-            `employeers/${e[0].id}/job_applications`
+            `employeers/${e.id}/job_applications`
           ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
 
-          const q = query(collectionRef, where('employer.id', '==', e[0].id));
+          const q = query(collectionRef, where('employer.id', '==', e.id));
 
           return collectionData(q, { idField: 'id' });
         })
       )
       .subscribe((j) => {
+        if (!j) {
+          return;
+        }
         this.jobApplications$.next(j);
       });
   }
@@ -64,16 +70,6 @@ export class EmployeeApplicationsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // if (!data.complimentData) {
-      //   this.removeCompliment(i);
-      // } else {
-      //   const compliment = data.complimenData;
-      //   if (this.currProd.complimentData) {
-      //     this.currProd.complimentData.push(compliment);
-      //   } else {
-      //     this.currProd.complimentData = [compliment];
-      //   }
-      // }
       console.log('The dialog was closed');
     });
   }

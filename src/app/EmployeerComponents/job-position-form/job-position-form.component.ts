@@ -2,12 +2,14 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Timestamp } from '@firebase/firestore';
+import { collection, doc, setDoc, Timestamp } from '@firebase/firestore';
+import { merge } from 'd3-array';
 import { IEmployer } from 'src/app/Models/employer';
 import {
   BonusTypes,
   IAddress,
   IJobPosition,
+  JobPosition,
   IRequirements,
   PositionType,
   WorkHoursTypes,
@@ -16,80 +18,7 @@ import { IQuestion } from 'src/app/Models/question';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { QuestionControlService } from 'src/app/Shared/QuestionsService/question-control-service';
 
-class JobPosition implements IJobPosition {
-  id!: string;
-  applied: boolean = false;
-  remote!: boolean;
-  name: string;
-  employer: IEmployer;
-  description: string;
-  requirements: IRequirements[];
-  createdAt: Timestamp;
-  address: IAddress;
-  payment_expectation: number[];
-  position_type: PositionType;
-  workhours_type: WorkHoursTypes[];
-  bonus_type?: BonusTypes[];
-  benefits: string[];
-  compensations: string[];
-  tags: string[];
 
-  constructor(
-    name: string,
-    description: string,
-    payment_expectation: number[],
-    employer: IEmployer,
-    address: IAddress,
-    position_type: PositionType,
-    workhours_type: WorkHoursTypes[] = [],
-    bonus_type: BonusTypes[] = [],
-    benefits: string[] = [],
-    createdAt: Timestamp = Timestamp.now(),
-    tags: string[] = [],
-    compensations: string[] = [],
-    requirements: IRequirements[] = []
-  ) {
-    this.name = name;
-    this.employer = employer;
-    this.description = description;
-    this.requirements = requirements;
-    this.createdAt = createdAt;
-    this.address = address;
-    this.description = description;
-    this.bonus_type = bonus_type;
-    this.payment_expectation = payment_expectation;
-    this.tags = tags;
-    this.benefits = benefits;
-    this.compensations = compensations;
-    this.workhours_type = workhours_type;
-    this.position_type = position_type;
-  }
-
-  get positionInfo() {
-    const work_hours_type = this.workhours_type
-    .map((w) => {
-      return { [w]: true };
-    })
-    const benefits = {
-      ...this.benefits.map((w) => {
-        return { [w]: true };
-      }),
-    }
-    return [
-      {
-        name: this.name,
-        description: this.description,
-        payment_expectation_min: this.payment_expectation[0],
-        payment_expectation_max: this.payment_expectation[1],
-      },
-      {
-        position_type: this.position_type,
-      },
-      ...work_hours_type,
-      ...benefits
-    ];
-  }
-}
 
 @Component({
   selector: 'app-job-position-form',
@@ -123,9 +52,9 @@ export class JobPositionFormComponent implements OnInit {
         this.data.employer,
         this.data.address,
         this.data.position_type,
-        this.data.workhours_type,
-        this.data.bonus_type,
-        this.data.benefits
+        this.data.workhours_type || [],
+        this.data.bonus_type || [],
+        this.data.benefits || []
       );
 
       jobPosition.id = this.data.id;
@@ -140,9 +69,7 @@ export class JobPositionFormComponent implements OnInit {
     }
   }
 
-  save() {
-    console.log(this.forms.map((f) => f.value));
-
+  async save() {
     const { name, description } = this.forms[0].value;
     const payment_expectation = [
       this.forms[0].get('payment_expectation_min')?.value,
@@ -156,24 +83,24 @@ export class JobPositionFormComponent implements OnInit {
       (k) => workhours_type[k]
     );
 
-    let benefits = this.forms[3].value;
-    benefits = Object.keys(benefits).filter((k) => benefits[k]);
+    let bonus_type = this.forms[3].value;
+    bonus_type = Object.keys(bonus_type).filter((k) => bonus_type[k]);
 
     const employeer = this.employeerService.employeers$.value[0];
 
-    const address = employeer.address;
-
-    const jobPosition = new JobPosition(
+    const docRef = doc(this.afs, `job_listing/${this.data.id}`);
+    
+    await setDoc(docRef, {
       name,
       description,
       payment_expectation,
       employeer,
-      address,
       position_type,
       workhours_type,
-      [],
-      benefits
-    );
+      bonus_type,
+    } , {
+      merge: true,
+    });
   }
 
   get isValid() {

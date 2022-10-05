@@ -34,6 +34,7 @@ export class JobItemComponent implements OnInit {
 
   ngOnChanges() {
     if (this.job) {
+      console.log(this.job)
     }
   }
 

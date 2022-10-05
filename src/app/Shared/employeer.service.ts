@@ -14,6 +14,9 @@ export class EmployeerService {
     []
   );
 
+  selectedEmployeer$: BehaviorSubject<IEmployer | null> =
+    new BehaviorSubject<IEmployer | null>(null);
+
   constructor(
     private readonly afs: Firestore,
     private readonly authService: AuthService
@@ -23,21 +26,30 @@ export class EmployeerService {
       `employeers`
     ).withConverter<IEmployer>(genericConverter<IEmployer>());
 
-    const employeersObs  = this.authService.userData$.pipe(
+    const employeersObs = this.authService.userData$.pipe(
       switchMap((user) => {
         if (!user) {
           return [];
         }
-        const q = query(
-          collectionRef,
-          where('owner', 'array-contains', user.uid)
-        );
+
+        if (!user.user_role) {
+          return [];
+        }
+
+        let q = query(collectionRef);
+        if (user.user_role == 'employeer') {
+          q = query(collectionRef, where('owner', 'array-contains', user.uid));
+        }
+
         return collectionData(q, { idField: 'id' });
       })
     );
 
     employeersObs.subscribe((_employeers) => {
+      if (_employeers.length > 0) {
+        this.selectedEmployeer$.next(_employeers[0]);
+      }
       this.employeers$.next(_employeers);
-    })
+    });
   }
 }

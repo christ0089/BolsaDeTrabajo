@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
 import { doc, Firestore } from '@angular/fire/firestore';
 import {
   ApplicationVerifier,
@@ -152,6 +152,11 @@ export class AuthService {
 
   emailAuth(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+
+  passResetEmail(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
   }
 
   setUserData() {

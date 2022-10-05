@@ -3,6 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { addDoc, collection, doc, GeoPoint, setDoc } from '@firebase/firestore';
 import { Geohash } from 'geofire-common';
+import { tap } from 'rxjs';
 import { IEmployer } from 'src/app/Models/employer';
 import { IQuestion } from 'src/app/Models/question';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
@@ -42,10 +43,10 @@ export class EmployerInfoFormComponent implements OnInit {
     coords: null,
   };
 
-  @Input()edit = false;
-  @Input()newBusiness = false;
+  @Input() edit = false;
+  @Input() newBusiness = false;
 
-  e!: IEmployer[];
+  e!: IEmployer;
 
   constructor(
     private qcs: QuestionControlService,
@@ -55,28 +56,30 @@ export class EmployerInfoFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.questions = this.qcs.employerInfoQuestionaire();
+    this.employeerService.selectedEmployeer$.pipe(
+      tap((e) => {
+        console.log(e)
+        this.questions = this.qcs.employerInfoQuestionaire();
 
-    this.forms = [];
-    this.questions.forEach((q) => {
-      const questions = this.qcs.toFormGroup(q.questions);
-      this.forms.push(questions);
-    });
+        this.forms = [];
+        this.questions.forEach((q) => {
+          const questions = this.qcs.toFormGroup(q.questions);
+          this.forms.push(questions);
+        });
 
-    if (this.newBusiness) {
-      return;
-    }
-    if (this.employeerService.employeers$.value.length > 0) {
-      this.edit = true;
-      const e = this.employeerService.employeers$.value;
-      this.e = e;
-      this.questions = this.qcs.employerInfoQuestionaire();
-      this.forms = [];
-      this.questions.forEach((q, i) => {
-        const questions = this.qcs.mapToQuestion(q.questions, e[0]);
-        this.forms[i] = this.qcs.toFormGroup(questions);
-      });
-    }
+        if (e && this.newBusiness === false) {
+          this.edit = true;
+          const e = this.employeerService.selectedEmployeer$.value as IEmployer;
+          this.e = e;
+          this.questions = this.qcs.employerInfoQuestionaire();
+          this.forms = [];
+          this.questions.forEach((q, i) => {
+            const questions = this.qcs.mapToQuestion(q.questions, e);
+            this.forms[i] = this.qcs.toFormGroup(questions);
+          });
+        }
+      })
+    ).subscribe();
   }
 
   locationSelected(address: AddressComponents[]) {
@@ -106,8 +109,8 @@ export class EmployerInfoFormComponent implements OnInit {
     const uid = this.authService.userData$.value?.uid;
     employeer.owner = [uid];
 
-    if (this.edit && this.e.length > 0) {
-      const docRef = doc(this.afs, `employeers/${this.e[0].id}`);
+    if (this.edit == true && this.e) {
+      const docRef = doc(this.afs, `employeers/${this.e.id}`);
 
       await setDoc(
         docRef,
@@ -119,12 +122,11 @@ export class EmployerInfoFormComponent implements OnInit {
         }
       );
       return;
-
     }
 
     await addDoc(docBeforeRef, {
       ...employeer,
-      status: "pending"
+      status: 'pending',
     });
   }
 

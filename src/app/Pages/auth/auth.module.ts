@@ -20,6 +20,7 @@ import { ComponentModule } from 'src/app/CommonComponents/components.module';
 import { NgZorroAntdModule } from 'src/app/ng-zorro.module';
 import { RegistrationComponent } from 'src/app/CommonComponents/registration/registration.component';
 import { MatIconModule } from '@angular/material/icon';
+import { PassRestComponent } from 'src/app/CommonComponents/pass_rest/pass_reset.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
     path: 'register',
     component: RegistrationComponent,
   },
+  {
+    path: "password_reset",
+    component: PassRestComponent
+  }
 ];
 
 @NgModule({
@@ -52,7 +57,7 @@ const routes: Routes = [
     MatGridListModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [AuthComponent, LoginComponent, RegistrationComponent],
+  declarations: [AuthComponent, LoginComponent, PassRestComponent, RegistrationComponent],
   providers: [AuthService],
 })
 export class AuthModule {}

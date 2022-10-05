@@ -29,6 +29,10 @@ export class EmployerGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    if (!this.auth.isLoggedIn) {
+      this.router.navigate(['auth']);
+      return this.auth.isAdmin;
+    }
     if (!this.auth.isAdmin) {
       this.router.navigate(['employeer_registration']);
     }

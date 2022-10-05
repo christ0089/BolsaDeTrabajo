@@ -1,24 +1,26 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { first } from "rxjs/operators";
+// import { AuthService } from "src/app/providers/Auth/AuthService";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthService } from "src/app/Shared/Auth/auth.service";
 
 @Component({
-  templateUrl: "login.component.html",
-  styleUrls: ["login.component.scss"],
-  selector: "login",
+  templateUrl: "pass_reset.component.html",
+  styleUrls: ["pass_reset.component.scss"],
+  selector: "pass_reset",
 })
-export class LoginComponent implements OnInit {
+export class PassRestComponent implements OnInit {
   loginForm: FormGroup = this.formBuilder.group({
-    email: ["", Validators.required],
-    password: ["", Validators.required],
+    email: ["", Validators.required]
   });
   loading = false;
   submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private auth: AuthService,
     private snackbar: MatSnackBar,
     private router: Router
@@ -32,15 +34,14 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  login() {
-    const user = this.loginForm.value;
-    this.auth.emailAuth(user.email, user.password).then(() => {
-      this.router.navigateByUrl("/")
-    }).catch((e) => {
-      this.snackbar
-      .open(e.message)
+  pwdVerfifyPassword() {
+    this.snackbar
+      .open(
+        "Te enviamos un correo para que cambies tu contraseña"
+      )
       ._dismissAfter(3000);
-    });
+    this.auth.passResetEmail(this.f['email'].value).catch(e => console.error(e));
   }
+
 
 }
