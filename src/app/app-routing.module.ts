@@ -27,6 +27,7 @@ const routes: Routes = [
   },
   {
     path: "administration",
+    canActivate: [AdminGuard],
     loadChildren: () =>
     import('./OperationsPages/operations/operations.module').then(
       (m) => m.OperationsModule
@@ -48,7 +49,6 @@ const routes: Routes = [
   },
   {
     path: 'employeer_registration',
-    canActivate: [AdminGuard],
     loadChildren: () =>
       import('./Pages/employeer-registration/employeer-registration.module').then(
         (m) => m.EmployeerRegistrationModule

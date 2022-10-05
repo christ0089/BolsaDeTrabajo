@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
+import { Functions } from '@angular/fire/functions';
 import { MatDialog } from '@angular/material/dialog';
 import { collection } from '@firebase/firestore';
+import { httpsCallable } from '@firebase/functions';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
 import { IJobApplication } from 'src/app/Models/job_application';
@@ -25,6 +27,7 @@ export class UserJobApplicationsComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly afs: Firestore,
     private readonly auth: AuthService,
+    private readonly functions: Functions
   ) {
     this.auth.userDataObs$
       .pipe(
@@ -69,5 +72,15 @@ export class UserJobApplicationsComponent implements OnInit {
       // }
       console.log('The dialog was closed');
     });
+  }
+
+  async removeJobApplication(job_application: IJobApplication) {
+    const jobApplicationFunctions$ = await  httpsCallable(this.functions, "applicationUserDelete")
+
+    jobApplicationFunctions$({
+      jobApplicationId: job_application.id,
+      employeerId: job_application.employeer_data.id
+    })
+    
   }
 }

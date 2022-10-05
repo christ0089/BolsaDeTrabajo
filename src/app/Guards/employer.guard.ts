@@ -30,12 +30,6 @@ export class EmployerGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (!this.auth.isAdmin) {
-      this.snackBar.open("No tienes permisos para navegar", "cerrar", {
-        politeness: "assertive",
-        verticalPosition: "top",
-        horizontalPosition: "right",
-        duration: 2000
-      })
       this.router.navigate(['employeer_registration']);
     }
     return this.auth.isAdmin;

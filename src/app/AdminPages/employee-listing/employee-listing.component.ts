@@ -62,16 +62,6 @@ export class EmployeeListingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // if (!data.complimentData) {
-      //   this.removeCompliment(i);
-      // } else {
-      //   const compliment = data.complimenData;
-      //   if (this.currProd.complimentData) {
-      //     this.currProd.complimentData.push(compliment);
-      //   } else {
-      //     this.currProd.complimentData = [compliment];
-      //   }
-      // }
       console.log('The dialog was closed');
     });
   }

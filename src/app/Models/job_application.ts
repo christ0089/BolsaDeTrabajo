@@ -1,4 +1,5 @@
 import { Timestamp } from '@firebase/firestore';
+import { IEmployer } from './employer';
 import { IUserData } from './user';
 
 export interface IExtraQuestions {
@@ -18,6 +19,7 @@ export interface IPrevEmployer {
 
 export interface IJobApplication {
   personal_data: IUserData;
+  employeer_data: IEmployer,
   id: string;
   formData: any;
   createdAt: Timestamp;
