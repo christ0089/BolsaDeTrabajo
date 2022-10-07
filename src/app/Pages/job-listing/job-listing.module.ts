@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 import { JobListingRoutingModule } from './job-listing-routing.module';
 import { JobItemComponent } from 'src/app/CommonComponents/job-item/job-item.component';
@@ -28,5 +28,6 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     ComponentModule
   ],
+  providers: [CurrencyPipe]
 })
 export class JobListingModule {}

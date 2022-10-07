@@ -13,6 +13,7 @@
             height: 200px;
             margin-left: auto;
             margin-right: auto;
+            display: block;
             object-fit: contain;
           "
           [src]="employeer.company_img"
@@ -21,11 +22,11 @@
       </div>
     </div>
     <app-employeer-select>
-      
+
     </app-employeer-select>
     <mat-list *ngFor="let route of availableRoutes">
       <mat-list-item [routerLink]="route.path">
-        <button mat-button>{{ route.name }}</button>
+        <button mat-button style="overflow: hidden; text-overflow: ellipsis;">{{ route.name }}</button>
       </mat-list-item>
     </mat-list>
   </div>

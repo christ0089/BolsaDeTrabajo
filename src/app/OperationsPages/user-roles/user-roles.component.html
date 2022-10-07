@@ -1,17 +1,17 @@
-<h2>Roles de Usario</h2>
+<h2>Roles de Usuario</h2>
 
 <mat-list>
   <mat-list-item role="listitem" *ngFor="let user of users$ | async">
-    <div>
+    <div style="width: 100%; display: inline-flex;">
       {{ user.fname }}
       {{ user.lname }}
 
       <span>Rol el: {{ user.user_role }}</span>
       <span class="example-spacer"></span>
-      <button mat-button (click)="changeRole(user)">
+      <button mat-button (click)="changeRole(user.uid,'admin')">
         Cambiar Rol
       </button>
-      <button mat-button (click)="deactivateAccount(user)">
+      <button mat-button (click)="deactivateAccount(user.uid)">
         Desactivar Cuenta
       </button>
     </div>

@@ -5,6 +5,9 @@ import { JobPositionFormComponent } from 'src/app/EmployeerComponents/job-positi
 import { EmployeeListingComponent } from '../employee-listing/employee-listing.component';
 import { EmployeeApplicationsComponent } from '../employee-applications/employee-applications.component';
 import { EmployeerComponent } from './employeer.component';
+import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-applications/reported-applications.component';
+import { UserRolesComponent } from 'src/app/OperationsPages/user-roles/user-roles.component';
+import { AdminGuard } from 'src/app/Guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -26,7 +29,17 @@ const routes: Routes = [
       {
         path: "job_applications/:id",
         component: JobPositionFormComponent,
-      }
+      },
+      {
+        path: "reported_applications",
+        canActivate: [AdminGuard],
+        component: ReportedApplicationsComponent
+      }, 
+      {
+        path: "user_roles",
+        canActivate: [AdminGuard],
+        component:  UserRolesComponent
+      }, 
     ]
   }
 ];

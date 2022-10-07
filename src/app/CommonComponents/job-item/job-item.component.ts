@@ -1,3 +1,4 @@
+import { CurrencyPipe, formatCurrency } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { IElement } from '../chips/chips.component';
@@ -11,16 +12,18 @@ export class JobItemComponent implements OnInit {
   @Input('job') job: IJobPosition | null = null;
   @Input('edit') editJob: boolean = false;
 
-  @Output('edit_job') editJobEvent: EventEmitter<IJobPosition> = new EventEmitter<IJobPosition>();
-  @Output('delete_job') deleteJobEvent: EventEmitter<IJobPosition> = new EventEmitter<IJobPosition>();
+  @Output('edit_job') editJobEvent: EventEmitter<IJobPosition> =
+    new EventEmitter<IJobPosition>();
+  @Output('delete_job') deleteJobEvent: EventEmitter<IJobPosition> =
+    new EventEmitter<IJobPosition>();
 
   elements: IElement[] = [
     {
-      icon: 'money',
+      icon: 'payments',
       elements: [],
     },
     {
-      icon: 'time',
+      icon: 'timer',
       elements: [],
     },
     {
@@ -28,13 +31,34 @@ export class JobItemComponent implements OnInit {
       elements: [],
     },
   ];
-  constructor() {}
+  constructor(private readonly cp: CurrencyPipe) {}
 
   ngOnInit(): void {}
 
   ngOnChanges() {
     if (this.job) {
-      console.log(this.job)
+      console.log(this.job);
+
+      this.elements[0].elements = [
+        `${this.cp.transform(
+          this.job.payment_expectation[0],
+          'USD',
+          'symbol',
+          '1.2-2'
+        )} a ${this.cp.transform(
+          this.job.payment_expectation[0],
+          'USD',
+          'symbol',
+          '1.2-2'
+        )}`,
+      ];
+
+      if (this.job.workhours_type) {
+        this.elements[1].elements = [...this.job.workhours_type] || [];
+      }
+      if (this.job.benefits) {
+        this.elements[2].elements = [...this.job.benefits] || [];
+      }
     }
   }
 
