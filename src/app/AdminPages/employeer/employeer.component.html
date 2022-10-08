@@ -1,4 +1,9 @@
-<div nz-row nzJustify="center" style="padding: 20px">
+<div
+  nz-row
+  nzJustify="center"
+  style="padding: 20px"
+  *ngIf="isMobile == false; else isMobileView"
+>
   <div
     nz-col
     nzSpan="4"
@@ -21,12 +26,12 @@
         <h2 style="text-align: center">{{ employeer.company_name }}</h2>
       </div>
     </div>
-    <app-employeer-select>
-
-    </app-employeer-select>
+    <app-employeer-select> </app-employeer-select>
     <mat-list *ngFor="let route of availableRoutes">
       <mat-list-item [routerLink]="route.path">
-        <button mat-button style="overflow: hidden; text-overflow: ellipsis;">{{ route.name }}</button>
+        <button mat-button style="overflow: hidden; text-overflow: ellipsis">
+          {{ route.name }}
+        </button>
       </mat-list-item>
     </mat-list>
   </div>
@@ -44,3 +49,50 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<ng-template #isMobileView>
+  <div *ngIf="employeer$ | async; let employeer " style="padding: 20px;">
+    <div *ngIf="employeer !== null">
+      <img
+        style="
+          width: 100%;
+          max-width: 200px;
+          height: 200px;
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          object-fit: contain;
+        "
+        [src]="employeer.company_img"
+      />
+      <h2 style="text-align: center">{{ employeer.company_name }}</h2>
+    </div>
+    <app-employeer-select> </app-employeer-select>
+  </div>
+ 
+  <mat-tab-group 
+  (focusChange)="navigateRoute($event.index)">
+    <mat-tab
+      *ngFor="let route of availableRoutes"
+      [label]="route.name"
+     
+    >
+      </mat-tab
+    >
+  </mat-tab-group>
+
+  <div nz-row nzJustify="center" style="padding: 10px">
+    <div
+      nz-col
+      style="
+        background: white;
+        width: 100%;
+        height: calc(100vh - 120px);
+        overflow-y: scroll;
+        padding: 10px;
+      "
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ng-template>

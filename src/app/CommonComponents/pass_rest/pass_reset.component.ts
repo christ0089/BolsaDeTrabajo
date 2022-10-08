@@ -40,7 +40,9 @@ export class PassRestComponent implements OnInit {
         "Te enviamos un correo para que cambies tu contraseña"
       )
       ._dismissAfter(3000);
-    this.auth.passResetEmail(this.f['email'].value).catch(e => console.error(e));
+    this.auth.passResetEmail(this.f['email'].value).then(() => {
+      this.router.navigate(["auth"]);
+    }).catch(e => console.error(e));
   }
 
 

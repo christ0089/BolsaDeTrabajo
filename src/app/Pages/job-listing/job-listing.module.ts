@@ -13,11 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { PipesModule } from 'src/app/Pipes/pipes.module';
+import { MobileJobDescriptionComponent } from './mobile-job-description/mobile-job-description.component';
 
 @NgModule({
-  declarations: [JobListingComponent],
+  declarations: [JobListingComponent, MobileJobDescriptionComponent],
   imports: [
     CommonModule,
+    ComponentModule,
     JobListingRoutingModule,
     MatChipsModule,
     MatButtonModule,

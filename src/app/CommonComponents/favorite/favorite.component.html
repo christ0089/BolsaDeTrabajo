@@ -1,0 +1,24 @@
+<div style="width: fit-content; height: fit-content" *ngIf="selectedJob">
+  <button
+    mat-icon-button
+    (click)="saveToFavorite(selectedJob)"
+    *ngIf="selectedJob.favorite; else addToFavorite"
+    color="primary"
+  >
+    <mat-icon *ngIf="selectedJob.favorite == true; else falseFav"
+      >favorite</mat-icon
+    >
+    <ng-template #falseFav>
+      <mat-icon class="material-icons-outlined">favorite_outline</mat-icon>
+    </ng-template>
+  </button>
+  <ng-template #addToFavorite>
+    <button
+      mat-icon-button
+      (click)="saveToFavorite(selectedJob)"
+      color="primary"
+    >
+      <mat-icon class="material-icons-outlined">favorite_outline</mat-icon>
+    </button>
+  </ng-template>
+</div>

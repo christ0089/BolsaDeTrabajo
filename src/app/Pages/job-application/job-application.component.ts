@@ -91,7 +91,7 @@ export class JobApplicationComponent implements OnInit {
       return m.value;
     });
 
-    const jobApplicationFuntion = httpsCallable(
+    const jobApplicationFuntion = httpsCallable<any,any>(
       this.functions,
       'applicationUserCreate'
     );
@@ -102,7 +102,7 @@ export class JobApplicationComponent implements OnInit {
         formData: questions,
         personal_data: this.auth.userData$.value,
         createdAt: Timestamp.now(),
-        jop_position: {
+        job_position: {
           id: this.job.id,
           name: this.job.name,
           employeer: this.job.employer,
@@ -113,9 +113,10 @@ export class JobApplicationComponent implements OnInit {
     })
       .then((result) => {
         this.loading = false;
-        if (result.data == 200) {
-          return this.snackBar.open(
-            'Se ha actualizado correctamene el rol',
+        console.log(result);
+        if (result.data.status == 200) {
+          this.snackBar.open(
+            'Se ha subido con exito tu aplicación',
             '',
             {
               verticalPosition: 'top',
@@ -124,6 +125,7 @@ export class JobApplicationComponent implements OnInit {
               duration: 2000,
             }
           );
+          this.router.navigate(["/"]);
         } else {
           throw new Error('No se actualizo con exito');
         }
@@ -131,7 +133,7 @@ export class JobApplicationComponent implements OnInit {
       .catch((e) => {
         this.loading = false;
         return this.snackBar.open(
-          'No se ha actualizado correctamene el rol',
+          'No ha subido con exito tu aplicación',
           '',
           {
             verticalPosition: 'top',

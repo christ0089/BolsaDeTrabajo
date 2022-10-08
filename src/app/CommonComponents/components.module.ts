@@ -32,6 +32,9 @@ import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-qu
 import { EmployeerComponent } from './employeer-dropdown/employeer.component';
 import { PipesModule } from '../Pipes/pipes.module';
 import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/user-roles.component';
+import { JobDescriptionComponent } from './job-description/job-description.component';
+import { FavoriteComponent } from './favorite/favorite.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -45,6 +48,7 @@ import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/u
     MatSelectModule,
     MatButtonModule,
     MatTabsModule,
+    MatDialogModule,
     MatCheckboxModule,
     MatChipsModule,
     MatProgressBarModule,
@@ -69,6 +73,8 @@ import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/u
     JobPositionFormComponent,
     UserRolesViewComponent,
     NewQuestionComponent,
+    JobDescriptionComponent,
+    FavoriteComponent,
   ],
   providers: [],
   exports: [
@@ -81,6 +87,8 @@ import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/u
     ApplicationInfoComponent,
     EmployerInfoFormComponent,
     JobPositionFormComponent,
+    JobDescriptionComponent,
+    FavoriteComponent,
     NewQuestionComponent,
   ],
 })

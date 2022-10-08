@@ -9,11 +9,79 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+$mat-red: (
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: #f44336,
+  600: #e53935,
+  700: #d32f2f,
+  800: #c62828,
+  900: #b71c1c,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #D01F2F,
+  contrast: (
+    50: rgb(46, 46, 46),
+    100:rgb(46, 46, 46),
+    200: rgb(46, 46, 46),
+    300: rgb(46, 46, 46),
+    400: rgb(46, 46, 46),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900:rgb(255, 255, 255),
+    A100:rgb(46, 46, 46),
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+$mat-green: (
+  50: #f6ffeb,
+  100: #f0ffcd,
+  200: #bcef9a,
+  300: #80e573,
+  400: #75ef50,
+  500: #46f436,
+  600: #35e55b,
+  700: #2fd366,
+  800: #28c65d,
+  900: #1cb750,
+  A100: #80ffb1,
+  A200: #3d9c34,
+  A400: #17ff5d,
+  A700: #029e48,
+  contrast: (
+    50: rgb(46, 46, 46),
+    100:rgb(46, 46, 46),
+    200: rgb(46, 46, 46),
+    300: rgb(46, 46, 46),
+    400: rgb(46, 46, 46),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900:rgb(255, 255, 255),
+    A100:rgb(46, 46, 46),
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$BolsaDeTrabajo-primary: mat.define-palette(mat.$indigo-palette);
-$BolsaDeTrabajo-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$BolsaDeTrabajo-primary: mat.define-palette(
+  $mat-red, A700
+);
+$BolsaDeTrabajo-accent: mat.define-palette($mat-green, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $BolsaDeTrabajo-warn: mat.define-palette(mat.$red-palette);

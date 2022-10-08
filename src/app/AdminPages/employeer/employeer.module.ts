@@ -19,6 +19,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { UserRolesComponent } from 'src/app/OperationsPages/user-roles/user-roles.component';
 import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-applications/reported-applications.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { MatChipsModule } from '@angular/material/chips';
     EmployeeApplicationsComponent,
     EmployeerComponent,
     UserRolesComponent,
-    ReportedApplicationsComponent
+    ReportedApplicationsComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +37,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NzPageHeaderModule,
     NzGridModule,
     NzLayoutModule,
+    MatTabsModule,
     MatButtonModule,
     MatListModule,
     MatIconModule,

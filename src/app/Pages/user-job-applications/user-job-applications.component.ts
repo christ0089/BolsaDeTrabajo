@@ -55,23 +55,13 @@ export class UserJobApplicationsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // if (!data.complimentData) {
-      //   this.removeCompliment(i);
-      // } else {
-      //   const compliment = data.complimenData;
-      //   if (this.currProd.complimentData) {
-      //     this.currProd.complimentData.push(compliment);
-      //   } else {
-      //     this.currProd.complimentData = [compliment];
-      //   }
-      // }
       console.log('The dialog was closed');
     });
   }
 
   async removeJobApplication(job_application: IJobApplication) {
     this.loading = true;
-    const jobApplicationFunctions$ = await httpsCallable(
+    const jobApplicationFunctions$ = await httpsCallable<any,any>(
       this.functions,
       'applicationUserDelete'
     );
@@ -82,7 +72,7 @@ export class UserJobApplicationsComponent implements OnInit {
     })
       .then((result) => {
         this.loading = false;
-        if (result.data == 200) {
+        if (result.data.status == 200) {
           return this.snackBar.open(
             'Se ha actualizado correctamene la applicacion',
             '',

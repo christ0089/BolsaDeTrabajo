@@ -1,4 +1,4 @@
-<nz-header>
+<nz-header *ngIf="(isMobileObs | async) == false; else mobileToolbar">
   <div class="logo" routerLink="/">
     <img
       style="width: 100%; height: 100%; object-fit: contain; margin-top: -30px"
@@ -7,13 +7,21 @@
   </div>
   <ul nz-menu nzMode="horizontal" style="float: right">
     <li nz-menu-item routerLink="/">Ofertas de Trabajos</li>
-    <li nz-menu-item routerLink="/admin"> Ofertar Trabajo</li>
+    <li nz-menu-item routerLink="/admin">Ofertar Trabajo</li>
     <li
       nz-menu-item
       routerLink="/auth"
       *ngIf="(user$ | async) === null; else loggedIn"
     >
-      Iniciar Sesion
+      <span style="font-weight: bolder;"> Iniciar Sesion</span>
+    </li>
+    <li
+      nz-menu-item
+      routerLink="/auth/register"
+      *ngIf="(user$ | async) === null; else loggedIn"
+      style="color: #D01F2F;"
+    >
+      Registrate
     </li>
     <ng-template #loggedIn>
       <li nz-menu-item *ngIf="user$ | async; let user">
@@ -22,9 +30,22 @@
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item routerLink="/user_info">Cuenta</button>
-          <button mat-menu-item routerLink="/user_applications">Aplicaciones de Trabajo</button>
-          <button mat-menu-item *ngIf="user.user_role === 'admin'" routerLink="/admin">Adminstracion de Empresas</button>
-          <button mat-menu-item color="primary" style="color: rgb(219, 10, 10)" (click)="logout()">
+          <button mat-menu-item routerLink="/user_applications">
+            Aplicaciones de Trabajo
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="user.user_role === 'admin'"
+            routerLink="/admin"
+          >
+            Adminstracion de Empresas
+          </button>
+          <button
+            mat-menu-item
+            color="primary"
+            style="color: rgb(219, 10, 10)"
+            (click)="logout()"
+          >
             Cerrar Sesion
           </button>
         </mat-menu>
@@ -32,3 +53,65 @@
     </ng-template>
   </ul>
 </nz-header>
+
+<ng-template #mobileToolbar>
+  <nz-header style="padding: 0px">
+    <div class="logo" routerLink="/">
+      <img
+        style="
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          margin-top: -30px;
+        "
+        src="https://www.torreon.gob.mx/img/logo2022.png"
+      />
+    </div>
+    <ul nz-menu nzMode="horizontal" style="float: right">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menuMobileLoggedOut"
+        *ngIf="(user$ | async) === null; else loggedInMobile"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menuMobileLoggedOut="matMenu">
+        <button mat-menu-item routerLink="/">Ofertas de Trabajos</button>
+        <button mat-menu-item routerLink="/admin">Ofertar Trabajo</button>
+        <button mat-menu-item routerLink="/auth" color="primary" style="font-weight: bolder;">
+          Iniciar Sesion
+        </button>
+      </mat-menu>
+      <ng-template #loggedInMobile>
+        <li nz-menu-item *ngIf="user$ | async; let user">
+          <button mat-icon-button [matMenuTriggerFor]="menuMobileLoggedIn">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <mat-menu #menuMobileLoggedIn="matMenu">
+            <button mat-menu-item routerLink="/user_info">Cuenta</button>
+            <button mat-menu-item routerLink="/">Ofertas de Trabajos</button>
+            <button mat-menu-item routerLink="/admin">Ofertar Trabajo</button>
+            <button mat-menu-item routerLink="/user_applications">
+              Aplicaciones de Trabajo
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="user.user_role === 'admin'"
+              routerLink="/admin"
+            >
+              Adminstracion de Empresas
+            </button>
+            <button
+              mat-menu-item
+              color="primary"
+              style="color: rgb(219, 10, 10)"
+              (click)="logout()"
+            >
+              Cerrar Sesion
+            </button>
+          </mat-menu>
+        </li>
+      </ng-template>
+    </ul>
+  </nz-header>
+</ng-template>

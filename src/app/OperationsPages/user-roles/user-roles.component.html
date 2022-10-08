@@ -2,15 +2,15 @@
 
 <mat-list>
   <mat-list-item role="listitem" *ngFor="let user of users$ | async">
-    <div style="width: 100%; display: inline-flex; line-height: 36px;">
+    <div style="width: 100%; display: inline-flex; line-height: 36px">
       {{ user.fname }}
       {{ user.lname }}
 
-      <mat-chip color="primary" *ngIf="user.user_role">{{ user.user_role }}</mat-chip>
       <span class="example-spacer"></span>
-      <button mat-button (click)="changeRole(user)">
-        Cambiar Rol
-      </button>
+      <mat-chip color="primary" style="background-color: rgba(0, 162, 255, 0.582); color: white;" *ngIf="user.user_role">{{
+        user.user_role
+      }}</mat-chip>
+      <button mat-button (click)="changeRole(user)">Cambiar Rol</button>
       <button mat-button color="primary" (click)="deactivateAccount(user.uid)">
         Desactivar Cuenta
       </button>

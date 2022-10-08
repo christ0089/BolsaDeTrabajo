@@ -4,9 +4,8 @@
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
-
-<div nz-row nzJustify="center" style="padding: 20px">
-  <div nz-col nzSpan="8" style="padding: 10px; background: white">
+<div nz-row nzJustify="center" style="padding: 20px" *ngIf="isMobile == false;else  mobileLayout">
+  <div nz-col nzSpan="8" style="padding: 10px; background: rgba(255, 255, 255, 0)">
     <app-job-item
       *ngFor="let job of jobListing$ | async"
       [job]="job"
@@ -19,64 +18,24 @@
   <div
     nz-col
     nzSpan="12"
-    style="background: white; padding: 20px"
+    style="background: rgba(255, 255, 255, 0); padding: 20px"
     *ngIf="selectedJob$ | async; let selectedJob"
     class="animate"
   >
-    <div>
-      <h1>{{ selectedJob.name }}</h1>
-      <h3>{{ selectedJob.employer.company_name }}</h3>
-      <h3>
-        {{selectedJob.address.street}} • {{ selectedJob.payment_expectation[0] | currency }} a
-        {{ selectedJob.payment_expectation[1] | currency }} / por mes
-      </h3>
-      <button mat-button (click)="openApplication(selectedJob)" color="primary" *ngIf="selectedJob.applied === false; else applied">
-        Postularse
-      </button>
-      <ng-template #applied>Ya Aplicaste!</ng-template>
-      <button mat-icon-button (click)="saveToFavorite(selectedJob)" *ngIf="selectedJob.favorite; else addToFavorite" color="primary">
-        <mat-icon *ngIf="selectedJob.favorite == true; else falseFav">favorite</mat-icon>
-        <ng-template #falseFav>
-          <mat-icon  class="material-icons-outlined">favorite_outline</mat-icon>
-        </ng-template>
-      </button>
-      <ng-template #addToFavorite>
-        <button mat-icon-button (click)="saveToFavorite(selectedJob)" color="primary">
-          <mat-icon class="material-icons-outlined">favorite_outline</mat-icon>
-        </button>
-      </ng-template>
-
-    </div>
-
-    <div style="max-height: 400px; overflow-y: scroll; margin-top: 15px">
-      <h3>Detalles del empleo</h3>
-      <h4>Salario</h4>
-      <p>
-        {{ selectedJob.payment_expectation[0] | currency }} a
-        {{ selectedJob.payment_expectation[1] | currency }} / por mes
-      </p>
-      <h4>Tiempo de Empleo</h4>
-      <p *ngFor="let time of selectedJob.position_type">{{ time }}</p>
-      <div *ngIf="selectedJob.benefits" >
-        <div style="width: 100%; height: 1px; margin-top: 15px; margin-bottom: 15px; background: lightgrey"></div>
-        <h3>Beneficios</h3>
-        <mat-chip-list>
-          <mat-chip *ngFor="let benefit of selectedJob.benefits">{{
-            benefit
-          }}</mat-chip>
-        </mat-chip-list>
-      </div>
-
-      <div *ngIf="selectedJob.bonus_type" >
-        <div style="width: 100%; height: 1px; background: lightgrey; margin-top: 15px; margin-bottom: 15px;"></div>
-        <h3>Bonos</h3>
-        <p *ngFor="let bonus of selectedJob.bonus_type">{{ bonus | bonus }}</p>
-      </div>
-      <div style="margin-top: 15px;">
-        <h3>Descripción completa del empleo</h3>
-        <p>{{ selectedJob.description }}</p>
-      </div>
-     
-    </div>
+    <app-job-description [selectedJob]="selectedJob" style="background: white;"></app-job-description>
   </div>
 </div>
+
+<ng-template #mobileLayout>
+  <div nz-row nzJustify="center" style="padding: 20px">
+    <div nz-col style="padding: 10px; background: rgba(255, 255, 255, 0)">
+      <app-job-item
+        *ngFor="let job of jobListing$ | async"
+        [job]="job"
+        (click)="selectJob(job)"
+        class="animate"
+      >
+      </app-job-item>
+    </div>
+  </div>
+</ng-template>

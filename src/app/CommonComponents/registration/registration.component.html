@@ -2,7 +2,7 @@
   <div id="recaptcha-container"></div>
   <form
     [formGroup]="registrationForm"
-    style="width: 400px; margin-left: auto; margin-right: auto"
+    style="width: 100%; margin-left: auto; margin-right: auto"
   >
     <button mat-icon-button routerLink="/auth">
       <mat-icon>arrow-backward</mat-icon>
@@ -108,7 +108,7 @@
       <button
         id="sign-in-button"
         mat-flat-button
-        style="width: calc(100% - 30px)"
+        style="width: 100%"
         (click)="register()"
       >
         Registrar
@@ -117,7 +117,7 @@
     <button
       id="sign-in-button"
       mat-flat-button
-      style="width: calc(100% - 30px); margin-top: 10px;"
+      style="width: 100%; margin-top: 10px;"
       routerLink="/auth"
       color="primary"
     >

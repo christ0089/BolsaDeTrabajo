@@ -34,14 +34,14 @@ export class UserRolesViewComponent implements OnInit {
   }
 
   async changeRole() {
-    const userRoleFunc$ = httpsCallable<any,number>(this.functions, 'userPromotion');
+    const userRoleFunc$ = httpsCallable<any,any>(this.functions, 'userPromotion');
 
     await userRoleFunc$({
       role: this.role,
       userUid: this.user.uid,
     })
       .then((result) => {
-        if (result.data == 200) {
+        if (result.data.status == 200) {
           return this.snackBar.open('Se ha actualizado correctamene el rol', '', {
             verticalPosition: 'top',
             horizontalPosition: 'right',
