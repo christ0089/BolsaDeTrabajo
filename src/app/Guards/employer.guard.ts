@@ -17,7 +17,6 @@ import { AuthService } from '../Shared/Auth/auth.service';
 export class EmployerGuard implements CanActivate {
   constructor(
     private auth: AuthService,
-    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 

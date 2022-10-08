@@ -70,7 +70,7 @@
       <div *ngIf="selectedJob.bonus_type" >
         <div style="width: 100%; height: 1px; background: lightgrey; margin-top: 15px; margin-bottom: 15px;"></div>
         <h3>Bonos</h3>
-        <p *ngFor="let bonus of selectedJob.bonus_type">{{ bonus }}</p>
+        <p *ngFor="let bonus of selectedJob.bonus_type">{{ bonus | bonus }}</p>
       </div>
       <div style="margin-top: 15px;">
         <h3>Descripción completa del empleo</h3>

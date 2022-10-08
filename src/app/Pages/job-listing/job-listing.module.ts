@@ -12,6 +12,7 @@ import { ComponentModule } from 'src/app/CommonComponents/components.module';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { PipesModule } from 'src/app/Pipes/pipes.module';
 
 @NgModule({
   declarations: [JobListingComponent],
@@ -25,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
+    PipesModule,
     MatIconModule,
     ComponentModule
   ],

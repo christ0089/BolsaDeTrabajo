@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
+import { collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { collection } from '@firebase/firestore';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { IJobApplication } from '../Models/job_application';
@@ -19,7 +19,9 @@ export class ListPostionService {
             this.afs,
             `users/${e?.uid}/job_applications`
           ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
-          return collectionData(collectionRef, { idField: 'id' });
+
+          const q = query(collectionRef, where("active","==", true ))
+          return collectionData(q, { idField: 'id' });
         })
       )
       .subscribe((j) => {

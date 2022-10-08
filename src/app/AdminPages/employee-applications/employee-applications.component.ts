@@ -41,8 +41,7 @@ export class EmployeeApplicationsComponent implements OnInit {
             `employeers/${e.id}/job_applications`
           ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
 
-          const q = query(collectionRef, where('employer.id', '==', e.id));
-
+          const q = query(collectionRef, where('active', '==', true));
           return collectionData(q, { idField: 'id' });
         })
       )

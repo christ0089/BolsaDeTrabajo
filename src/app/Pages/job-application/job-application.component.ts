@@ -3,7 +3,11 @@ import { collection, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Router,
+} from '@angular/router';
 import { addDoc, doc, getDoc, setDoc, Timestamp } from '@firebase/firestore';
 import { firstValueFrom } from 'rxjs';
 import { QuestionBase } from 'src/app/Models/Forms/question-base';
@@ -23,6 +27,8 @@ export class JobApplicationComponent implements OnInit {
   forms!: FormGroup[];
   job!: IJobPosition;
   idx: number = 0;
+  loading = false;
+
   constructor(
     private afs: Firestore,
     private functions: Functions,
@@ -33,13 +39,15 @@ export class JobApplicationComponent implements OnInit {
     private qcs: QuestionControlService,
     private storageService: StorageService
   ) {
-    firstValueFrom(this.activeRoute.paramMap).then((params) => {
-      const job_id = params.get('id') as string;
+    firstValueFrom(this.activeRoute.paramMap)
+      .then((params) => {
+        const job_id = params.get('id') as string;
 
-      return this.loadJob(job_id);
-    }).then((j) => {
-      this.job = j;
-    });
+        return this.loadJob(job_id);
+      })
+      .then((j) => {
+        this.job = j;
+      });
   }
 
   ngOnInit(): void {
@@ -78,37 +86,60 @@ export class JobApplicationComponent implements OnInit {
   }
 
   upload() {
+    this.loading = true;
     const { ...questions } = this.forms.flatMap((m) => {
       return m.value;
     });
 
-    const jobApplicationFuntion = httpsCallable(this.functions, 'applicationUserCreate'); 
-    
+    const jobApplicationFuntion = httpsCallable(
+      this.functions,
+      'applicationUserCreate'
+    );
+
     jobApplicationFuntion({
       jobApplication: {
-        formData : questions,
+        active: true,
+        formData: questions,
         personal_data: this.auth.userData$.value,
         createdAt: Timestamp.now(),
-        employer: this.job.employer
+        jop_position: {
+          id: this.job.id,
+          name: this.job.name,
+          employeer: this.job.employer,
+        },
+        employer: this.job.employer,
       },
-      employer: this.job.employer
-    }).then(() => {
-      this.snackBar.open('Se guardo la applicacion con exito', 'cerrar', {
-        politeness: 'assertive',
-        verticalPosition: "top",
-        horizontalPosition: "right",
-        panelClass: ["green-snackbar"],
-        duration: 2000,
+      employer: this.job.employer,
+    })
+      .then((result) => {
+        this.loading = false;
+        if (result.data == 200) {
+          return this.snackBar.open(
+            'Se ha actualizado correctamene el rol',
+            '',
+            {
+              verticalPosition: 'top',
+              horizontalPosition: 'right',
+              panelClass: ['green-snackbar'],
+              duration: 2000,
+            }
+          );
+        } else {
+          throw new Error('No se actualizo con exito');
+        }
+      })
+      .catch((e) => {
+        this.loading = false;
+        return this.snackBar.open(
+          'No se ha actualizado correctamene el rol',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
       });
-      this.router.navigate(["user_applications"])
-    }).catch(() => {
-      this.snackBar.open('No se guardo la applicacion', 'cerrar', {
-        politeness: 'assertive',
-        verticalPosition: "top",
-        horizontalPosition: "right",
-        panelClass: ["red-snackbar"],
-        duration: 2000,
-      });
-    });
   }
 }

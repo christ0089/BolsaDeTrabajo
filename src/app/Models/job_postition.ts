@@ -14,7 +14,7 @@ export interface IAddress {
 
 export type PositionType = 'half_time' | 'full_time' | 'internship' | "tempory" | "apprenticeship";
 
-export type WorkHoursTypes = "8_horus" | "10_hours" | "12_hours" | "morning_shift" | "night_shift" | "guard" | "includes_holidays" | "includes_weekends" | "flexible"
+export type WorkHoursTypes = "8_hours" | "10_hours" | "12_hours" | "morning_shift" | "night_shift" | "guard" | "includes_holidays" | "includes_weekends" | "flexible"
  | "only_weeknds";
 
  export type BonusTypes = "productivity_bonus" | "punctuality_bonus" | "monthly_bonus" | "yearly_bonus" | "quarter_bonus";

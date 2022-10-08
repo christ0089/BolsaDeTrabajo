@@ -12,7 +12,7 @@
     </mat-chip>
     <mat-chip *ngIf="elements[1].elements.length > 0" color="primary">
       <mat-icon style="margin-right: 10px;">{{ elements[1].icon }}</mat-icon>
-      {{ elements[1].elements[0] }}
+      {{ elements[1].elements[0] | workHours }}
       <span style="margin-left: 10px" *ngIf="elements[2].elements.length > 0"
         >+{{ elements[2].elements.length - 1 }}</span
       >

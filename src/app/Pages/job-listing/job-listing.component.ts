@@ -42,7 +42,7 @@ export class JobListingComponent implements OnInit {
           jobListing.forEach((j) => {
             j.applied = false;
             appliedJob.forEach((b) => {
-              if (b.id == j.id) {
+              if (b.job_position.id == j.id) {
                 j.applied = true;
               }
             });

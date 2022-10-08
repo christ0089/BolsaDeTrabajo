@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection } from '@firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
+import { UserRolesViewComponent } from 'src/app/EmployeerComponents/user-roles-view/user-roles.component';
 import { IUserData, Role } from 'src/app/Models/user';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
@@ -24,6 +26,7 @@ export class UserRolesComponent implements OnInit {
     private readonly afs: Firestore,
     private readonly functions: Functions,
     private readonly snackBar: MatSnackBar,
+    private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
     this.searchForm.valueChanges.subscribe((userInput) => {
@@ -47,44 +50,40 @@ export class UserRolesComponent implements OnInit {
     const searchTerm: string = search.toLowerCase();
   }
 
-  async changeRole(user_uid: string, role: Role) {
-    const userRoleFunc$ = httpsCallable(this.functions, 'userPromotion');
+  async changeRole(user: IUserData) {
+    const dialogRef = this.matDialog.open(UserRolesViewComponent, {
+      width: '800px',
+      maxWidth: '1200px',
+      height: '80%',
+      data: { user: user },
+    });
 
-    await userRoleFunc$({
-      role,
-      user_uid,
-    })
-      .then(() => {
-        return this.snackBar.open('Se ha actualizado correctamene el rol', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['green-snackbar'],
-          duration: 2000,
-        });
-      })
-      .catch((e) => {
-        return this.snackBar.open('No se ha actualizado correctamene el rol', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['red-snackbar'],
-          duration: 2000,
-        });
-      });
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('The dialog was closed');
+    });
   }
 
   async deactivateAccount(user_uid: string) {
-    const userRoleFunc$ = httpsCallable(this.functions, 'deactivateAccount');
+    const userRoleFunc$ = httpsCallable<any, number>(this.functions, 'deactivateAccount');
 
     await userRoleFunc$({
       user_uid,
     })
-      .then(() => {
-        return this.snackBar.open('Se ha actualizado correctamente la cuenta', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['green-snackbar'],
-          duration: 2000,
-        });
+      .then((result) => {
+        if (result.data == 200) {
+          return this.snackBar.open(
+            'Se ha actualizado correctamene el rol',
+            '',
+            {
+              verticalPosition: 'top',
+              horizontalPosition: 'right',
+              panelClass: ['green-snackbar'],
+              duration: 2000,
+            }
+          );
+        } else {
+          throw new Error('No se actualizo con exito');
+        }
       })
       .catch((e) => {
         return this.snackBar.open('No se ha descativado la cuenta', '', {

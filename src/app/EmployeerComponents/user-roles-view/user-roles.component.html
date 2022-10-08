@@ -1,0 +1,18 @@
+<h2>
+    Roles de usuario
+</h2>
+
+
+<p>Nombre: {{user.fname}} {{user.lname}}</p>
+<p>Correo: {{user.email}}</p>
+
+<mat-form-field appearance="fill" *ngIf="user" style="width: 100%;">
+    <mat-label>Rol de Usuario</mat-label>
+    <mat-select (valueChange)="selectRole($event)" [value]="user.user_role" required>
+        <mat-option *ngFor="let role of userRoles" [value]="role">
+            {{role}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
+<button mat-button (click)="changeRole()">Guardar</button>

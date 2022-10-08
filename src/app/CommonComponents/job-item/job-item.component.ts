@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { IElement } from '../chips/chips.component';
 
+import { WorkHoursPipe } from 'src/app/Pipes/work-hours.pipe';
+
 @Component({
   selector: 'app-job-item',
   templateUrl: './job-item.component.html',

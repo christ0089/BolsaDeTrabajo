@@ -1,9 +1,15 @@
 <mat-progress-bar
-  *ngIf="forms"
+  *ngIf="forms && loading == false"
   style="margin: 20px; width: calc(100% - 40px)"
   mode="determinate"
   [value]="((idx + 1) / forms.length) * 100"
 ></mat-progress-bar>
+
+<mat-progress-bar
+  *ngIf="loading == true"
+  mode="indeterminate"
+></mat-progress-bar>
+
 <p
   *ngIf="forms"
   style="margin: 20px 0px; text-align: right; width: calc(100% - 40px)"

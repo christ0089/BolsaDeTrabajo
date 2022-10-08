@@ -1,4 +1,4 @@
-<mat-form-field appearance="fill" *ngIf="(selectedEmployeers$ | async) let selected_employeers" style="width: 100%;">
+<mat-form-field appearance="fill" *ngIf="(selectedEmployeers$ | async); let selected_employeers" style="width: 100%;">
     <mat-label>Empresa</mat-label>
     <mat-select (valueChange)="selectEmployeer($event)" required [compareWith]="compareObjects"
         [value]="selectedEmployeers$">

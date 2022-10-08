@@ -30,13 +30,14 @@ import { EmployerInfoFormComponent } from '../EmployeerComponents/employer-info-
 import { JobPositionFormComponent } from '../EmployeerComponents/job-position-form/job-position-form.component';
 import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-question.component';
 import { EmployeerComponent } from './employeer-dropdown/employeer.component';
+import { PipesModule } from '../Pipes/pipes.module';
+import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/user-roles.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -53,6 +54,7 @@ import { EmployeerComponent } from './employeer-dropdown/employeer.component';
     NzMenuModule,
     NzCardModule,
     NzPageHeaderModule,
+    PipesModule,
     NzLayoutModule,
   ],
   declarations: [
@@ -65,6 +67,7 @@ import { EmployeerComponent } from './employeer-dropdown/employeer.component';
     EmployeerComponent,
     EmployerInfoFormComponent,
     JobPositionFormComponent,
+    UserRolesViewComponent,
     NewQuestionComponent,
   ],
   providers: [],

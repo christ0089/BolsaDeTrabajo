@@ -2,6 +2,7 @@ export type Role = 'admin' | 'operator' | 'employeer';
 
 export interface IUserData {
   uid: string;
+  id?: string;
   fname: string;
   lname: string;
   email: string;

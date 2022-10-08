@@ -18,6 +18,7 @@ import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { UserRolesComponent } from 'src/app/OperationsPages/user-roles/user-roles.component';
 import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-applications/reported-applications.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -38,10 +39,10 @@ import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-
     MatButtonModule,
     MatListModule,
     MatIconModule,
+    MatChipsModule,
     NzStepsModule,
     MatDialogModule,
     EmployeerRoutingModule,
-
   ],
   providers: [EmployeerService, CurrencyPipe],
 })
