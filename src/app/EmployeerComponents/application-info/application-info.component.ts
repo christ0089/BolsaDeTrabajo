@@ -9,7 +9,8 @@ import { IJobApplication } from 'src/app/Models/job_application';
 })
 export class ApplicationInfoComponent implements OnInit {
   job!: IJobApplication;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.job = data.job;
   }
 
@@ -19,4 +20,6 @@ export class ApplicationInfoComponent implements OnInit {
   download(url: string) {
     window.open(url);
   }
+
+
 }

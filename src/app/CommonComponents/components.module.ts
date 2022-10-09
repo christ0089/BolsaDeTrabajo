@@ -35,6 +35,7 @@ import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/u
 import { JobDescriptionComponent } from './job-description/job-description.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatRadioModule,
     MatListModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     NzMenuModule,
     NzCardModule,
     NzPageHeaderModule,

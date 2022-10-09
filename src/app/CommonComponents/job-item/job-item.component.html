@@ -36,6 +36,8 @@
   </p>
   <div *ngIf="editJob">
     <button mat-button color="primary" (click)="editJobForm()">Editar</button>
-    <button mat-button color="warn" (click)="removeJob()">Borrar</button>
+    <button mat-button (click)="removeJob()">Cerrar convocatoria</button>
+    <button mat-button color="warn" (click)="removeJob()">Cancelar convocatoria</button>
   </div>
+  <button *ngIf="editJob" mat-button style="float: right;" (click)="viewApplicants()">Ver candidatos</button>
 </nz-card>

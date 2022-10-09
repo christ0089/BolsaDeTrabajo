@@ -118,7 +118,7 @@ export class JobListingComponent implements OnInit {
       const dialogRef = this.matDialog.open(MobileJobDescriptionComponent, {
         width: '800px',
         maxWidth: '1200px',
-        height: '80%',
+        height: '100%',
         data: { job: job },
       });
 

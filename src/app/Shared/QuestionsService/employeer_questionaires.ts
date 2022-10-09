@@ -1,11 +1,14 @@
 import { Validators } from '@angular/forms';
 import { CheckboxQuestion } from 'src/app/Models/Forms/checkbox';
+import { DropdownQuestion } from 'src/app/Models/Forms/dropdown';
+import { DatePickerQuestion } from 'src/app/Models/Forms/datePicker';
 import { GeolocationQuestion } from 'src/app/Models/Forms/geolocation';
 import { RadioQuestion } from 'src/app/Models/Forms/radio';
 import { TextArea } from 'src/app/Models/Forms/textarea';
 import { TextboxQuestion } from 'src/app/Models/Forms/textbox';
 import { UploadFileQuestion } from 'src/app/Models/Forms/upload_file';
 import { IQuestion } from 'src/app/Models/question';
+import { Role } from 'src/app/Models/user';
 
 export const employeer_img = (): IQuestion => {
   return {
@@ -66,6 +69,33 @@ export const employer_info = (): IQuestion => {
         options: [],
         verfication: false,
         validators: [Validators.minLength(1)],
+      }),
+    ],
+  };
+};
+
+export const employer_status = (): IQuestion => {
+  return {
+    title: 'Estatus de Empresa',
+    subtitle: null,
+    questions: [
+      new DropdownQuestion({
+        key: 'active',
+        label: 'Estatus',
+        value: true,
+        required: true,
+        order: 0,
+        options: [
+          {
+            key: true,
+            value: 'Activar',
+          },
+          {
+            key: false,
+            value: 'Desactivar',
+          },
+        ],
+        verfication: false,
       }),
     ],
   };
@@ -173,6 +203,16 @@ export const job_application_general_info_questionaire = () => {
         verfication: false,
         validators: [Validators.maxLength(40)],
       }),
+      new DatePickerQuestion({
+        key: 'expiration_date',
+        label: 'Fecha de Expiración',
+        value: '',
+        required: true,
+        order: 0,
+        options: [],
+        verfication: false,
+        validators: [],
+      })
     ],
   };
 };
@@ -210,7 +250,7 @@ export const position_type = () => {
             value: 'apprenticeship',
           },
         ],
-        verfication: false
+        verfication: false,
       }),
     ],
   };
@@ -353,19 +393,24 @@ export const benefits = () => {
       }),
     ],
   };
-}
+};
 
 export const job_application = (): IQuestion[] => {
   const questions = [
     job_application_general_info_questionaire(),
     position_type(),
     work_hours_type(),
-    bonus_type()
+    bonus_type(),
   ];
   return questions;
 };
 
-export const employer_questionaires = (): IQuestion[] => {
-  const questions = [employeer_img(), employer_info(), employer_location()];
+export const employer_questionaires = (role: Role): IQuestion[] => {
+  let questions: IQuestion[] = [];
+
+  if (role === 'admin') {
+    questions = questions.concat(employer_status());
+  }
+  questions = questions.concat([employeer_img(), employer_info(), employer_location()]);
   return questions;
 };

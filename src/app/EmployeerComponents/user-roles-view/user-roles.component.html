@@ -1,7 +1,9 @@
 <h2>
     Roles de usuario
 </h2>
-
+<button mat-icon-button style="float: right" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
 
 <p>Nombre: {{user.fname}} {{user.lname}}</p>
 <p>Correo: {{user.email}}</p>
@@ -14,5 +16,9 @@
         </mat-option>
     </mat-select>
 </mat-form-field>
+
+<button mat-button color="primary" (click)="deactivateAccount(user.uid)">
+    Desactivar Cuenta
+  </button>
 
 <button mat-button (click)="changeRole()">Guardar</button>

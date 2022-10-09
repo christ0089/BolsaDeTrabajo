@@ -93,6 +93,7 @@
         [matDatepicker]="picker"
         placeholder="{{ question.label }}"
         [formControlName]="question.key"
+        [value]="question.value"
         [id]="question.key"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

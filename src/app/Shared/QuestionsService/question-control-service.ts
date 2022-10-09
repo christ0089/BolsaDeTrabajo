@@ -4,6 +4,8 @@ import { QuestionBase } from 'src/app/Models/Forms/question-base';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { employer_location, employer_questionaires, job_application,  } from './employeer_questionaires';
 import { employee_questionaires, user_info_questionaire } from './employee_questionaire';
+import { Role } from 'src/app/Models/user';
+import { Timestamp } from '@firebase/firestore';
 
 @Injectable()
 export class QuestionControlService {
@@ -20,11 +22,11 @@ export class QuestionControlService {
       if (question.type == 'calendar') {
         let _question = (group[question.key] = question.required
           ? new FormControl(
-              question.value || new Date(),
+              question.value ||  new Date(Date.now()),
               [Validators.required].concat(...question.validators)
             )
           : new FormControl({
-              value: question.value || new Date(),
+              value: question.value || new Date(Date.now()),
               disabled: question.disabled,
             }));
         console.log(_question);
@@ -44,18 +46,30 @@ export class QuestionControlService {
     return new FormGroup(group);
   }
 
-  toEditFormGroup(questions: QuestionBase<string>[], data: any) {
+  toEditFormGroup(questions: QuestionBase<any>[], data: any) {
     let group: any = {};
 
     questions.forEach((question) => {
-      group[question.key] = question.required
-        ? new FormControl(
-            data[question.key] || '',
-            [Validators.required].concat(question.validators)
-          )
-        : new FormControl(
-            { value: data[question.key], disabled: question.disabled } || ''
-          );
+      if (question.type == 'calendar') {
+        group[question.key] = (group[question.key] = question.required
+          ? new FormControl(
+                (question.value as Timestamp).toDate() || new Date(),
+              [Validators.required].concat(...question.validators)
+            )
+          : new FormControl({
+              value: (question.value as Timestamp).toDate() || new Date(),
+              disabled: question.disabled,
+            }));
+      } else {
+        group[question.key] = question.required
+          ? new FormControl(
+              data[question.key] || '',
+              [Validators.required].concat(question.validators)
+            )
+          : new FormControl(
+              { value: data[question.key], disabled: question.disabled } || ''
+            );
+      }
     });
 
     return new FormGroup(group);
@@ -85,8 +99,8 @@ export class QuestionControlService {
     return this.formData.asObservable();
   }
 
-  employerInfoQuestionaire() {
-    return employer_questionaires();
+  employerInfoQuestionaire(role: Role) {
+    return employer_questionaires(role);
   }
 
   employerNewJobPosition() {

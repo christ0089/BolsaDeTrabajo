@@ -55,11 +55,11 @@ export class EmployeerComponent implements OnInit {
             this.availableRoutes = this.availableRoutes.concat([
               {
                 path: 'reported_applications',
-                name: 'Aplicanciones Reportadas',
+                name: 'Reportes',
               },
               {
                 path: 'user_roles',
-                name: 'Roles de Usuarios',
+                name: 'Adminstrar Usuarios',
               },
             ]);
           }

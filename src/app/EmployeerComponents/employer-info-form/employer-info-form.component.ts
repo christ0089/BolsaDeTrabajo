@@ -59,7 +59,8 @@ export class EmployerInfoFormComponent implements OnInit {
     this.employeerService.selectedEmployeer$.pipe(
       tap((e) => {
         console.log(e)
-        this.questions = this.qcs.employerInfoQuestionaire();
+        const role = this.authService.userData$.value?.user_role || "operator"
+        this.questions = this.qcs.employerInfoQuestionaire(role);
 
         this.forms = [];
         this.questions.forEach((q) => {
@@ -71,7 +72,7 @@ export class EmployerInfoFormComponent implements OnInit {
           this.edit = true;
           const e = this.employeerService.selectedEmployeer$.value as IEmployer;
           this.e = e;
-          this.questions = this.qcs.employerInfoQuestionaire();
+          this.questions = this.qcs.employerInfoQuestionaire(role);
           this.forms = [];
           this.questions.forEach((q, i) => {
             const questions = this.qcs.mapToQuestion(q.questions, e);

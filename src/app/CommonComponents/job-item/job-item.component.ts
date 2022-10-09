@@ -16,6 +16,8 @@ export class JobItemComponent implements OnInit {
 
   @Output('edit_job') editJobEvent: EventEmitter<IJobPosition> =
     new EventEmitter<IJobPosition>();
+  @Output('delete_job') closeJobEvent: EventEmitter<IJobPosition> =
+    new EventEmitter<IJobPosition>();
   @Output('delete_job') deleteJobEvent: EventEmitter<IJobPosition> =
     new EventEmitter<IJobPosition>();
 
@@ -74,5 +76,14 @@ export class JobItemComponent implements OnInit {
     if (this.job) {
       this.deleteJobEvent.emit(this.job);
     }
+  }
+  closeJob() {
+    if (this.job) {
+      this.deleteJobEvent.emit(this.job);
+    }
+  }
+
+  viewApplicants() {
+    
   }
 }

@@ -58,6 +58,7 @@ export class JobPositionFormComponent implements OnInit {
       );
 
       jobPosition.id = this.data.id;
+      jobPosition.expiration_date = this.data.expiration_date;
       const jobDataForm = jobPosition.positionInfo;
 
       console.log(jobDataForm);
@@ -70,7 +71,7 @@ export class JobPositionFormComponent implements OnInit {
   }
 
   async save() {
-    const { name, description } = this.forms[0].value;
+    const { name, description, expiration_date } = this.forms[0].value;
     const payment_expectation = [
       this.forms[0].get('payment_expectation_min')?.value,
       this.forms[0].get('payment_expectation_max')?.value,
@@ -96,6 +97,7 @@ export class JobPositionFormComponent implements OnInit {
       payment_expectation,
       employeer,
       position_type,
+      expiration_date: Timestamp.fromDate(expiration_date),
       workhours_type,
       bonus_type,
     } , {

@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -44,6 +45,11 @@ export const applicationUserCreate = functions.https.onCall(
         .set(jobApplication, {
           merge: true,
         });
+
+      await admin
+        .firestore()
+        .doc(`job_listings/${jobApplication.job_position.id}`)
+        .update({ applicants: firestore.FieldValue.increment(1) });
       return { status: 200 };
     } catch (e: any) {
       return { status: 400 };
@@ -234,3 +240,32 @@ export const employeerUpdate = functions.firestore
       return Promise.all(promises);
     });
   });
+
+async function isAdmin(user_uid: string): Promise<boolean> {
+  const adminSnap = await admin
+    .firestore()
+    .collection('users')
+    .doc(user_uid)
+    .get();
+
+  if (!adminSnap.exists) {
+    return false;
+  }
+  const adminData = adminSnap.data();
+
+  if (adminData?.user_role !== 'admin') {
+    // eslint-disable-line
+    return false;
+  }
+  return true;
+}
+
+export const applicationStatus = functions.https.onCall(async (data, context) => {
+  const job_application_interested = admin.firestore().collectionGroup("job_applications").where("status", "==","interested").get()
+
+  const job_application_contracted = admin.firestore().collectionGroup("job_applications").where("status", "==","contracted").get()
+
+  const res = await Promise.all([job_application_interested, job_application_contracted]);
+  
+  
+});

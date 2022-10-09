@@ -1,4 +1,4 @@
-<h2>Roles de Usuario</h2>
+<h2>Adminstrar Usuarios</h2>
 
 <mat-list>
   <mat-list-item role="listitem" *ngFor="let user of users$ | async">
@@ -10,10 +10,8 @@
       <mat-chip color="primary" style="background-color: rgba(0, 162, 255, 0.582); color: white;" *ngIf="user.user_role">{{
         user.user_role
       }}</mat-chip>
-      <button mat-button (click)="changeRole(user)">Cambiar Rol</button>
-      <button mat-button color="primary" (click)="deactivateAccount(user.uid)">
-        Desactivar Cuenta
-      </button>
+      <button mat-button (click)="changeRole(user)" color="primary">Ver</button>
+     
     </div>
   </mat-list-item>
 </mat-list>

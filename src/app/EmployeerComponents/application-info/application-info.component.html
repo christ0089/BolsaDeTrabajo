@@ -1,21 +1,31 @@
-<!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">
-  <nz-step nzTitle="Informacion del Candidato"> </nz-step>
-  <nz-step nzTitle="CV" nzDescription="This is a description."> </nz-step>
-  <nz-step nzTitle="Posicion Previa" nzDescription="This is a description.">
-  </nz-step>
-</nz-steps> -->
-<h1>Aplicacion: #{{job.id}}</h1>
-
+<h1>Aplicacion: #{{ job.id }}</h1>
+<button mat-icon-button style="float: right" mat-dialog-close>
+  <mat-icon>close</mat-icon>
+</button>
 <h2>Informacion de Contacto</h2>
 <p>{{ job.personal_data.fname }} {{ job.personal_data.lname }}</p>
-<p>Telefono: {{job.personal_data.country_code }} {{ job.personal_data.phone }}</p>
+<p>
+  Telefono: {{ job.personal_data.country_code }} {{ job.personal_data.phone }}
+</p>
 <p>Correo: {{ job.personal_data.email }}</p>
 
 <h2>Curriculum</h2>
-<button mat-button (click)="download(job.formData[0].resume_url)">Descargar CV</button>
+<button mat-button (click)="download(job.formData[0].resume_url)">
+  Descargar CV
+</button>
 
 <h2>Puesto Previo</h2>
 <p>{{ job.formData[1].prev_position }}</p>
 <p>{{ job.formData[1].prev_employer }}</p>
 
+<button mat-button>Notificar candidato</button>
 
+<button mat-button>Se contrato candidato</button>
+
+<!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">
+  <nz-step nzTitle="Revisar Info del Candidato"> </nz-step>
+  <nz-step nzTitle="Notificar Candidato" nzDescription="This is a description.">
+  </nz-step>
+  <nz-step nzTitle="Contratar Candidato" nzDescription="This is a description.">
+  </nz-step>
+</nz-steps> -->

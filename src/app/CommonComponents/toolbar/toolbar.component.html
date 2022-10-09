@@ -6,6 +6,9 @@
     />
   </div>
   <ul nz-menu nzMode="horizontal" style="float: right">
+    <li nz-menu-item *ngIf="(user$ | async) !== null">
+      <mat-icon>notifications</mat-icon>
+    </li>
     <li nz-menu-item routerLink="/">Ofertas de Trabajos</li>
     <li nz-menu-item routerLink="/admin">Ofertar Trabajo</li>
     <li
@@ -13,13 +16,13 @@
       routerLink="/auth"
       *ngIf="(user$ | async) === null; else loggedIn"
     >
-      <span style="font-weight: bolder;"> Iniciar Sesion</span>
+      <span style="font-weight: bolder"> Iniciar Sesion</span>
     </li>
     <li
       nz-menu-item
       routerLink="/auth/register"
-      *ngIf="(user$ | async) === null; else loggedIn"
-      style="color: #D01F2F;"
+      *ngIf="(user$ | async) === null"
+      style="color: #d01f2f"
     >
       Registrate
     </li>
@@ -68,6 +71,9 @@
       />
     </div>
     <ul nz-menu nzMode="horizontal" style="float: right">
+      <button mat-icon-button *ngIf="(user$ | async) !== null">
+        <mat-icon>notifications</mat-icon>
+      </button>
       <button
         mat-icon-button
         [matMenuTriggerFor]="menuMobileLoggedOut"
@@ -78,7 +84,12 @@
       <mat-menu #menuMobileLoggedOut="matMenu">
         <button mat-menu-item routerLink="/">Ofertas de Trabajos</button>
         <button mat-menu-item routerLink="/admin">Ofertar Trabajo</button>
-        <button mat-menu-item routerLink="/auth" color="primary" style="font-weight: bolder;">
+        <button
+          mat-menu-item
+          routerLink="/auth"
+          color="primary"
+          style="font-weight: bolder"
+        >
           Iniciar Sesion
         </button>
       </mat-menu>

@@ -63,35 +63,5 @@ export class UserRolesComponent implements OnInit {
     });
   }
 
-  async deactivateAccount(user_uid: string) {
-    const userRoleFunc$ = httpsCallable<any, number>(this.functions, 'deactivateAccount');
-
-    await userRoleFunc$({
-      user_uid,
-    })
-      .then((result) => {
-        if (result.data == 200) {
-          return this.snackBar.open(
-            'Se ha actualizado correctamene el rol',
-            '',
-            {
-              verticalPosition: 'top',
-              horizontalPosition: 'right',
-              panelClass: ['green-snackbar'],
-              duration: 2000,
-            }
-          );
-        } else {
-          throw new Error('No se actualizo con exito');
-        }
-      })
-      .catch((e) => {
-        return this.snackBar.open('No se ha descativado la cuenta', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['red-snackbar'],
-          duration: 2000,
-        });
-      });
-  }
+  
 }

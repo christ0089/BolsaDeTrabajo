@@ -28,6 +28,7 @@ export interface IJobPosition {
   description: string;
   requirements: IRequirements[];
   createdAt: Timestamp;
+  expiration_date: Timestamp,
   address: IAddress;
   payment_expectation: number[];
   position_type: PositionType;
@@ -55,6 +56,7 @@ export class JobPosition implements IJobPosition {
   description: string;
   requirements: IRequirements[];
   createdAt: Timestamp;
+  expiration_date: Timestamp = Timestamp.fromDate(new Date(Date.now()));
   address: IAddress;
   payment_expectation: number[];
   position_type: PositionType;
@@ -114,6 +116,7 @@ export class JobPosition implements IJobPosition {
         description: this.description,
         payment_expectation_min: this.payment_expectation[0],
         payment_expectation_max: this.payment_expectation[1],
+        expiration_date: this.expiration_date.toDate()
       },
       {
         position_type: this.position_type,
