@@ -4,6 +4,7 @@ import { IJobPosition } from 'src/app/Models/job_postition';
 import { IElement } from '../chips/chips.component';
 
 import { WorkHoursPipe } from 'src/app/Pipes/work-hours.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-item',
@@ -16,7 +17,7 @@ export class JobItemComponent implements OnInit {
 
   @Output('edit_job') editJobEvent: EventEmitter<IJobPosition> =
     new EventEmitter<IJobPosition>();
-  @Output('delete_job') closeJobEvent: EventEmitter<IJobPosition> =
+  @Output('close_job') closeJobEvent: EventEmitter<IJobPosition> =
     new EventEmitter<IJobPosition>();
   @Output('delete_job') deleteJobEvent: EventEmitter<IJobPosition> =
     new EventEmitter<IJobPosition>();
@@ -35,14 +36,12 @@ export class JobItemComponent implements OnInit {
       elements: [],
     },
   ];
-  constructor(private readonly cp: CurrencyPipe) {}
+  constructor(private readonly cp: CurrencyPipe, private router: Router) {}
 
   ngOnInit(): void {}
 
   ngOnChanges() {
     if (this.job) {
-      console.log(this.job);
-
       this.elements[0].elements = [
         `${this.cp.transform(
           this.job.payment_expectation[0],
@@ -77,13 +76,9 @@ export class JobItemComponent implements OnInit {
       this.deleteJobEvent.emit(this.job);
     }
   }
-  closeJob() {
-    if (this.job) {
-      this.deleteJobEvent.emit(this.job);
-    }
-  }
 
-  viewApplicants() {
-    
+  viewApplicants(job_id: string = "") {
+    console.log(job_id);
+   this.router.navigate([`/admin/job_applications/${job_id}`]) 
   }
 }

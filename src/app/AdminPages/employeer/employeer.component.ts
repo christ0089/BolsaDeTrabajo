@@ -54,12 +54,16 @@ export class EmployeerComponent implements OnInit {
           if (user.user_role === 'admin') {
             this.availableRoutes = this.availableRoutes.concat([
               {
-                path: 'reported_applications',
+                path: 'reports',
                 name: 'Reportes',
               },
               {
-                path: 'user_roles',
-                name: 'Adminstrar Usuarios',
+                path: 'admin_users',
+                name: 'Administrar Usuarios',
+              },
+              {
+                path: 'admin_company',
+                name: 'Administrar Empresas',
               },
             ]);
           }

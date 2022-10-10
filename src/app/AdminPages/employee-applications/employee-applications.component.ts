@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDrawer } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
 import { collection, query, where } from '@firebase/firestore';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, switchMap } from 'rxjs';
 import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
 import { IJobApplication } from 'src/app/Models/job_application';
-import { JobApplicationComponent } from 'src/app/Pages/job-application/job-application.component';
-import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
@@ -27,21 +25,33 @@ export class EmployeeApplicationsComponent implements OnInit {
   constructor(
     private readonly matDialog: MatDialog,
     private readonly afs: Firestore,
-    private readonly auth: AuthService,
-    private readonly employeerService: EmployeerService
+    private readonly employeerService: EmployeerService,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
-    this.employeerService.selectedEmployeer$
+
+    combineLatest([
+      this.employeerService.selectedEmployeer$,
+      this.activatedRoute.paramMap
+    ])
       .pipe(
-        switchMap((e) => {
+        switchMap(([e, params]) => {
           if (!e) {
             return of(null);
           }
+
           const collectionRef = collection(
             this.afs,
             `employeers/${e.id}/job_applications`
           ).withConverter<IJobApplication>(genericConverter<IJobApplication>());
 
-          const q = query(collectionRef, where('active', '==', true));
+          let queries = [where('active', '==', true)]
+
+          if (params.has('id')) {
+            const id = params.get('id');
+            queries.push(where('job_position.id', '==', id));
+          }
+
+          const q = query(collectionRef,...queries );
           return collectionData(q, { idField: 'id' });
         })
       )

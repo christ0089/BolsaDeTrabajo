@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collectionData, doc, Firestore } from '@angular/fire/firestore';
+import { collectionData, doc, Firestore, query, where } from '@angular/fire/firestore';
 import {
   collection,
   DocumentData,
@@ -50,8 +50,10 @@ export class JobPostionService {
       this.afs,
       'job_listing'
     ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
+    
+    const q = query(collectionRef, where("active","==", true ), where("expiration_date", ">=", new Date(Date.now())))
 
-    collectionData(collectionRef, { idField: 'id' })
+    collectionData(q, { idField: 'id' })
       .pipe(takeUntil(this.destroy$))
       .subscribe((job) => {
         this.jobListing$.next(job);

@@ -23,22 +23,34 @@ const routes: Routes = [
         component: EmployeeListingComponent,
       },
       {
+        path: "applicants/:id",
+        component: EmployeeListingComponent,
+      },
+      {
         path: "job_applications",
         component: EmployeeApplicationsComponent,
       },
       {
         path: "job_applications/:id",
-        component: JobPositionFormComponent,
+        component: EmployeeApplicationsComponent,
       },
       {
-        path: "reported_applications",
+        path: "reports",
         canActivate: [AdminGuard],
         component: ReportedApplicationsComponent
       }, 
       {
-        path: "user_roles",
+        path: "admin_users",
         canActivate: [AdminGuard],
         component:  UserRolesComponent
+      }, 
+      {
+        path: "admin_company",
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+        import('../../OperationsPages/employeer-list/employeer-list.module').then(
+          (m) => m.EmployeerListModule
+        ),
       }, 
     ]
   }

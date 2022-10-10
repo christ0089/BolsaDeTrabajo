@@ -1,0 +1,37 @@
+<h2>Administrar Empresas</h2>
+<mat-tab-group>
+  <mat-tab label="Aprobadas">
+    <mat-list>
+      <mat-list-item
+        *ngFor="let approved_employeer of employeerApproved$ | async"
+      >
+        {{ approved_employeer.company_name }}
+        <span class="example-spacer"></span>
+        <button
+          *ngIf="approved_employeer.active; else inactive"
+          mat-button
+          color="primary"
+          (click)="deactivate(approved_employeer.id, approved_employeer.active)"
+        >
+          Desactivar
+        </button>
+        <ng-template #inactive>
+          <button mat-button
+          (click)="deactivate(approved_employeer.id, approved_employeer.active)"
+          ƒ>Activar</button>
+        </ng-template>
+      </mat-list-item>
+    </mat-list>
+  </mat-tab>
+  <mat-tab label="Pendientes">
+    <mat-list>
+      <mat-list-item
+        *ngFor="let pending_employeers of employeerPending$ | async"
+      >
+        {{ pending_employeers.company_name }}
+        <span class="example-spacer"></span>
+        <button mat-button color="primary" (click)="approveEmployeer(pending_employeers.id)">Aprobar</button>
+      </mat-list-item>
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>

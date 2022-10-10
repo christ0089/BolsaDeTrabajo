@@ -49,8 +49,8 @@ export class EmployerInfoFormComponent implements OnInit {
   e!: IEmployer;
 
   constructor(
-    private qcs: QuestionControlService,
     private afs: Firestore,
+    private readonly qcs: QuestionControlService,
     private readonly employeerService: EmployeerService,
     private readonly authService: AuthService
   ) {}
@@ -110,25 +110,30 @@ export class EmployerInfoFormComponent implements OnInit {
     const uid = this.authService.userData$.value?.uid;
     employeer.owner = [uid];
 
-    if (this.edit == true && this.e) {
-      const docRef = doc(this.afs, `employeers/${this.e.id}`);
+    try {
+      if (this.edit == true && this.e) {
+        const docRef = doc(this.afs, `employeers/${this.e.id}`);
+  
+        await setDoc(
+          docRef,
+          {
+            ...employeer,
+          },
+          {
+            merge: true,
+          }
+        );
+        return;
+      }
+  
+      await addDoc(docBeforeRef, {
+        ...employeer,
+        status: 'pending',
+        active: false
+      });
+    } catch (e: any) {
 
-      await setDoc(
-        docRef,
-        {
-          ...employeer,
-        },
-        {
-          merge: true,
-        }
-      );
-      return;
     }
-
-    await addDoc(docBeforeRef, {
-      ...employeer,
-      status: 'pending',
-    });
   }
 
   get isValid() {

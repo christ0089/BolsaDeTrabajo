@@ -1,0 +1,28 @@
+<div *ngIf="job" style="width: 100%; height: 100%;">
+  <h1>Aplicacion: #{{ job.id }}</h1>
+  <button mat-icon-button style="float: right" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>Motivo de clausura de convocatoria</mat-label>
+    <mat-select
+      (valueChange)="selectClosingReason($event)"
+      required
+      [compareWith]="compareObjects"
+    >
+      <mat-option
+        *ngFor="let closure_reason of closure_reasons"
+        [value]="closure_reason.key"
+      >
+        {{ closure_reason.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div style="background-color: white; margin-top: 10px">
+    <button mat-button style="float: right" color="primary" (click)="save()">
+      Guardar
+    </button>
+  </div>
+</div>

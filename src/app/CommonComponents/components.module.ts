@@ -11,31 +11,33 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule} from '@angular/material/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LocationComponent } from './location/location.component';
 import { GeoQuestionComponent } from './geo-question/geo-question.component';
-import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
-import { ChipsComponent } from './chips/chips.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatNativeDateModule } from '@angular/material/core';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { JobItemComponent } from './job-item/job-item.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
+
+import { JobItemComponent } from './job-item/job-item.component';
+import { ChipsComponent } from './chips/chips.component';
 import { ApplicationInfoComponent } from '../EmployeerComponents/application-info/application-info.component';
 import { EmployerInfoFormComponent } from '../EmployeerComponents/employer-info-form/employer-info-form.component';
 import { JobPositionFormComponent } from '../EmployeerComponents/job-position-form/job-position-form.component';
-import { NewQuestionComponent } from '../EmployeerComponents/new-question/new-question.component';
 import { EmployeerComponent } from './employeer-dropdown/employeer.component';
-import { PipesModule } from '../Pipes/pipes.module';
 import { UserRolesViewComponent } from '../EmployeerComponents/user-roles-view/user-roles.component';
 import { JobDescriptionComponent } from './job-description/job-description.component';
 import { FavoriteComponent } from './favorite/favorite.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
+import { ApplicationStatusComponent } from '../EmployeerComponents/application-status/application-status.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { PipesModule } from '../Pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -48,6 +50,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     DragDropModule,
     MatSelectModule,
     MatButtonModule,
+    MatBadgeModule,
     MatTabsModule,
     MatDialogModule,
     MatCheckboxModule,
@@ -74,9 +77,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     EmployerInfoFormComponent,
     JobPositionFormComponent,
     UserRolesViewComponent,
-    NewQuestionComponent,
     JobDescriptionComponent,
+    ApplicationStatusComponent,
     FavoriteComponent,
+   // NotificationsComponent,
   ],
   providers: [],
   exports: [
@@ -85,13 +89,14 @@ import { MatNativeDateModule } from '@angular/material/core';
     ChipsComponent,
     JobItemComponent,
     GeoQuestionComponent,
+    ApplicationStatusComponent,
     EmployeerComponent,
     ApplicationInfoComponent,
     EmployerInfoFormComponent,
     JobPositionFormComponent,
     JobDescriptionComponent,
     FavoriteComponent,
-    NewQuestionComponent,
+ //   NotificationsComponent
   ],
 })
 export class ComponentModule {}

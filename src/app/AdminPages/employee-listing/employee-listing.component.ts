@@ -6,9 +6,11 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { collection, deleteDoc, doc } from '@firebase/firestore';
 import { filter } from 'd3';
 import { BehaviorSubject, switchMap } from 'rxjs';
+import { ApplicationStatusComponent } from 'src/app/EmployeerComponents/application-status/application-status.component';
 import { JobPositionFormComponent } from 'src/app/EmployeerComponents/job-position-form/job-position-form.component';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
@@ -40,7 +42,10 @@ export class EmployeeListingComponent implements OnInit {
             `job_listing`
           ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
 
-          const q = query(collectionRef, where('employer.id', '==', e.id));
+          let queries = [where('employer.id', '==', e.id)];
+
+
+          const q = query(collectionRef, ...queries);
 
           return collectionData(q, { idField: 'id' });
         })
@@ -66,8 +71,16 @@ export class EmployeeListingComponent implements OnInit {
     });
   }
 
-  deleteJobApplication(job_postition: IJobPosition) {
-    const docRef = doc(this.afs, `job_listing/${job_postition.id}`);
-    deleteDoc(docRef);
+  updateJobApplication(job_position: IJobPosition) {
+    const dialogRef = this.matDialog.open(ApplicationStatusComponent, {
+      width: '800px',
+      maxWidth: '1200px',
+      height: '80%',
+      data: { job_position },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('The dialog was closed');
+    });
   }
 }
