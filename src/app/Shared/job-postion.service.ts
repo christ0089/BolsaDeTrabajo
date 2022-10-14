@@ -51,11 +51,11 @@ export class JobPostionService {
       'job_listing'
     ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
     
-    const q = query(collectionRef, where("active","==", true ), where("expiration_date", ">=", new Date(Date.now())))
+    const q = query(collectionRef, where("active","==", true ))
 
     collectionData(q, { idField: 'id' })
-      .pipe(takeUntil(this.destroy$))
       .subscribe((job) => {
+        console.log(job);
         this.jobListing$.next(job);
       });
 

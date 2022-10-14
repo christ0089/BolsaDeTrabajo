@@ -18,10 +18,13 @@ export interface IPrevEmployer {
   position: string;
 }
 
+export type JobStatus = 'applied' | 'notified' | 'contracted' | 'dismissed';
+
 export interface IJobApplication {
   personal_data: IUserData;
-  employer: IEmployer,
-  job_position: IJobPosition,
+  employer: IEmployer;
+  job_position: IJobPosition;
+  status: JobStatus;
   id: string;
   formData: any;
   createdAt: Timestamp;

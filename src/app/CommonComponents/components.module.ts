@@ -38,6 +38,7 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { ApplicationStatusComponent } from '../EmployeerComponents/application-status/application-status.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { PipesModule } from '../Pipes/pipes.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { PipesModule } from '../Pipes/pipes.module';
     MatCheckboxModule,
     MatChipsModule,
     MatProgressBarModule,
+    HttpClientModule,
     MatRadioModule,
     MatListModule,
     MatDatepickerModule,

@@ -46,6 +46,7 @@ export class EmployeerService {
     );
 
     employeersObs.subscribe((_employeers) => {
+      console.log(_employeers);
       if (_employeers.length > 0) {
         this.selectedEmployeer$.next(_employeers[0]);
       }

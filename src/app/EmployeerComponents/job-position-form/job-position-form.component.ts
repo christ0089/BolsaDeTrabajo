@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection, doc, setDoc, Timestamp } from '@firebase/firestore';
 import { merge } from 'd3-array';
 import { IEmployer } from 'src/app/Models/employer';
@@ -32,7 +33,8 @@ export class JobPositionFormComponent implements OnInit {
     private qcs: QuestionControlService,
     private employeerService: EmployeerService,
     private afs: Firestore,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -100,8 +102,16 @@ export class JobPositionFormComponent implements OnInit {
       expiration_date: Timestamp.fromDate(expiration_date),
       workhours_type,
       bonus_type,
+      applicants: 0
     } , {
       merge: true,
+    }).catch((e) => {
+      this.snackBar.open('No se ha creado correctamente la solcitud', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
     });
   }
 

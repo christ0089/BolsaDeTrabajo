@@ -63,7 +63,7 @@ export class UserJobApplicationsComponent implements OnInit {
     this.loading = true;
     const jobApplicationFunctions$ = await httpsCallable<any,any>(
       this.functions,
-      'applicationUserDelete'
+      'applicationUserUpdate'
     );
 
     jobApplicationFunctions$({

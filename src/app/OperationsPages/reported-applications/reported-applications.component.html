@@ -1,28 +1,32 @@
 <h2>Reporte de Aplicaciones</h2>
 
 <mat-list>
-    <mat-list-item role="listitem">
-        Reporte de status de aplicaciones 
-        <span class="example-spacer"></span>
-        <button mat-button color="primary">Generar</button>
-     
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Reporte de interacciones 
-        <span class="example-spacer"></span>
-        <button mat-button  color="primary">Generar</button>
-     
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Reporte de contrataciones
-        <span class="example-spacer"></span>
-        <button mat-button color="primary">Generar</button>
-     
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Reporte de empresas
-        <span class="example-spacer"></span>
-        <button mat-button  color="primary">Generar</button>
-     
-    </mat-list-item>
+  <mat-list-item role="listitem">
+    Reporte de status de aplicaciones
+    <span class="example-spacer"></span>
+    <button mat-button color="primary" (click)="applicationStatusReport()">
+      Generar
+    </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+    Reporte de interacciones
+    <span class="example-spacer"></span>
+    <button mat-button color="primary" (click)="applicationNumberReport()">
+      Generar
+    </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+    Reporte de contrataciones
+    <span class="example-spacer"></span>
+    <button mat-button color="primary" (click)="employeerCreationReport()">
+      Generar
+    </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+    Reporte de empresas
+    <span class="example-spacer"></span>
+    <button mat-button color="primary" (click)="hiringReport()">
+      Generar
+    </button>
+  </mat-list-item>
 </mat-list>

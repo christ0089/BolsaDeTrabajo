@@ -115,6 +115,60 @@ export const applicationUserUpdate = functions.https.onCall(
 
       return { status: 200 };
     } catch (e: any) {
+      console.error(e);
+      return { status: 400 };
+    }
+  }
+);
+
+export const jobApplicationEmployeerUpdate = functions.https.onCall(
+  async (data, context) => {
+    const uid = context.auth?.uid;
+    const { employeerId, jobApplication, status } = data;
+
+    if (!uid) return { status: 400 };
+    if ((await isAdmin(uid)) === false) return { status: 400 };
+
+    try {
+      const companyName = jobApplication.employer.company_name;
+      await admin
+        .firestore()
+        .collection(`users/${jobApplication.personal_data.id}/inbox`) // eslint-disable-line
+        .add({
+          components: [companyName],
+          status: status,
+          viewed: false,
+          createdAt: firestore.Timestamp.now(),
+        });
+      await admin
+        .firestore()
+        .collection(`employeers/${employeerId}/job_applications`)
+        .doc(jobApplication.id)
+        .set(
+          {
+            status,
+            updated: firestore.Timestamp.now(),
+          },
+          {
+            merge: true,
+          }
+        );
+      await admin
+        .firestore()
+        .collection(`users/${jobApplication.personal_data.id}/job_applications`) // eslint-disable-line
+        .doc(jobApplication.id)
+        .set(
+          {
+            status,
+            updated: firestore.Timestamp.now(),
+          },
+          {
+            merge: true,
+          }
+        );
+      return { status: 200 };
+    } catch (e: any) {
+      console.error(e);
       return { status: 400 };
     }
   }
@@ -126,9 +180,9 @@ export const jobListingEmployeerUpdate = functions.https.onCall(
       return { status: 400 };
     }
 
-    const admin_uid = context.auth?.uid;
+    const adminUid = context.auth?.uid;
 
-    if ((await isAdmin(admin_uid)) == false) {
+    if ((await isAdmin(adminUid)) == false) {
       return { status: 400 };
     }
     const { jobApplicationId, closingReason } = data;
@@ -136,12 +190,13 @@ export const jobListingEmployeerUpdate = functions.https.onCall(
     try {
       await admin
         .firestore()
-        .collection(`job_listings`)
+        .collection('job_listing')
         .doc(jobApplicationId)
         .set(
           {
             closing_reason: closingReason,
             updatedAt: firestore.Timestamp.now(),
+            active: false,
           },
           {
             merge: true,
@@ -150,6 +205,7 @@ export const jobListingEmployeerUpdate = functions.https.onCall(
 
       return { status: 200 };
     } catch (e: any) {
+      console.error(e);
       return { status: 400 };
     }
   }
@@ -189,6 +245,7 @@ export const userPromotion = functions.https.onCall(async (data, context) => {
 
     return { status: 200 };
   } catch (e: any) {
+    console.error(e);
     return { status: 400 };
   }
 });
@@ -237,13 +294,14 @@ export const deactivateAccount = functions.https.onCall(
 
       return { status: 200 };
     } catch (e) {
+      console.error(e);
       return { status: 400 };
     }
   }
 );
 
 export const employeerUpdate = functions.firestore
-  .document('employeer/{id}')
+  .document('employeers/{id}')
   .onUpdate((data, context) => {
     const employerId = context.params.id;
 
@@ -260,9 +318,10 @@ export const employeerUpdate = functions.firestore
 
     return jobListings.then((docs) => {
       const promises = docs.docs.map((doc) => {
+        const docData = doc.data();
         return doc.ref.set(
           {
-            active: afterJob.active,
+            active: docData.active == false ? false : afterJob.active,
             employeer: {
               company_name: afterJob.name,
               id: employerId,
@@ -277,11 +336,12 @@ export const employeerUpdate = functions.firestore
     });
   });
 
-async function isAdmin(user_uid: string): Promise<boolean> {
+async function isAdmin(userUid: string): Promise<boolean> {
+  // eslint-disable-line
   const adminSnap = await admin
     .firestore()
     .collection('users')
-    .doc(user_uid)
+    .doc(userUid)
     .get();
 
   if (!adminSnap.exists) {
@@ -298,45 +358,63 @@ async function isAdmin(user_uid: string): Promise<boolean> {
 
 export const applicationStatusReport = functions.https.onCall(
   async (data, context) => {
-    const job_application_interested = admin
+    const jobApplicationInterested = admin
       .firestore()
       .collectionGroup('job_applications')
-      .where('status', '==', 'interested')
+      .where('status', '==', 'notified')
       .get();
 
-    const job_application_contracted = admin
+    const jobApplicationContracted = admin
       .firestore()
       .collectionGroup('job_applications')
       .where('status', '==', 'contracted')
       .get();
 
     const res = await Promise.all([
-      job_application_interested,
-      job_application_contracted,
+      jobApplicationInterested,
+      jobApplicationContracted,
     ]);
 
-    return res;
+    return res.map((docs) => {
+      const data = docs.docs.map(doc => {
+        const job = doc.data
+        return {
+          id : doc.id,
+          job
+        }
+      })
+      return data;
+    });
   }
 );
 
 export const applicationNumberReport = functions.https.onCall(
   async (data, context) => {
-    const job_application_interested = admin
+    const jobApplicationInterested = admin
       .firestore()
       .collectionGroup('job_applications')
-      .where('status', '==', 'interested')
+      .where('status', '==', 'notified')
       .get();
-    const job_application_contracted = admin
+    const jobApplicationContracted = admin
       .firestore()
       .collectionGroup('job_applications')
       .where('status', '==', 'contracted')
       .get();
 
     const res = await Promise.all([
-      job_application_interested,
-      job_application_contracted,
+      jobApplicationInterested,
+      jobApplicationContracted,
     ]);
-    return res;
+    return res.map((docs) => {
+      const data = docs.docs.map(doc => {
+        const job = doc.data
+        return {
+          id : doc.id,
+          job
+        }
+      })
+      return data;
+    });
   }
 );
 
@@ -351,17 +429,35 @@ export const employeerCreationReport = functions.https.onCall(
       .get();
 
     const res = await Promise.all([employeers]);
-    return res;
+    return res.map((docs) => {
+      const data = docs.docs.map(doc => {
+        const job = doc.data
+        return {
+          id : doc.id,
+          job
+        }
+      })
+      return data;
+    });
   }
 );
 
 export const hiringReport = functions.https.onCall(async (data, context) => {
-  const job_application_contracted = admin
+  const jobApplicationContracted = admin
     .firestore()
     .collectionGroup('job_applications')
     .where('status', '==', 'contracted')
     .get();
 
-  const res = await Promise.all([job_application_contracted]);
-  return res;
+  const res = await Promise.all([jobApplicationContracted]);
+  return res.map((docs) => {
+    const data = docs.docs.map(doc => {
+      const job = doc.data
+      return {
+        id : doc.id,
+        job
+      }
+    })
+    return data;
+  });
 });

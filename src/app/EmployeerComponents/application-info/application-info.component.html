@@ -18,9 +18,11 @@
 <p>{{ job.formData[1].prev_position }}</p>
 <p>{{ job.formData[1].prev_employer }}</p>
 
-<button mat-button>Notificar candidato</button>
-
-<button mat-button>Se contrato candidato</button>
+<div *ngIf="(isAdmin$ |async) == true">
+  <button mat-button *ngIf="job.status == 'applied'" (click)="updateStatus('notified')">Notificar candidato</button>
+  <button mat-button *ngIf="job.status == 'notified'" (click)="updateStatus('contracted')">Se contrato candidato</button>
+  <button mat-button (click)="updateStatus('dismissed')" color="warn">Cancelar Applicacion</button>
+</div>
 
 <!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">
   <nz-step nzTitle="Revisar Info del Candidato"> </nz-step>

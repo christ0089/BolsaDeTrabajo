@@ -108,12 +108,12 @@ export class JobApplicationComponent implements OnInit {
           employeer: this.job.employer,
         },
         employer: this.job.employer,
+        status: "applied"
       },
       employer: this.job.employer,
     })
       .then((result) => {
         this.loading = false;
-        console.log(result);
         if (result.data.status == 200) {
           this.snackBar.open(
             'Se ha subido con exito tu aplicación',

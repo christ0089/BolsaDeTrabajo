@@ -3,17 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { html } from 'd3-fetch';
 import {
   BehaviorSubject,
   combineLatest,
-  EMPTY,
-  Observable,
+
   Subject,
   takeUntil,
   tap,
 } from 'rxjs';
-import { JobDescriptionComponent } from 'src/app/CommonComponents/job-description/job-description.component';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { JobPostionService } from 'src/app/Shared/job-postion.service';
@@ -57,7 +54,7 @@ export class JobListingComponent implements OnInit {
       this.jobService.favoriteJobListing$,
     ])
       .pipe(
-        takeUntil(this.destroy$),
+       // takeUntil(this.destroy$),
         tap(([jobListing, appliedJob, favoriteJob]) => {
           jobListing.forEach((j) => {
             j.applied = false;
@@ -79,7 +76,7 @@ export class JobListingComponent implements OnInit {
           this.jobListing$.next(jobListing);
         })
       )
-      .subscribe();
+      .subscribe(console.log);
 
     this.searchForm.valueChanges.subscribe((userInput) => {
       this.searchJob(userInput);

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { addDoc, collection, doc, GeoPoint, setDoc } from '@firebase/firestore';
 import { Geohash } from 'geofire-common';
 import { tap } from 'rxjs';
@@ -52,35 +53,42 @@ export class EmployerInfoFormComponent implements OnInit {
     private afs: Firestore,
     private readonly qcs: QuestionControlService,
     private readonly employeerService: EmployeerService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.employeerService.selectedEmployeer$.pipe(
-      tap((e) => {
-        console.log(e)
-        const role = this.authService.userData$.value?.user_role || "operator"
-        this.questions = this.qcs.employerInfoQuestionaire(role);
+    const role = this.authService.userData$.value?.user_role || 'operator';
+    this.questions = this.qcs.employerInfoQuestionaire(role);
+    this.forms = [];
+    this.questions.forEach((q) => {
+      const questions = this.qcs.toFormGroup(q.questions);
+      this.forms.push(questions);
+    });
 
-        this.forms = [];
-        this.questions.forEach((q) => {
-          const questions = this.qcs.toFormGroup(q.questions);
-          this.forms.push(questions);
-        });
+    this.employeerService.selectedEmployeer$
+      .pipe(
+        tap((e) => {
+          console.log(e);
+          if (!e) {
+            return;
+          }
 
-        if (e && this.newBusiness === false) {
-          this.edit = true;
-          const e = this.employeerService.selectedEmployeer$.value as IEmployer;
-          this.e = e;
-          this.questions = this.qcs.employerInfoQuestionaire(role);
-          this.forms = [];
-          this.questions.forEach((q, i) => {
-            const questions = this.qcs.mapToQuestion(q.questions, e);
-            this.forms[i] = this.qcs.toFormGroup(questions);
-          });
-        }
-      })
-    ).subscribe();
+          if (e && this.newBusiness === false) {
+            this.edit = true;
+            const e = this.employeerService.selectedEmployeer$
+              .value as IEmployer;
+            this.e = e;
+            this.questions = this.qcs.employerInfoQuestionaire(role);
+            this.forms = [];
+            this.questions.forEach((q, i) => {
+              const questions = this.qcs.mapToQuestion(q.questions, e);
+              this.forms[i] = this.qcs.toFormGroup(questions);
+            });
+          }
+        })
+      )
+      .subscribe();
   }
 
   locationSelected(address: AddressComponents[]) {
@@ -113,7 +121,7 @@ export class EmployerInfoFormComponent implements OnInit {
     try {
       if (this.edit == true && this.e) {
         const docRef = doc(this.afs, `employeers/${this.e.id}`);
-  
+
         await setDoc(
           docRef,
           {
@@ -125,14 +133,19 @@ export class EmployerInfoFormComponent implements OnInit {
         );
         return;
       }
-  
+
       await addDoc(docBeforeRef, {
         ...employeer,
         status: 'pending',
-        active: false
+        active: false,
       });
     } catch (e: any) {
-
+      this.snackBar.open('No se ha creado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
     }
   }
 
