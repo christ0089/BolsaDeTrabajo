@@ -4,7 +4,7 @@ import { IQuestion } from 'src/app/Models/question';
 
 export const user_info_questionaire = () => {
   return {
-    title: 'Tu Informacion',
+    title: 'Tu Información',
     subtitle: '',
     questions: [
       new TextboxQuestion({
@@ -27,7 +27,7 @@ export const user_info_questionaire = () => {
       }),
       new TextboxQuestion({
         key: 'phone',
-        label: 'Telefono',
+        label: 'Teléfono',
         value: 0,
         disabled: false,
         order: 0,

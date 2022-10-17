@@ -16,7 +16,7 @@
       routerLink="/auth"
       *ngIf="(user$ | async) === null; else loggedIn"
     >
-      <span style="font-weight: bolder"> Iniciar Sesion</span>
+      <span style="font-weight: bolder"> Iniciar Sesión</span>
     </li>
     <li
       nz-menu-item
@@ -24,7 +24,7 @@
       *ngIf="(user$ | async) === null"
       style="color: #d01f2f"
     >
-      Registrate
+    Regístrate
     </li>
     <ng-template #loggedIn>
       <li nz-menu-item *ngIf="user$ | async; let user">
@@ -41,7 +41,7 @@
             *ngIf="user.user_role === 'admin'"
             routerLink="/admin"
           >
-            Adminstracion de Empresas
+            Adminstración de Empresas
           </button>
           <button
             mat-menu-item
@@ -49,7 +49,7 @@
             style="color: rgb(219, 10, 10)"
             (click)="logout()"
           >
-            Cerrar Sesion
+            Cerrar sesión
           </button>
         </mat-menu>
       </li>
@@ -90,7 +90,7 @@
           color="primary"
           style="font-weight: bolder"
         >
-          Iniciar Sesion
+          Iniciar sesión
         </button>
       </mat-menu>
       <ng-template #loggedInMobile>
@@ -110,7 +110,7 @@
               *ngIf="user.user_role === 'admin'"
               routerLink="/admin"
             >
-              Adminstracion de Empresas
+            Adminstración de Empresas
             </button>
             <button
               mat-menu-item
@@ -118,7 +118,7 @@
               style="color: rgb(219, 10, 10)"
               (click)="logout()"
             >
-              Cerrar Sesion
+              Cerrar sesión
             </button>
           </mat-menu>
         </li>

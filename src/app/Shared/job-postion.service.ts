@@ -11,6 +11,7 @@ import { map } from 'd3-array';
 import {
   BehaviorSubject,
   Observable,
+  of,
   Subject,
   switchMap,
   takeUntil,
@@ -55,14 +56,13 @@ export class JobPostionService {
 
     collectionData(q, { idField: 'id' })
       .subscribe((job) => {
-        console.log(job);
         this.jobListing$.next(job);
       });
 
     this.authService.userData$.pipe(
       switchMap((user) => {
         if (!user) {
-          return [];
+          return of([]);
         }
         const collectionRef = collection(
           this.afs,

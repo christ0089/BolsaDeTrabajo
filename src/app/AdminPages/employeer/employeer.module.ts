@@ -20,6 +20,9 @@ import { UserRolesComponent } from 'src/app/OperationsPages/user-roles/user-role
 import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-applications/reported-applications.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { MatTabsModule } from '@angular/material/tabs';
     ComponentModule,
     NzPageHeaderModule,
     NzGridModule,
+    MatInputModule,
     NzLayoutModule,
+    MatProgressBarModule,
+    MatDatepickerModule,
     MatTabsModule,
     MatButtonModule,
     MatListModule,

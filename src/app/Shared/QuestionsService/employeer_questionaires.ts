@@ -36,7 +36,7 @@ export const employeer_img = (): IQuestion => {
 
 export const employer_info = (): IQuestion => {
   return {
-    title: 'Informacion de la  Empresa',
+    title: 'Información de la  Empresa',
     subtitle: null,
     key: null,
     questions: [
@@ -52,7 +52,7 @@ export const employer_info = (): IQuestion => {
       }),
       new TextboxQuestion({
         key: 'contact_phone',
-        label: 'Telefono',
+        label: 'Teléfono',
         value: '',
         required: true,
         order: 0,
@@ -62,7 +62,7 @@ export const employer_info = (): IQuestion => {
       }),
       new TextboxQuestion({
         key: 'contact_email',
-        label: 'Correo Electronico',
+        label: 'Correo electrónico',
         value: '',
         required: true,
         order: 0,
@@ -103,7 +103,7 @@ export const employer_status = (): IQuestion => {
 
 export const employer_location = (): IQuestion => {
   return {
-    title: 'Ubicacion de la Empresa',
+    title: 'Ubicación de la Empresa',
     subtitle: null,
     questions: [
       new GeolocationQuestion({
@@ -137,7 +137,7 @@ export const employer_location = (): IQuestion => {
       }),
       new TextboxQuestion({
         key: 'zip',
-        label: 'Codigo Postal',
+        label: 'Código Postal',
         value: '',
         required: true,
         order: 0,
@@ -151,12 +151,12 @@ export const employer_location = (): IQuestion => {
 
 export const job_application_general_info_questionaire = () => {
   return {
-    title: 'Informacion de la posicion',
+    title: 'Información de la posición',
     subtitle: null,
     questions: [
       new TextboxQuestion({
         key: 'name',
-        label: 'Nombre de la posicion',
+        label: 'Nombre de la posición',
         value: '',
         required: true,
         order: 0,
@@ -176,7 +176,7 @@ export const job_application_general_info_questionaire = () => {
       }),
       new TextboxQuestion({
         key: 'payment_expectation_min',
-        label: 'Pago Minimo',
+        label: 'Pago Mínimo',
         value: '',
         required: true,
         order: 0,
@@ -185,7 +185,7 @@ export const job_application_general_info_questionaire = () => {
       }),
       new TextboxQuestion({
         key: 'payment_expectation_max',
-        label: 'Pago Maximo',
+        label: 'Pago Máximo',
         value: '',
         required: true,
         order: 0,
@@ -219,7 +219,7 @@ export const job_application_general_info_questionaire = () => {
 
 export const position_type = () => {
   return {
-    title: 'Tipo de Posicion',
+    title: 'Tipo de Posición',
     subtitle: null,
     questions: [
       new RadioQuestion({
@@ -238,7 +238,7 @@ export const position_type = () => {
             value: 'full_time',
           },
           {
-            key: 'Pasantia',
+            key: 'Pasantía',
             value: 'internship',
           },
           {
@@ -246,7 +246,7 @@ export const position_type = () => {
             value: 'tempory',
           },
           {
-            key: 'Practicas',
+            key: 'Prácticas',
             value: 'apprenticeship',
           },
         ],

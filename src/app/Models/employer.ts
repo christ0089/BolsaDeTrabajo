@@ -12,6 +12,7 @@ export interface IEmployer {
   active: boolean;
   description: string;
   address: IAddress;
+  street: string;
   industry: string;
   employee_rage: EmployeeRange;
   status: 'pending' | 'approved';

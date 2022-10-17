@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { collection } from '@firebase/firestore';
-import { BehaviorSubject, Subject, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { IJobApplication } from '../Models/job_application';
 import { AuthService } from './Auth/auth.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
@@ -20,6 +20,7 @@ export class ListPostionService {
       .pipe(
         takeUntil(this.destroy$),
         switchMap((e) => {
+          if (!e) { return of([])}
           const collectionRef = collection(
             this.afs,
             `users/${e?.uid}/job_applications`

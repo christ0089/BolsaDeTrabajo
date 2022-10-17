@@ -1,5 +1,20 @@
 <h2>Reporte de Aplicaciones</h2>
-
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<mat-form-field class="example-form-field" appearance="fill">
+  <mat-label>Rago de Fechas</mat-label>
+  <mat-date-range-input
+    [formGroup]="campaignOne"
+    [rangePicker]="campaignOnePicker"
+  >
+    <input matStartDate placeholder="Start date" formControlName="start" />
+    <input matEndDate placeholder="End date" formControlName="end" />
+  </mat-date-range-input>
+  <mat-datepicker-toggle
+    matSuffix
+    [for]="campaignOnePicker"
+  ></mat-datepicker-toggle>
+  <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+</mat-form-field>
 <mat-list>
   <mat-list-item role="listitem">
     Reporte de status de aplicaciones
@@ -16,17 +31,19 @@
     </button>
   </mat-list-item>
   <mat-list-item role="listitem">
-    Reporte de contrataciones
+    Reporte de empresas
     <span class="example-spacer"></span>
     <button mat-button color="primary" (click)="employeerCreationReport()">
       Generar
     </button>
   </mat-list-item>
   <mat-list-item role="listitem">
-    Reporte de empresas
+    Reporte de contrataciones
     <span class="example-spacer"></span>
     <button mat-button color="primary" (click)="hiringReport()">
       Generar
     </button>
   </mat-list-item>
 </mat-list>
+<div style="height: 1px; width: 100%; background-color: lightgray;"></div>
+<a *ngIf="link" [href]="link" download="reporte.csv"  style="margin: 10px;">Descargar</a>
