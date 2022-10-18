@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Functions } from '@angular/fire/functions';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { httpsCallable } from '@firebase/functions';
 import * as json2csv from 'json2csv';
 import { IEmployer } from 'src/app/Models/employer';
+import { IJobPosition } from 'src/app/Models/job_postition';
 
 @Component({
   selector: 'app-reported-applications',
@@ -16,7 +18,11 @@ export class ReportedApplicationsComponent implements OnInit {
   link: SafeUrl | null = null;
   loading = false;
 
-  constructor(private functions: Functions, private domSanitizer: DomSanitizer) {
+  constructor(
+    private functions: Functions,
+    private snackBar: MatSnackBar,
+    private domSanitizer: DomSanitizer
+  ) {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
@@ -40,7 +46,8 @@ export class ReportedApplicationsComponent implements OnInit {
       min_date: this.campaignOne.get('start')?.value,
       max_date: this.campaignOne.get('end')?.value,
     }).then((res: any) => {
-      this.link = this.statusToFlat(res.data);
+      console.log(res.data[0]);
+      this.link = this.applicationToFlat(res.data[0]);
       if (!this.link) {
         throw new Error('No data');
       }
@@ -51,6 +58,7 @@ export class ReportedApplicationsComponent implements OnInit {
 
   async applicationNumberReport() {
     this.loading = true;
+    this.link = null;
     const report = httpsCallable(this.functions, 'applicationNumberReport');
     await report({
       min_date: this.campaignOne.get('start')?.value,
@@ -58,7 +66,7 @@ export class ReportedApplicationsComponent implements OnInit {
     })
       .then((res: any) => {
         console.log(res.data[0]);
-        this.link = this.objectToCSV(res.data);
+        this.link = this.applicationToFlat(res.data[0]);
 
         if (!this.link) {
           throw new Error('No data');
@@ -66,11 +74,22 @@ export class ReportedApplicationsComponent implements OnInit {
       })
       .catch((e) => {
         console.error(e);
+        this.snackBar.open(
+          'Se ha actualizado correctamente la applicacion',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
       });
     this.loading = false;
   }
   async employeerCreationReport() {
     this.loading = true;
+    this.link = null;
     const report = httpsCallable<any>(
       this.functions,
       'employeerCreationReport'
@@ -87,12 +106,23 @@ export class ReportedApplicationsComponent implements OnInit {
         }
       })
       .catch((e) => {
+        this.snackBar.open(
+          'Se ha actualizado correctamente la applicacion',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
         console.error(e);
       });
     this.loading = false;
   }
   async hiringReport() {
     this.loading = true;
+    this.link = null;
     const report = httpsCallable(this.functions, 'hiringReport');
     report({
       min_date: this.campaignOne.get('start')?.value,
@@ -100,12 +130,22 @@ export class ReportedApplicationsComponent implements OnInit {
     })
       .then((res: any) => {
         console.log(res.data[0]);
-        this.link = this.objectToCSV(res.data[0]);
+        this.link = this.statusToFlat(res.data[0]);
         if (!this.link) {
           throw new Error('No data');
         }
       })
       .catch((e) => {
+        this.snackBar.open(
+          'Se ha actualizado correctamente la applicacion',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
         console.error(e);
       });
 
@@ -133,6 +173,23 @@ export class ReportedApplicationsComponent implements OnInit {
     return this.objectToCSV(res);
   }
 
+  applicationToFlat(data: IJobPosition[]) {
+    const res = data.map((position: IJobPosition) => {
+      return {
+        Id: position.id,
+        Estatus: position.closing_reason || '-',
+        Empresa: position.employer.company_name || '-',
+        'Email de contacto': position.employer.contact_email,
+        'Teléfono de contacto': position.employer.contact_phone,
+        Descripcion: position.description || '-',
+        Aplicantes: position.applicants,
+        // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
+        // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
+      };
+    });
+    return this.objectToCSV(res);
+  }
+
   companyToFlat(data: IEmployer[]) {
     const res = data.map((employer: IEmployer) => {
       return {
@@ -156,7 +213,9 @@ export class ReportedApplicationsComponent implements OnInit {
       const fields = [...Object.keys(flatOrder[0])];
       const ops = { fields, output: 'report_file.csv' };
       const csv = json2csv.parse(flatOrder, ops);
-      return this.domSanitizer.bypassSecurityTrustUrl('data:text/csv,' + encodeURIComponent(csv));
+      return this.domSanitizer.bypassSecurityTrustUrl(
+        'data:text/csv,' + encodeURIComponent(csv)
+      );
     }
     return null;
   }

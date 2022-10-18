@@ -102,7 +102,8 @@ export class JobPositionFormComponent implements OnInit {
       expiration_date: Timestamp.fromDate(expiration_date),
       workhours_type,
       bonus_type,
-      applicants: 0
+      applicants: 0,
+      closing_reason: "open"
     } , {
       merge: true,
     }).catch((e) => {

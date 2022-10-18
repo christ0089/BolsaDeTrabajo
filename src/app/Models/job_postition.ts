@@ -12,12 +12,38 @@ export interface IAddress {
   coords: any; // TODO: Firebase GeoTypings
 }
 
-export type PositionType = 'half_time' | 'full_time' | 'internship' | "tempory" | "apprenticeship";
+export type PositionType =
+  | 'half_time'
+  | 'full_time'
+  | 'internship'
+  | 'tempory'
+  | 'apprenticeship';
 
-export type WorkHoursTypes = "8_hours" | "10_hours" | "12_hours" | "morning_shift" | "night_shift" | "guard" | "includes_holidays" | "includes_weekends" | "flexible"
- | "only_weeknds";
+export type WorkHoursTypes =
+  | '8_hours'
+  | '10_hours'
+  | '12_hours'
+  | 'morning_shift'
+  | 'night_shift'
+  | 'guard'
+  | 'includes_holidays'
+  | 'includes_weekends'
+  | 'flexible'
+  | 'only_weeknds';
 
- export type BonusTypes = "productivity_bonus" | "punctuality_bonus" | "monthly_bonus" | "yearly_bonus" | "quarter_bonus";
+export type BonusTypes =
+  | 'productivity_bonus'
+  | 'punctuality_bonus'
+  | 'monthly_bonus'
+  | 'yearly_bonus'
+  | 'quarter_bonus';
+
+export type IClosureReason =
+  | 'open'
+  | 'expired'
+  | 'employee_found'
+  | 'employee_not_found'
+  | 'closing';
 
 export interface IJobPosition {
   id?: string;
@@ -28,7 +54,8 @@ export interface IJobPosition {
   description: string;
   requirements: IRequirements[];
   createdAt: Timestamp;
-  expiration_date: Timestamp,
+  expiration_date: Timestamp;
+  applicants?: number;
   address: IAddress;
   payment_expectation: number[];
   position_type: PositionType;
@@ -36,16 +63,16 @@ export interface IJobPosition {
   bonus_type?: BonusTypes[];
   benefits: string[];
   compensations: string[];
-  remote? : boolean;
-  tags: string[]
+  remote?: boolean;
+  tags: string[];
+  closing_reason?: IClosureReason;
 }
 
 export interface IFavorite {
-  active : boolean;
+  active: boolean;
   addedOn: Timestamp;
   id: string;
 }
-
 
 export class JobPosition implements IJobPosition {
   id!: string;
@@ -114,7 +141,7 @@ export class JobPosition implements IJobPosition {
         description: this.description,
         payment_expectation_min: this.payment_expectation[0],
         payment_expectation_max: this.payment_expectation[1],
-        expiration_date: this.expiration_date.toDate()
+        expiration_date: this.expiration_date.toDate(),
       },
       {
         position_type: this.position_type,
@@ -125,4 +152,3 @@ export class JobPosition implements IJobPosition {
     ];
   }
 }
-

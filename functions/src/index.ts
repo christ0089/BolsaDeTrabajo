@@ -9,6 +9,7 @@ import {firestore} from "firebase-admin";
 //   response.send("Hello from Firebase!");
 // });
 
+
 admin.initializeApp({credential: admin.credential.applicationDefault()});
 
 export const applicationUserCreate = functions.https.onCall(
@@ -319,7 +320,7 @@ export const employeerUpdate = functions.firestore
           return doc.ref.set(
               {
                 active: docData.active == false ? false : afterJob.active,
-                employeer: {
+                employer: {
                   company_name: afterJob.name,
                   id: employerId,
                 },
@@ -353,21 +354,14 @@ async function isAdmin(userUid: string): Promise<boolean> { // eslint-disable-li
 
 export const applicationStatusReport = functions.https.onCall(
     async (data, context) => {
-      const jobApplicationInterested = admin
+      const jobListingReport = await admin
           .firestore()
-          .collectionGroup("job_applications")
-          .where("status", "==", "notified")
-          .get();
-
-      const jobApplicationContracted = admin
-          .firestore()
-          .collectionGroup("job_applications")
-          .where("status", "==", "contracted")
+          .collection("job_listing")
+          .orderBy("closing_reason", "desc")
           .get();
 
       const res = await Promise.all([
-        jobApplicationInterested,
-        jobApplicationContracted,
+        jobListingReport,
       ]);
 
       return res.map((docs) => {
@@ -375,29 +369,10 @@ export const applicationStatusReport = functions.https.onCall(
           const job = doc.data();
           return {
             id: doc.id,
-            job,
+            ...job,
           };
         });
         return data;
-      });
-    }
-);
-
-export const applicationNumberReport = functions.https.onCall(
-    async (data, context) => {
-      const jobListingReport = await admin
-          .firestore()
-          .collection("job_listing")
-          .get();
-
-
-      const res = await jobListingReport.docs;
-      return res.map((doc) => {
-        const job = doc.data();
-        return {
-          id: doc.id,
-          ...job,
-        };
       });
     }
 );

@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IJobPosition } from 'src/app/Models/job_postition';
+import { IClosureReason, IJobPosition } from 'src/app/Models/job_postition';
+
 
 @Component({
   selector: 'app-application-status',
@@ -25,9 +26,13 @@ export class ApplicationStatusComponent implements OnInit {
       key: 'closing',
       value: 'Cerrar convocatoria',
     },
+    {
+      key: 'closing',
+      value: 'Expirado',
+    },
   ];
 
-  selectedClosingReason!: string;
+  selectedClosingReason!: IClosureReason;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,7 +49,7 @@ export class ApplicationStatusComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  selectClosingReason(reason: string) {
+  selectClosingReason(reason: IClosureReason) {
     this.selectedClosingReason = reason;
   }
 
