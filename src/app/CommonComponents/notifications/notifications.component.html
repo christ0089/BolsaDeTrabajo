@@ -1,3 +1,13 @@
-<!-- <button mat-icon-button *ngIf="let notifications of (notifications$ | async)" [matBadgeHidden]="notifications.length > 0" [matBadge]="notifications.length" >
+<button
+  mat-icon-button
+  *ngIf="let notifications of notifications$ | async; else: empty"
+  [matBadgeHidden]="notifications.length > 0"
+  [matBadge]="notifications.length"
+>
+  <mat-icon>notifications</mat-icon>
+</button>
+<ng-template #empty>
+  <button mat-icon-button>
     <mat-icon>notifications</mat-icon>
-</button> -->
+  </button>
+</ng-template>

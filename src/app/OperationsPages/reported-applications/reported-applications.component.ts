@@ -46,45 +46,13 @@ export class ReportedApplicationsComponent implements OnInit {
       min_date: this.campaignOne.get('start')?.value,
       max_date: this.campaignOne.get('end')?.value,
     }).then((res: any) => {
-      console.log(res.data[0]);
+      console.log(res);
       this.link = this.applicationToFlat(res.data[0]);
       if (!this.link) {
         throw new Error('No data');
       }
     });
 
-    this.loading = false;
-  }
-
-  async applicationNumberReport() {
-    this.loading = true;
-    this.link = null;
-    const report = httpsCallable(this.functions, 'applicationNumberReport');
-    await report({
-      min_date: this.campaignOne.get('start')?.value,
-      max_date: this.campaignOne.get('end')?.value,
-    })
-      .then((res: any) => {
-        console.log(res.data[0]);
-        this.link = this.applicationToFlat(res.data[0]);
-
-        if (!this.link) {
-          throw new Error('No data');
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        this.snackBar.open(
-          'Se ha actualizado correctamente la applicacion',
-          '',
-          {
-            verticalPosition: 'top',
-            horizontalPosition: 'right',
-            panelClass: ['red-snackbar'],
-            duration: 2000,
-          }
-        );
-      });
     this.loading = false;
   }
   async employeerCreationReport() {
@@ -99,7 +67,7 @@ export class ReportedApplicationsComponent implements OnInit {
       max_date: this.campaignOne.get('end')?.value,
     })
       .then((res: any) => {
-        console.log(res.data[0]);
+        console.log(res);
         this.link = this.companyToFlat(res.data[0]);
         if (!this.link) {
           throw new Error('No data');
@@ -137,7 +105,7 @@ export class ReportedApplicationsComponent implements OnInit {
       })
       .catch((e) => {
         this.snackBar.open(
-          'Se ha actualizado correctamente la applicacion',
+          'No se genero el reporte',
           '',
           {
             verticalPosition: 'top',
@@ -153,22 +121,18 @@ export class ReportedApplicationsComponent implements OnInit {
   }
 
   statusToFlat(data: any[]) {
-    const res = data.flatMap((job_data: any[]) => {
-      console.log(job_data);
-
-      return job_data.map((job) => {
-        console.log(job);
-        return {
-          Id: job.id,
-          'Nombre del trabajo': job.job.job_position.name,
-          Estatus: job.job.status,
-          'Nombre de usuario':
-            job.job.personal_data.fname + job.job.personal_data.lname,
-          Empresa: job.job.employer.company_name,
-          // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
-          // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
-        };
-      });
+    const res = data.map((job) => {
+      console.log(job);
+      return {
+        Id: job.id,
+        'Nombre del trabajo': job.job_position.name,
+        Estatus: job.status,
+        'Nombre de usuario':
+          job.personal_data.fname + job.personal_data.lname,
+        Empresa: job.employer.company_name,
+        // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
+        // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
+      };
     });
     return this.objectToCSV(res);
   }
@@ -181,7 +145,7 @@ export class ReportedApplicationsComponent implements OnInit {
         Empresa: position.employer.company_name || '-',
         'Email de contacto': position.employer.contact_email,
         'Teléfono de contacto': position.employer.contact_phone,
-        Descripcion: position.description || '-',
+        'Descripción': position.description || '-',
         Aplicantes: position.applicants,
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
@@ -198,7 +162,7 @@ export class ReportedApplicationsComponent implements OnInit {
         Empresa: employer.company_name,
         'Email de contacto': employer.contact_email,
         'Teléfono de contacto': employer.contact_phone,
-        Descripcion: employer.description || '-',
+        'Descripción': employer.description || '-',
         Direccion: employer.street,
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",

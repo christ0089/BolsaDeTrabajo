@@ -37,7 +37,7 @@ export class PassRestComponent implements OnInit {
   pwdVerfifyPassword() {
     this.snackbar
       .open(
-        "Te enviamos un correo para que cambies tu contraseña"
+        "Te enviamos un correo para que cambies tú contraseña"
       )
       ._dismissAfter(3000);
     this.auth.passResetEmail(this.f['email'].value).then(() => {

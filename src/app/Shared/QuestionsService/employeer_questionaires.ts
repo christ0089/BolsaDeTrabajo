@@ -166,7 +166,7 @@ export const job_application_general_info_questionaire = () => {
       }),
       new TextboxQuestion({
         key: 'description',
-        label: 'Descripcion',
+        label: 'Descripción',
         value: '',
         required: true,
         order: 0,

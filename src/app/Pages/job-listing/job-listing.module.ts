@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { PipesModule } from 'src/app/Pipes/pipes.module';
 import { MobileJobDescriptionComponent } from './mobile-job-description/mobile-job-description.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [JobListingComponent, MobileJobDescriptionComponent],
@@ -28,6 +29,7 @@ import { MobileJobDescriptionComponent } from './mobile-job-description/mobile-j
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
+    MatTabsModule,
     PipesModule,
     MatIconModule,
     ComponentModule

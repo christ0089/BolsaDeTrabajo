@@ -11,7 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -82,7 +82,7 @@ import { HttpClientModule } from '@angular/common/http';
     JobDescriptionComponent,
     ApplicationStatusComponent,
     FavoriteComponent,
-   // NotificationsComponent,
+    NotificationsComponent,
   ],
   providers: [],
   exports: [
@@ -98,7 +98,7 @@ import { HttpClientModule } from '@angular/common/http';
     JobPositionFormComponent,
     JobDescriptionComponent,
     FavoriteComponent,
- //   NotificationsComponent
+    NotificationsComponent,
   ],
 })
 export class ComponentModule {}

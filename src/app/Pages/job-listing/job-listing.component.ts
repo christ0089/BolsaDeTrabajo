@@ -2,6 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import {
   BehaviorSubject,
@@ -28,6 +29,9 @@ export class JobListingComponent implements OnInit {
   >([]);
   selectedJob$: BehaviorSubject<IJobPosition | null> =
     new BehaviorSubject<IJobPosition | null>(null);
+  
+  list$: BehaviorSubject<string> =
+    new BehaviorSubject<string>("general");
 
   searchForm = new FormControl();
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -37,9 +41,9 @@ export class JobListingComponent implements OnInit {
     private readonly jobService: JobPostionService,
     private readonly jobApplied: ListPostionService,
     private readonly breakpointObserver: BreakpointObserver,
-    private readonly matDialog: MatDialog,
     private readonly auth: AuthService,
-    private readonly router: Router
+    private readonly matDialog: MatDialog,
+    private readonly snackBar: MatSnackBar
   ) {
     breakpointObserver
       .observe([Breakpoints.Handset])
@@ -52,10 +56,11 @@ export class JobListingComponent implements OnInit {
       this.jobService.jobListing$,
       this.jobApplied.jobApplications$,
       this.jobService.favoriteJobListing$,
+      this.list$,
     ])
       .pipe(
-       // takeUntil(this.destroy$),
-        tap(([jobListing, appliedJob, favoriteJob]) => {
+        takeUntil(this.destroy$),
+        tap(([jobListing, appliedJob, favoriteJob, state]) => {
           jobListing.forEach((j) => {
             j.applied = false;
             appliedJob.forEach((b) => {
@@ -73,6 +78,10 @@ export class JobListingComponent implements OnInit {
               }
             });
           });
+
+          if (state === "favorites") {
+            jobListing = jobListing.filter(v => v.favorite === true)
+          }
           this.jobListing$.next(jobListing);
         })
       )
@@ -97,9 +106,8 @@ export class JobListingComponent implements OnInit {
       Object.keys(jobs).forEach((key) => {
         jobs = jobs.filter((v) => {
           const hasPosition = v.name.toLowerCase().includes(searchTerm);
-
-          //const hasEmployer = v.employer.name.toLowerCase().includes(searchTerm);
-          return hasPosition;
+          const hasEmployer = v.employer.company_name.toLowerCase().includes(searchTerm);
+          return hasPosition || hasEmployer;
         });
       });
       this.jobListing$.next(jobs);
@@ -122,6 +130,25 @@ export class JobListingComponent implements OnInit {
       dialogRef.afterClosed().subscribe(() => {
         console.log('The dialog was closed');
       });
+    }
+  }
+
+  changeList(idx: number) {
+    const state = ["general", "favorites"]
+
+    if (this.auth.isLoggedIn == false) {
+      this.snackBar.open(
+        'Inicia sesion, para poder guardar a favoritos' ,
+        '',
+        {
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass: ['red-snackbar'],
+          duration: 2000,
+        }
+      );
+    } else {
+      this.list$.next(state[idx]);
     }
   }
 }

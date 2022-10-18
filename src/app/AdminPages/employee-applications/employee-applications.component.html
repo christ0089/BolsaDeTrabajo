@@ -3,7 +3,7 @@
 <mat-list>
   <mat-list-item
     role="listitem"
-    *ngFor="let job_application of jobApplications$ | async"
+    *ngFor="let job_application of jobApplications$ | async; else noApplications"
   >
     <div style="width: 100%; display: inline-flex;">
       {{ job_application.personal_data.fname }}
@@ -18,3 +18,6 @@
 </mat-list>
 
 
+<div #noApplications>
+  <h1>To</h1>
+</div>

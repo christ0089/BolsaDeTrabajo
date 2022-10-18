@@ -38,6 +38,7 @@ import { MapboxService } from './Shared/Mapbox/mapbox.service';
 import { ScriptService } from './Shared/Script/script.service';
 import { ListPostionService } from './Shared/list-postion.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ComponentModule } from './CommonComponents/components.module';
 
 registerLocaleData(en);
 
@@ -64,6 +65,7 @@ registerLocaleData(en);
     MatButtonModule,
     MatSnackBarModule,
     NzListModule,
+    ComponentModule,
     BrowserAnimationsModule
   ],
   providers: [
