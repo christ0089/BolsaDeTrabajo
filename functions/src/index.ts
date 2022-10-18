@@ -49,11 +49,12 @@ export const applicationUserCreate = functions.https.onCall(
 
         await admin
             .firestore()
-            .doc(`job_listings/${jobApplication.job_position.id}`)
+            .doc(`job_listing/${jobApplication.job_position.id}`)
             .update({applicants: firestore.FieldValue.increment(1)});
 
         return {status: 200};
       } catch (e: any) {
+        logger(e, "ERROR");
         return {status: 400};
       }
     }
@@ -115,7 +116,7 @@ export const applicationUserUpdate = functions.https.onCall(
 
         return {status: 200};
       } catch (e: any) {
-        console.error(e);
+        logger(e, "ERROR");
         return {status: 400};
       }
     }
@@ -168,11 +169,28 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
             );
         return {status: 200};
       } catch (e: any) {
-        console.error(e);
+        logger(e, "ERROR");
         return {status: 400};
       }
     }
 );
+
+type ServerityLogger= "NOTICE" | "WARNING" | "ERROR"
+const logger = (message: any, severity: ServerityLogger ) => {
+  const globalLogFields = {};
+
+  const entry = Object.assign(
+      {
+        severity,
+        message: `${message}`,
+        // Log viewer accesses 'component' as 'jsonPayload.component'.
+        component: "arbitrary-property",
+      },
+      globalLogFields
+  );
+
+  console.log(JSON.stringify(entry));
+};
 
 export const jobListingEmployeerUpdate = functions.https.onCall(
     async (data, context) => {
@@ -214,7 +232,7 @@ export const jobListingEmployeerUpdate = functions.https.onCall(
 export const userPromotion = functions.https.onCall(async (data, context) => {
   const {userUid, role} = data;
   if (!context.auth?.uid) {
-    return 400;
+    return {status: 400};
   }
   const adminUid = context.auth?.uid;
   const adminSnap = await admin
@@ -292,7 +310,7 @@ export const deactivateAccount = functions.https.onCall(
 
         return {status: 200};
       } catch (e) {
-        console.error(e);
+        logger(e, "ERROR");
         return {status: 400};
       }
     }
