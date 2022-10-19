@@ -1,11 +1,41 @@
 <button
   mat-icon-button
-  *ngIf="let notifications of notifications$ | async; else: empty"
-  [matBadgeHidden]="notifications.length > 0"
-  [matBadge]="notifications.length"
+  *ngIf="notification$ | async; let notification; else: empty"
+  [matBadgeHidden]="notification.length < 1"
+  [matBadge]="notification.length"
+  (click)="viewList()"
 >
   <mat-icon>notifications</mat-icon>
 </button>
+<div
+  *ngIf="view == true"
+  style="
+    position: absolute;
+    background: white;
+    z-index: 10;
+    width: 300px;
+    left: -200px;
+    white-space: pre-wrap;
+    line-height: 20px;
+  "
+>
+  <mat-list>
+    <mat-list-item
+      *ngFor="let notifications of notification$ | async"
+      (click)="onOpen()"
+    >
+      <p>
+        La compania {{ notifications.components[0] }}
+        <span
+          [style.color]="
+            notifications.status === 'notified' ? '#1cb750' : '#0098ff'
+          "
+          >{{ notifications.status | status }}</span
+        >
+      </p>
+    </mat-list-item>
+  </mat-list>
+</div>
 <ng-template #empty>
   <button mat-icon-button>
     <mat-icon>notifications</mat-icon>

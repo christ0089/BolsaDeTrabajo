@@ -6,6 +6,7 @@
 <button mat-icon-button style="float: right" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>
+<mat-chip color="primary" *ngIf="job.status">{{job.status}}</mat-chip>
 <h2>Información de Contacto</h2>
 <p>{{ job.personal_data.fname }} {{ job.personal_data.lname }}</p>
 <p>

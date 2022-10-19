@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BenefitsPipe } from './benefits.pipe';
 import { BonusPipe } from './bonus.pipe';
 import { WorkHoursPipe } from './work-hours.pipe';
+import { StatusPipe } from './status.pipe';
 
 
 
@@ -10,13 +11,15 @@ import { WorkHoursPipe } from './work-hours.pipe';
   declarations: [
     BenefitsPipe,
     BonusPipe,
-    WorkHoursPipe
+    WorkHoursPipe,
+    StatusPipe
   ],
   imports: [
     CommonModule
   ], exports: [
     BenefitsPipe,
     BonusPipe,
+    StatusPipe,
     WorkHoursPipe
   ]
 })

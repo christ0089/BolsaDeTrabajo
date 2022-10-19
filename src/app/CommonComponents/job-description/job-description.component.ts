@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IJobPosition } from 'src/app/Models/job_postition';
@@ -14,6 +14,7 @@ import { JobPostionService } from 'src/app/Shared/job-postion.service';
 export class JobDescriptionComponent implements OnInit , OnChanges{
 
   @Input()selectedJob!: IJobPosition;
+  @Output()close = new  EventEmitter<boolean>()
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -33,6 +34,11 @@ export class JobDescriptionComponent implements OnInit , OnChanges{
   }
 
   openApplication(job: IJobPosition): void {
+    if (this.auth.isLoggedIn == false) {
+      this.router.navigate(['/auth']);
+      this.close.emit(true);
+      return;
+    }
     this.router.navigate([`/job_application/${job.id}`], {
       state: {
         job,
@@ -41,7 +47,7 @@ export class JobDescriptionComponent implements OnInit , OnChanges{
   }
 
   saveToFavorite(job: IJobPosition): void {
-    if (this.auth.isLoggedIn) {
+    if (this.auth.isLoggedIn == false) {
       this.router.navigate(['/auth']);
       return;
     }

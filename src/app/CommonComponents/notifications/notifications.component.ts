@@ -7,8 +7,9 @@ import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
 export interface INotification {
-  name: string;
+  components: string[];
   createdAt: Timestamp;
+  status: "notified" | "contracted";
   viewed: boolean;
   id: string;
 }
@@ -23,15 +24,15 @@ export class NotificationsComponent implements OnInit {
     INotification[]
   >([]);
   destroy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  view = false;
   constructor(
     private readonly afs: Firestore,
     private readonly auth: AuthService
   ) {
-    this.auth.auth$.pipe(
-      takeUntil(this.destroy$),
+    this.auth.userDataObs$.pipe(
+      // takeUntil(this.destroy$),
       switchMap((user) => {
-        if (user) {
+        if (!user) {
           return of([]);
         }
         const collectionRef = collection(this.afs, `users/${user.uid}/inbox`).withConverter<INotification>(genericConverter<INotification>());
@@ -53,6 +54,10 @@ export class NotificationsComponent implements OnInit {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe()
+  }
+
+  viewList() {
+    this.view = !this.view
   }
 
   onOpen() {

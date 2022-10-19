@@ -82,7 +82,9 @@ export class JobApplicationComponent implements OnInit {
       this.questions[this.idx].questions[
         event.question_index
       ].options[0].value = true; // Sets uploaded state to true;
-    } catch (e: any) {}
+    } catch (e: any) {
+      console.error(e)
+    }
   }
 
   upload() {
