@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { collection, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
@@ -9,7 +10,7 @@ import {
   Router,
 } from '@angular/router';
 import { addDoc, doc, getDoc, setDoc, Timestamp } from '@firebase/firestore';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { QuestionBase } from 'src/app/Models/Forms/question-base';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { IQuestion } from 'src/app/Models/question';
@@ -27,6 +28,9 @@ export class JobApplicationComponent implements OnInit {
   forms!: FormGroup[];
   job!: IJobPosition;
   idx: number = 0;
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  isMobile = false;
   loading = false;
 
   constructor(
@@ -39,6 +43,8 @@ export class JobApplicationComponent implements OnInit {
     private qcs: QuestionControlService,
     private storageService: StorageService
   ) {
+
+
     firstValueFrom(this.activeRoute.paramMap)
       .then((params) => {
         const job_id = params.get('id') as string;
@@ -57,6 +63,11 @@ export class JobApplicationComponent implements OnInit {
       const questions = this.qcs.toFormGroup(q.questions);
       this.forms.push(questions);
     });
+  }
+
+  ngOnDetroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   loadJob(id: string) {

@@ -38,12 +38,13 @@ export class JobDescriptionComponent implements OnInit , OnChanges{
       this.router.navigate(['/auth']);
       this.close.emit(true);
       return;
-    }
+    }  
     this.router.navigate([`/job_application/${job.id}`], {
       state: {
         job,
       },
     });
+    this.close.emit(true);
   }
 
   saveToFavorite(job: IJobPosition): void {
