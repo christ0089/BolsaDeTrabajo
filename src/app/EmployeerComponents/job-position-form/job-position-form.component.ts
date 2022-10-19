@@ -3,23 +3,18 @@ import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { collection, doc, setDoc, Timestamp } from '@firebase/firestore';
-import { merge } from 'd3-array';
-import { IEmployer } from 'src/app/Models/employer';
 import {
-  BonusTypes,
-  IAddress,
-  IJobPosition,
-  JobPosition,
-  IRequirements,
-  PositionType,
-  WorkHoursTypes,
-} from 'src/app/Models/job_postition';
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+  Timestamp,
+} from '@firebase/firestore';
+
+import { JobPosition } from 'src/app/Models/job_postition';
 import { IQuestion } from 'src/app/Models/question';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { QuestionControlService } from 'src/app/Shared/QuestionsService/question-control-service';
-
-
 
 @Component({
   selector: 'app-job-position-form',
@@ -29,6 +24,7 @@ import { QuestionControlService } from 'src/app/Shared/QuestionsService/question
 export class JobPositionFormComponent implements OnInit {
   questions!: IQuestion[];
   forms!: FormGroup[];
+  loading = false;
   constructor(
     private qcs: QuestionControlService,
     private employeerService: EmployeerService,
@@ -46,7 +42,7 @@ export class JobPositionFormComponent implements OnInit {
       this.forms.push(this.qcs.toFormGroup(q.questions));
     });
 
-    if (this.data) {
+    if (this.data !== {}) {
       const jobPosition = new JobPosition(
         this.data.name,
         this.data.description,
@@ -73,6 +69,7 @@ export class JobPositionFormComponent implements OnInit {
   }
 
   async save() {
+    this.loading = true;
     const { name, description, expiration_date } = this.forms[0].value;
     const payment_expectation = [
       this.forms[0].get('payment_expectation_min')?.value,
@@ -89,31 +86,76 @@ export class JobPositionFormComponent implements OnInit {
     let bonus_type = this.forms[3].value;
     bonus_type = Object.keys(bonus_type).filter((k) => bonus_type[k]);
 
-    const employeer = this.employeerService.employeers$.value[0];
+    let benefits = this.forms[4].value;
+    benefits = Object.keys(benefits).filter((k) => benefits[k]);
 
-    const docRef = doc(this.afs, `job_listing/${this.data.id}`);
-    
-    await setDoc(docRef, {
+    const employer = this.employeerService.employeers$.value[0];
+
+    const jobListing = {
+      active: true,
       name,
       description,
       payment_expectation,
-      employeer,
+      employer,
       position_type,
       expiration_date: Timestamp.fromDate(expiration_date),
       workhours_type,
       bonus_type,
+      benefits,
       applicants: 0,
-      closing_reason: "open"
-    } , {
-      merge: true,
-    }).catch((e) => {
-      this.snackBar.open('No se ha creado correctamente la solcitud', '', {
-        verticalPosition: 'top',
-        horizontalPosition: 'right',
-        panelClass: ['red-snackbar'],
-        duration: 2000,
-      });
-    });
+      closing_reason: 'open',
+    };
+
+    if (this.data.id) {
+      const docRef = doc(this.afs, `job_listing/${this.data.id}`);
+
+      await setDoc(
+        docRef,
+        { ...jobListing },
+        {
+          merge: true,
+        }
+      )
+        .then(() => {
+          this.snackBar.open('Se ha creado correctamente la solcitud', '', {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['green-snackbar'],
+            duration: 2000,
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          this.snackBar.open('No se ha creado correctamente la solcitud', '', {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          });
+        });
+    } else {
+      const docRef = collection(this.afs, `job_listing`);
+
+      await addDoc(docRef, { ...jobListing, createdAt: Timestamp.now() })
+        .then(() => {
+          this.snackBar.open('Se ha creado correctamente la solcitud', '', {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['green-snackbar'],
+            duration: 2000,
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          this.snackBar.open('No se ha creado correctamente la solcitud', '', {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          });
+        });
+    }
+    this.loading = false;
   }
 
   get isValid() {

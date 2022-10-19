@@ -40,6 +40,9 @@ export class JobPostionService {
     IFavorite[]
   >([]);
 
+  selectedJob$: BehaviorSubject<IJobPosition | null> =
+    new BehaviorSubject<IJobPosition | null>(null);
+
   filterKeys$ = new BehaviorSubject<any>(null);
   destroy$: Subject<boolean> = new Subject<boolean>();
 

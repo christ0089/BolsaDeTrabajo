@@ -1,4 +1,8 @@
 <h1>Nueva Solicitud de Empleo</h1>
+<mat-progress-bar
+*ngIf="loading == true"
+mode="indeterminate"
+></mat-progress-bar>
 <button mat-icon-button style="float: right" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>

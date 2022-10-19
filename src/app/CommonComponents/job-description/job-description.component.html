@@ -1,11 +1,13 @@
-
-<div class="job_description">
-  <div *ngIf="selectedJob">
+<div class="job_description" *ngIf="selectedJob">
+  <div>
     <h1>{{ selectedJob.name }}</h1>
-    <app-favorite [selectedJob]="selectedJob"   style="float: right;"></app-favorite>
+    <app-favorite
+      [selectedJob]="selectedJob"
+      style="float: right"
+    ></app-favorite>
     <h3>{{ selectedJob.employer.company_name }}</h3>
     <h3>
-      {{ selectedJob.address.street }} •
+      {{ selectedJob.employer.street }} •
       {{ selectedJob.payment_expectation[0] | currency }} a
       {{ selectedJob.payment_expectation[1] | currency }} / por mes
     </h3>
@@ -22,9 +24,8 @@
         Ya Aplicaste!
       </span></ng-template
     >
-  
   </div>
-  
+
   <div style="max-height: 400px; overflow-y: scroll; margin-top: 15px">
     <h3>Detalles del empleo</h3>
     <h4>Salario</h4>
@@ -32,9 +33,7 @@
       {{ selectedJob.payment_expectation[0] | currency }} a
       {{ selectedJob.payment_expectation[1] | currency }} / por mes
     </p>
-    <h4>Tiempo de Empleo</h4>
-    <p *ngFor="let time of selectedJob.position_type">{{ time }}</p>
-    <div *ngIf="selectedJob.benefits">
+    <div>
       <div
         style="
           width: 100%;
@@ -47,11 +46,11 @@
       <h3>Beneficios</h3>
       <mat-chip-list>
         <mat-chip *ngFor="let benefit of selectedJob.benefits">{{
-          benefit
+          benefit | benefits
         }}</mat-chip>
       </mat-chip-list>
     </div>
-  
+
     <div *ngIf="selectedJob.bonus_type">
       <div
         style="
@@ -71,4 +70,3 @@
     </div>
   </div>
 </div>
-

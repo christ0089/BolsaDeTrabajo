@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { collection, deleteDoc, doc } from '@firebase/firestore';
 import { filter } from 'd3';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
 import { ApplicationStatusComponent } from 'src/app/EmployeerComponents/application-status/application-status.component';
 import { JobPositionFormComponent } from 'src/app/EmployeerComponents/job-position-form/job-position-form.component';
 import { IJobPosition } from 'src/app/Models/job_postition';
@@ -26,14 +26,16 @@ export class EmployeeListingComponent implements OnInit {
   jobListing$: BehaviorSubject<IJobPosition[]> = new BehaviorSubject<
     IJobPosition[]
   >([]);
+
+  list$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   constructor(
     private readonly afs: Firestore,
     private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
-    this.employeerService.selectedEmployeer$
+    combineLatest(this.employeerService.selectedEmployeer$, this.list$)
       .pipe(
-        switchMap((e) => {
+        switchMap(([e, status]) => {
           if (!e) {
             return [];
           }
@@ -42,8 +44,10 @@ export class EmployeeListingComponent implements OnInit {
             `job_listing`
           ).withConverter<IJobPosition>(genericConverter<IJobPosition>());
 
-          let queries = [where('employer.id', '==', e.id)];
-
+          let queries = [
+            where('employer.id', '==', e.id),
+            where('active', '==', status),
+          ];
 
           const q = query(collectionRef, ...queries);
 
@@ -82,5 +86,11 @@ export class EmployeeListingComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
+  }
+
+  changeList(idx: number) {
+    const state = [true, false];
+
+    this.list$.next(state[idx]);
   }
 }

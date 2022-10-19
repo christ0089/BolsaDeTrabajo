@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IClosureReason, IJobPosition } from 'src/app/Models/job_postition';
 
-
 @Component({
   selector: 'app-application-status',
   templateUrl: './application-status.component.html',
@@ -12,6 +11,7 @@ import { IClosureReason, IJobPosition } from 'src/app/Models/job_postition';
 })
 export class ApplicationStatusComponent implements OnInit {
   job!: IJobPosition;
+  loading = false;
 
   closure_reasons = [
     {
@@ -39,7 +39,7 @@ export class ApplicationStatusComponent implements OnInit {
     private functions: Functions,
     private snackBar: MatSnackBar
   ) {
-    console.log(data)
+    console.log(data);
     this.job = data.job_position;
   }
 
@@ -54,6 +54,7 @@ export class ApplicationStatusComponent implements OnInit {
   }
 
   async save() {
+    this.loading = true;
     const applicationUpdate$ = httpsCallable(
       this.functions,
       'jobListingEmployeerUpdate'
@@ -61,10 +62,11 @@ export class ApplicationStatusComponent implements OnInit {
     applicationUpdate$({
       jobApplicationId: this.job.id,
       employeerId: this.job.employer.id,
-      closureReason: this.selectedClosingReason,
+      closingReason: this.selectedClosingReason,
     })
-      .then((result) => {
-        if (result.data == 200) {
+      .then((result: any) => {
+        this.loading = false;
+        if (result.data.status == 200) {
           return this.snackBar.open(
             'Se ha actualizado correctamente la applicacion',
             '',
@@ -80,12 +82,18 @@ export class ApplicationStatusComponent implements OnInit {
         }
       })
       .catch((e) => {
-        return this.snackBar.open('No se ha actualizado correctamente la applicacion', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['red-snackbar'],
-          duration: 2000,
-        });
+        this.loading = false;
+        console.error(e);
+        return this.snackBar.open(
+          'No se ha actualizado correctamente la applicacion',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
       });
   }
 }

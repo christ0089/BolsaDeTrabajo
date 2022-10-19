@@ -124,11 +124,19 @@ export const applicationUserUpdate = functions.https.onCall(
 
 export const jobApplicationEmployeerUpdate = functions.https.onCall(
     async (data, context) => {
-      const uid = context.auth?.uid;
       const {employeerId, jobApplication, status} = data;
 
-      if (!uid) return {status: 400};
-      if ((await isAdmin(uid)) === false) return {status: 400};
+      if (!context.auth?.uid) {
+        logger("Not logged in", "ERROR");
+        return {status: 400};
+      }
+
+      const adminUid = context.auth?.uid;
+
+      if (await isAdminRole(adminUid) == false) {
+        logger("Not admin", "ERROR");
+        return {status: 400};
+      }
 
       try {
         const companyName = jobApplication.employer.company_name;
@@ -195,12 +203,14 @@ const logger = (message: any, severity: ServerityLogger ) => {
 export const jobListingEmployeerUpdate = functions.https.onCall(
     async (data, context) => {
       if (!context.auth?.uid) {
+        logger("Not logged in", "ERROR");
         return {status: 400};
       }
 
       const adminUid = context.auth?.uid;
 
-      if ((await isAdmin(adminUid)) == false) {
+      if ((await isAdminRole(adminUid)) == false) {
+        logger("Not admin", "ERROR");
         return {status: 400};
       }
       const {jobApplicationId, closingReason} = data;
@@ -223,7 +233,7 @@ export const jobListingEmployeerUpdate = functions.https.onCall(
 
         return {status: 200};
       } catch (e: any) {
-        console.error(e);
+        logger(e, "ERROR");
         return {status: 400};
       }
     }
@@ -262,7 +272,7 @@ export const userPromotion = functions.https.onCall(async (data, context) => {
 
     return {status: 200};
   } catch (e: any) {
-    console.error(e);
+    logger(e, "ERROR");
     return {status: 400};
   }
 });
@@ -318,7 +328,7 @@ export const deactivateAccount = functions.https.onCall(
 
 export const employeerUpdate = functions.firestore
     .document("employeers/{id}")
-    .onUpdate((data, context) => {
+    .onUpdate(async (data, context) => {
       const employerId = context.params.id;
 
       if (!data.after.exists) {
@@ -331,6 +341,12 @@ export const employeerUpdate = functions.firestore
           .collection("job_listing")
           .where("employer.id", "==", employerId)
           .get();
+
+      await admin.firestore()
+          .collection("users")
+          .doc(afterJob.owner[0]).update({
+            "user_role": "employeer",
+          });
 
       return jobListings.then((docs) => {
         const promises = docs.docs.map((doc) => {
@@ -352,7 +368,8 @@ export const employeerUpdate = functions.firestore
       });
     });
 
-async function isAdmin(userUid: string): Promise<boolean> { // eslint-disable-line
+
+async function isAdminRole(userUid: string): Promise<boolean> { // eslint-disable-line
   const adminSnap = await admin
       .firestore()
       .collection("users")
@@ -364,10 +381,10 @@ async function isAdmin(userUid: string): Promise<boolean> { // eslint-disable-li
   }
   const adminData = adminSnap.data();
 
-  if (adminData?.user_role !== "admin") { // eslint-disable-line
-    return false;
+  if (adminData?.user_role == "employeer" || adminData?.user_role == "admin") { // eslint-disable-line
+    return true;
   }
-  return true;
+  return false;
 }
 
 export const applicationStatusReport = functions.https.onCall(

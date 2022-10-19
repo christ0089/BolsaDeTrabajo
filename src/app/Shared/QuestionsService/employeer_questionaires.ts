@@ -401,6 +401,7 @@ export const job_application = (): IQuestion[] => {
     position_type(),
     work_hours_type(),
     bonus_type(),
+    benefits()
   ];
   return questions;
 };

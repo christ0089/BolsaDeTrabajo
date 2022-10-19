@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IJobPosition } from 'src/app/Models/job_postition';
@@ -8,20 +8,28 @@ import { JobPostionService } from 'src/app/Shared/job-postion.service';
 @Component({
   selector: 'app-job-description',
   templateUrl: './job-description.component.html',
-  styleUrls: ['./job-description.component.sass']
+  styleUrls: ['./job-description.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JobDescriptionComponent implements OnInit {
+export class JobDescriptionComponent implements OnInit , OnChanges{
 
   @Input()selectedJob!: IJobPosition;
   constructor(
     private router: Router,
     private auth: AuthService,
-    private jobService: JobPostionService
+    private jobService: JobPostionService,
+    private changeRef: ChangeDetectorRef
   ){
   }
 
   ngOnInit(): void {
 
+  }
+
+  ngOnChanges() {
+    if(this.selectedJob) {
+      this.changeRef.markForCheck()
+    }
   }
 
   openApplication(job: IJobPosition): void {

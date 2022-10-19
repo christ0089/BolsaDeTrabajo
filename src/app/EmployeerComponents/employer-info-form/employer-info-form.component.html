@@ -1,5 +1,9 @@
-<div style="height: 600px;">
-  <div style="height: 85%; overflow-y: scroll; margin-bottom: 20px;">
+<div style="height: 600px">
+  <mat-progress-bar
+    *ngIf="loading == true"
+    mode="indeterminate"
+  ></mat-progress-bar>
+  <div style="height: 85%; overflow-y: scroll; margin-bottom: 20px">
     <div *ngFor="let question of questions; let idx = index">
       <form
         [formGroup]="forms[idx]"
@@ -8,7 +12,12 @@
       >
         <div
           class="form-row"
-          style="width: 100%; height: 100%; margin-left: auto; margin-right: auto"
+          style="
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+          "
         >
           <h2>{{ questions[idx].title }}</h2>
           <app-question
@@ -23,12 +32,16 @@
       </form>
     </div>
   </div>
-  
-  <div style="background-color: white; margin-top: 10px;">
-      <button mat-button style="float: right" color="primary" (click)="save()" [disabled]="!isValid">
-          Guardar
-        </button>
+
+  <div style="background-color: white; margin-top: 10px">
+    <button
+      mat-button
+      style="float: right"
+      color="primary"
+      (click)="save()"
+      [disabled]="!isValid"
+    >
+      Guardar
+    </button>
   </div>
 </div>
-
-

@@ -1,4 +1,8 @@
 <h1>Aplicación: #{{ job.id }}</h1>
+<mat-progress-bar
+  *ngIf="loading == true"
+  mode="indeterminate"
+></mat-progress-bar>
 <button mat-icon-button style="float: right" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>
@@ -18,10 +22,24 @@
 <p>{{ job.formData[1].prev_position }}</p>
 <p>{{ job.formData[1].prev_employer }}</p>
 
-<div *ngIf="(isAdmin$ |async) == true">
-  <button mat-button *ngIf="job.status == 'applied'" (click)="updateStatus('notified')">Notificar candidato</button>
-  <button mat-button *ngIf="job.status == 'notified'" (click)="updateStatus('contracted')">Se contrato candidato</button>
-  <button mat-button (click)="updateStatus('dismissed')" color="warn">Cancelar Applicacion</button>
+<div *ngIf="(isAdmin$ | async) == true">
+  <button
+    mat-button
+    *ngIf="job.status == 'applied'"
+    (click)="updateStatus('notified')"
+  >
+    Notificar candidato
+  </button>
+  <button
+    mat-button
+    *ngIf="job.status == 'notified'"
+    (click)="updateStatus('contracted')"
+  >
+    Se contrato candidato
+  </button>
+  <button mat-button (click)="updateStatus('dismissed')" color="warn">
+    Cancelar Applicacion
+  </button>
 </div>
 
 <!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">

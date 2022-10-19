@@ -6,6 +6,7 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection, updateDoc } from '@firebase/firestore';
 import { active } from 'd3-transition';
 import { BehaviorSubject, EMPTY, map, Observable, switchMap } from 'rxjs';
@@ -24,7 +25,7 @@ export class EmployeerListComponent implements OnInit {
 
   employeerPending$: Observable<IEmployer[]> = EMPTY;
 
-  constructor(private afs: Firestore) {
+  constructor(private afs: Firestore, private snackBar: MatSnackBar) {
     const collectionRef = collection(
       this.afs,
       'employeers'
@@ -38,11 +39,25 @@ export class EmployeerListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  deactivate(id: string,active: boolean) {
+  deactivate(id: string, active: boolean) {
     const docRef = doc(this.afs, `employeers/${id}`);
 
     updateDoc(docRef, {
       active: !active,
+    }).then(() => {
+      this.snackBar.open('Se ha activado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['green-snackbar'],
+        duration: 2000,
+      });
+    }).catch(e => {
+      this.snackBar.open('No se ha desactivado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
     });
   }
 
@@ -51,6 +66,21 @@ export class EmployeerListComponent implements OnInit {
 
     updateDoc(docRef, {
       status: 'approved',
+    }).then(() => {
+      this.snackBar.open('Se ha aprovado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['green-snackbar'],
+        duration: 2000,
+      });
+    }).catch(e => {
+      this.snackBar.open('No se ha aprovado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      console.error(e);
     });
   }
 }

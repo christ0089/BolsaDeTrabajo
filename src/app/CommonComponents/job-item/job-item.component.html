@@ -1,7 +1,7 @@
 -
-<nz-card *ngIf="job;" [nzTitle]="job.name" style="margin-bottom: 10px">
+<nz-card *ngIf="job" [nzTitle]="job.name" style="margin-bottom: 10px">
   <h3>{{ job.employer.company_name }}</h3>
-  
+
   <!-- <h3>{{job.address.street}}</h3> -->
   <app-favorite
     [selectedJob]="job"
@@ -19,14 +19,14 @@
     <mat-chip *ngIf="elements[1].elements.length > 0" color="primary">
       <mat-icon style="margin-right: 10px">{{ elements[1].icon }}</mat-icon>
       {{ elements[1].elements[0] | workHours }}
-      <span style="margin-left: 10px" *ngIf="elements[2].elements.length > 0"
+      <span style="margin-left: 10px" *ngIf="elements[2].elements.length > 1"
         >+{{ elements[2].elements.length - 1 }}</span
       >
     </mat-chip>
     <mat-chip *ngIf="elements[2].elements.length > 0" color="primary">
       <mat-icon style="margin-right: 10px">{{ elements[2].icon }}</mat-icon>
-      {{ elements[2].elements[0] }}
-      <span style="margin-left: 10px" *ngIf="elements[2].elements.length > 0"
+      {{ elements[2].elements[0] | benefits }}
+      <span style="margin-left: 10px" *ngIf="elements[2].elements.length > 1"
         >+{{ elements[2].elements.length - 1 }}</span
       >
     </mat-chip>
@@ -40,5 +40,12 @@
     <button mat-button color="primary" (click)="editJobForm()">Editar</button>
     <button mat-button (click)="removeJob()">Cerrar convocatoria</button>
   </div>
-  <button *ngIf="editJob" mat-button style="float: right;" (click)="viewApplicants(job.id)">Ver candidatos</button>
+  <button
+    *ngIf="editJob"
+    mat-button
+    style="float: right"
+    (click)="viewApplicants(job.id)"
+  >
+    Ver candidatos
+  </button>
 </nz-card>

@@ -1,4 +1,8 @@
-<div *ngIf="job" style="width: 100%; height: 100%;">
+<div *ngIf="job" style="width: 100%; height: 100%">
+  <mat-progress-bar
+    *ngIf="loading == true"
+    mode="indeterminate"
+  ></mat-progress-bar>
   <h1>Aplicación: #{{ job.id }}</h1>
   <button mat-icon-button style="float: right" mat-dialog-close>
     <mat-icon>close</mat-icon>

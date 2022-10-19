@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/Shared/Auth/auth.service';
 })
 export class ApplicationInfoComponent implements OnInit {
   job!: IJobApplication;
+  loading = false;
   isAdmin$ = new BehaviorSubject<boolean>(false);
   private destroy$ = new BehaviorSubject<boolean>(false);
   constructor(
@@ -49,6 +50,7 @@ export class ApplicationInfoComponent implements OnInit {
   }
 
   updateStatus(status: JobStatus) {
+    this.loading = true;
     const updateStatus$ = httpsCallable(
       this.functions,
       'jobApplicationEmployeerUpdate'
@@ -60,7 +62,7 @@ export class ApplicationInfoComponent implements OnInit {
       employeerId: this.job.employer.id,
     })
       .then((result:any) => {
-        console.log(result);
+        this.loading = false;
         if (result.data.status == 200) {
           return this.snackBar.open(
             'Se ha actualizado correctamente la applicacion',
@@ -77,6 +79,7 @@ export class ApplicationInfoComponent implements OnInit {
         }
       })
       .catch((e) => {
+        this.loading = false;
         return this.snackBar.open(
           'No se ha actualizado correctamente la applicacion',
           '',

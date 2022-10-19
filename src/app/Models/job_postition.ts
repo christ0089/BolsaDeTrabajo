@@ -135,6 +135,7 @@ export class JobPosition implements IJobPosition {
     const bonus_type = this.bonus_type.map((w) => {
       return { [w]: true };
     });
+
     return [
       {
         name: this.name,

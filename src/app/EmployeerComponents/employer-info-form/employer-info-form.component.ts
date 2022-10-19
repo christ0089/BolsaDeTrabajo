@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { addDoc, collection, doc, GeoPoint, setDoc } from '@firebase/firestore';
 import { Geohash } from 'geofire-common';
 import { tap } from 'rxjs';
@@ -36,6 +37,7 @@ export interface IAddress {
 export class EmployerInfoFormComponent implements OnInit {
   forms!: FormGroup[];
   questions!: IQuestion[];
+  loading = false;
   address: IAddress = {
     street: '',
     colonia: '',
@@ -54,7 +56,8 @@ export class EmployerInfoFormComponent implements OnInit {
     private readonly qcs: QuestionControlService,
     private readonly employeerService: EmployeerService,
     private readonly authService: AuthService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -110,6 +113,7 @@ export class EmployerInfoFormComponent implements OnInit {
   }
 
   async save() {
+    this.loading = true;
     const docBeforeRef = collection(this.afs, `employeers`);
 
     const formData = this.forms.flatMap((f) => f.value);
@@ -139,7 +143,17 @@ export class EmployerInfoFormComponent implements OnInit {
         status: 'pending',
         active: false,
       });
+
+      this.snackBar.open('Se ha creado correctamente la empresa', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['green-snackbar'],
+        duration: 2000,
+      });
+      this.loading = false;
+      this.router.navigate(['/']);
     } catch (e: any) {
+      this.loading = false;
       this.snackBar.open('No se ha creado correctamente la empresa', '', {
         verticalPosition: 'top',
         horizontalPosition: 'right',
