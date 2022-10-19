@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { PipesModule } from 'src/app/Pipes/pipes.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatButtonModule,
     MatDialogModule,
     MatProgressBarModule,
+    PipesModule,
     UserJobApplicationsRoutingModule
   ]
 })

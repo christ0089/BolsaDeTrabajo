@@ -4,6 +4,7 @@ import { BenefitsPipe } from './benefits.pipe';
 import { BonusPipe } from './bonus.pipe';
 import { WorkHoursPipe } from './work-hours.pipe';
 import { StatusPipe } from './status.pipe';
+import { StatusChipPipe } from './status-chip.pipe';
 
 
 
@@ -12,13 +13,15 @@ import { StatusPipe } from './status.pipe';
     BenefitsPipe,
     BonusPipe,
     WorkHoursPipe,
-    StatusPipe
+    StatusPipe,
+    StatusChipPipe
   ],
   imports: [
     CommonModule
   ], exports: [
     BenefitsPipe,
     BonusPipe,
+    StatusChipPipe,
     StatusPipe,
     WorkHoursPipe
   ]

@@ -31,7 +31,7 @@ export class ApplicationInfoComponent implements OnInit {
         tap((user) => {
           console.log(user);
           if (user) {
-            this.isAdmin$.next(true);
+            this.isAdmin$.next(this.auth.isAdmin);
           }
         })
       )

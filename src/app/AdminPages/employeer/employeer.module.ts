@@ -23,6 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PipesModule } from 'src/app/Pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     NzStepsModule,
     MatDialogModule,
     EmployeerRoutingModule,
+    PipesModule
   ],
   providers: [EmployeerService, CurrencyPipe],
 })

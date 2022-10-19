@@ -16,7 +16,7 @@
         {{ job_application.personal_data.lname }}
 
         <span class="example-spacer"></span>
-        <mat-chip color="primary" *ngIf="job_application.status">{{job_application.status}}</mat-chip>
+        <mat-chip color="primary" *ngIf="job_application.status">{{job_application.status | statusChip}}</mat-chip>
         <button mat-button (click)="selectJob(job_application)">
           Ver Applicación
         </button>

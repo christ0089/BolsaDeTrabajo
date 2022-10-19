@@ -24,10 +24,7 @@ export class UserRolesComponent implements OnInit {
 
   constructor(
     private readonly afs: Firestore,
-    private readonly functions: Functions,
-    private readonly snackBar: MatSnackBar,
     private readonly matDialog: MatDialog,
-    private readonly employeerService: EmployeerService
   ) {
     this.searchForm.valueChanges.subscribe((userInput) => {
       this.searchUser(userInput);

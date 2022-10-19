@@ -17,9 +17,7 @@
   {{ idx + 1 }} de {{ forms.length }}
 </p>
 <div
-  style="
   
-  "
   class="formContainer"
   *ngIf="forms"
 >
@@ -68,7 +66,10 @@
   </div>
   <div class="container"  *ngIf="job">
     <h1>{{ job.name }}</h1>
-    <h3>{{ job.employer.company_name }}</h3>
+    <div style="display: inline-flex;">
+      <img style="width: 60px; height: 60px; margin-right: 20px;"  [src]="job.employer.company_img">
+      <h3 style="line-height: 60px; justify-content: center;">{{ job.employer.company_name }}</h3>
+    </div>
     <h3>
       TRC, Coahuila • {{ job.payment_expectation[0] | currency }} a
       {{ job.payment_expectation[1] | currency }} / por mes

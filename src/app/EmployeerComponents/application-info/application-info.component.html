@@ -6,7 +6,7 @@
 <button mat-icon-button style="float: right" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>
-<mat-chip color="primary" *ngIf="job.status">{{job.status}}</mat-chip>
+<mat-chip color="primary" *ngIf="job.status">{{job.status | statusChip}}</mat-chip>
 <h2>Información de Contacto</h2>
 <p>{{ job.personal_data.fname }} {{ job.personal_data.lname }}</p>
 <p>
@@ -15,7 +15,7 @@
 <p>Correo: {{ job.personal_data.email }}</p>
 
 <h2>Curriculum</h2>
-<button mat-button (click)="download(job.formData[0].resume_url)">
+<button mat-button color="primary" (click)="download(job.formData[0].resume_url)">
   Descargar CV
 </button>
 
@@ -36,11 +36,18 @@
     *ngIf="job.status == 'notified'"
     (click)="updateStatus('contracted')"
   >
-    Se contrato candidato
+    Se contrato al candidato
   </button>
-  <button mat-button (click)="updateStatus('dismissed')" color="warn">
+  <button mat-button  *ngIf="job.status !== 'contracted'" (click)="updateStatus('dismissed')" color="warn">
     Cancelar Applicacion
   </button>
+  <span *ngIf="job.status == 'contracted'" style="font-weight: bolder; color: rgb(0, 107, 57)">
+    ¡Fue Contratado!
+  </span>
+
+  <span *ngIf="job.status == 'dismissed'" style="font-weight: bolder; color: rgb(107, 0, 0)">
+    Fue Rechazado
+  </span>
 </div>
 
 <!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">
