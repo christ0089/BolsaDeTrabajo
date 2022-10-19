@@ -136,9 +136,9 @@ export class JobListingComponent implements OnInit {
   changeList(idx: number) {
     const state = ["general", "favorites"]
 
-    if (this.auth.isLoggedIn == false) {
+    if (this.auth.isLoggedIn == false && idx == 1) {
       this.snackBar.open(
-        'Inicia sesion, para poder guardar a favoritos' ,
+        'Inicia sesión, para poder guardar a favoritos' ,
         '',
         {
           verticalPosition: 'top',
