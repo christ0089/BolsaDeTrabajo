@@ -15,9 +15,11 @@ import { MatInputModule } from '@angular/material/input';
 import { PipesModule } from 'src/app/Pipes/pipes.module';
 import { MobileJobDescriptionComponent } from './mobile-job-description/mobile-job-description.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { JobListingFilterComponent } from './job-listing-filter/job-listing-filter.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [JobListingComponent, MobileJobDescriptionComponent],
+  declarations: [JobListingComponent, MobileJobDescriptionComponent, JobListingFilterComponent],
   imports: [
     CommonModule,
     ComponentModule,
@@ -29,6 +31,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
+    MatSelectModule,
     MatTabsModule,
     PipesModule,
     MatIconModule,

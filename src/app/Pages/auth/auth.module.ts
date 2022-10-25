@@ -21,6 +21,8 @@ import { NgZorroAntdModule } from 'src/app/ng-zorro.module';
 import { RegistrationComponent } from 'src/app/CommonComponents/registration/registration.component';
 import { MatIconModule } from '@angular/material/icon';
 import { PassRestComponent } from 'src/app/CommonComponents/pass_rest/pass_reset.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const routes: Routes = [
   {
@@ -45,6 +47,9 @@ const routes: Routes = [
     MatToolbarModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatInputModule,
+    MatAutocompleteModule,
     MatGridListModule,
     MatSelectModule,
     NgZorroAntdModule,

@@ -49,6 +49,10 @@ export class EmployeerComponent implements OnInit {
               name: 'Mis Solicitantes',
               path: 'job_applications',
             },
+            {
+              name: 'Descubre Candidatos',
+              path: 'discover',
+            },
           ];
 
           if (user.user_role === 'admin') {

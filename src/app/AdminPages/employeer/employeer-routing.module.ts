@@ -8,6 +8,7 @@ import { EmployeerComponent } from './employeer.component';
 import { ReportedApplicationsComponent } from 'src/app/OperationsPages/reported-applications/reported-applications.component';
 import { UserRolesComponent } from 'src/app/OperationsPages/user-roles/user-roles.component';
 import { AdminGuard } from 'src/app/Guards/admin.guard';
+import { DiscoverComponent } from '../discover/discover.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: "applicants/:id",
         component: EmployeeListingComponent,
+      },
+      {
+        path: "discover",
+        component: DiscoverComponent,
       },
       {
         path: "job_applications",

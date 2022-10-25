@@ -1,5 +1,7 @@
 export type Role = 'admin' | 'operator' | 'employeer';
 
+export type ISchoolLevel = "middleschool" | "highschool" | "univeristy" | "masters"
+
 export interface IUserData {
   uid: string;
   id?: string;
@@ -9,6 +11,9 @@ export interface IUserData {
   phone: string;
   country_code?: string;
   user_role: Role;
+  skills?: string[];
+  school_level?: ISchoolLevel;
+  nationality?: string;
 }
 
 export class User implements IUserData {

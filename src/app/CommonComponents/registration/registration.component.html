@@ -12,100 +12,198 @@
       style="width: 100%; height: 200px; object-fit: contain"
       src="https://www.torreon.gob.mx/img/logo2022.png"
     />
-    <h2>Registro</h2>
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          type="name"
-          matInput
-          placeholder="Nombre"
-          formControlName="fname"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['fname'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['fname'].errors" class="invalid-feedback">
-        <div *ngIf="f['fname'].errors['required']">El nombre es requerido</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          type="lname"
-          matInput
-          placeholder="Apellidos"
-          formControlName="lname"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['lname'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['lname'].errors" class="invalid-feedback">
-        <div *ngIf="f['lname'].errors['required']">
-          Los apellidos son requeridos
+
+    <div *ngIf="page == 0">
+      <h2>Cuentanos de ti</h2>
+      <div class="form-group">
+        <mat-form-field>
+          <input
+            type="name"
+            matInput
+            placeholder="Nombre"
+            formControlName="fname"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['fname'].errors }"
+          />
+        </mat-form-field>
+        <div *ngIf="submitted && f['fname'].errors" class="invalid-feedback">
+          <div *ngIf="f['fname'].errors['required']">
+            El nombre es requerido
+          </div>
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          type="email"
-          matInput
-          placeholder="Correo Electrónico"
-          formControlName="email"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-        <div *ngIf="f['email'].errors['required']">El correo es requerido</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          type="password"
-          matInput
-          placeholder="Contraseña"
-          formControlName="password"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">
-          La contraseña es requerida
-        </div>
-        <div *ngIf="f['password'].errors['minlength']">
-          La contraseña es requerida
+      <div class="form-group">
+        <mat-form-field>
+          <input
+            type="lname"
+            matInput
+            placeholder="Apellidos"
+            formControlName="lname"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['lname'].errors }"
+          />
+        </mat-form-field>
+        <div *ngIf="submitted && f['lname'].errors" class="invalid-feedback">
+          <div *ngIf="f['lname'].errors['required']">
+            Los apellidos son requeridos
+          </div>
         </div>
       </div>
-    </div>
-    <div style="display: inline-flex">
-      <mat-form-field style="max-width: 150px">
-        <mat-icon matPrefix style="margin: 0px 20px">phone</mat-icon>
-        <mat-select
-          formControlName="contry_code"
-          [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+      <div class="form-group">
+        <mat-form-field>
+          <input
+            type="email"
+            matInput
+            placeholder="Correo Electrónico"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+        </mat-form-field>
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">
+            El correo es requerido
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <input
+            type="password"
+            matInput
+            placeholder="Contraseña"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+        </mat-form-field>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">
+            La contraseña es requerida
+          </div>
+          <div *ngIf="f['password'].errors['minlength']">
+            La contraseña es requerida
+          </div>
+        </div>
+      </div>
+      <div style="display: inline-flex">
+        <mat-form-field style="max-width: 150px">
+          <mat-icon matPrefix style="margin: 0px 20px">phone</mat-icon>
+          <mat-select
+            formControlName="contry_code"
+            [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+          >
+            <mat-option *ngFor="let country of countryJson"
+              >{{ country.dial_code }} {{ country.code }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="phone"
+            matInput
+            placeholder="Teléfono"
+            formControlName="phone"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <button
+          id="sign-in-button"
+          mat-flat-button
+          style="width: 100%"
+          [disabled]="!registrationForm.valid"
+          (click)="next()"
         >
-          <mat-option *ngFor="let country of countryJson"
-            >{{ country.dial_code }} {{ country.code }}
+          Siguiente
+        </button>
+      </div>
+    </div>
+    <div *ngIf="page == 1">
+      <h2>¿Que hablidades tienes?</h2>
+      <mat-form-field class="example-chip-list" appearance="fill">
+        <mat-label>Tus mejores 5 habilidades</mat-label>
+        <mat-chip-list #chipList aria-label="Seleccion de 5 hablidades">
+          <mat-chip *ngFor="let skill of skills" (removed)="remove(skill)">
+            {{ skill }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Hablidad..."
+            #skillsInput
+            [formControl]="skillsCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+            [disabled]="skills.length >= 5"
+          />
+        </mat-chip-list>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+        >
+          <mat-option
+            *ngFor="let skill of filteredSkills | async"
+            [value]="skill"
+          >
+            {{ skill }}
           </mat-option>
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field>
-        <input
-          type="phone"
-          matInput
-          placeholder="Teléfono"
-          formControlName="phone"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
-        />
-      </mat-form-field>
+      <button
+        id="sign-in-button"
+        mat-flat-button
+        style="width: 100%"
+        [disabled]="skills.length < 3"
+        (click)="next()"
+      >
+        Siguiente
+      </button>
     </div>
 
-    <div class="form-group">
+    <div *ngIf="page == 2">
+      <h2>¿Que nacionalidad tienes?</h2>
+      <mat-form-field>
+        <mat-select [formControl]="nationality">
+          <mat-option value="mexican">Mexicano</mat-option>
+          <mat-option value="chilean">Chileno</mat-option>
+          <mat-option value="venezuelan">Venezolano</mat-option>
+          <mat-option value="colombian">Colombiano</mat-option>
+          <mat-option value="brazilian">Brazileño</mat-option>
+          <mat-option value="american">Americano</mat-option>
+          <mat-option value="canadian">Canadiense</mat-option>
+        </mat-select>
+      </mat-form-field>
       <button
+        [disabled]="!schoolLevel.valid"
+        id="sign-in-button"
+        mat-flat-button
+        style="width: 100%"
+        (click)="next()"
+      >
+        Siguiente
+      </button>
+    </div>
+
+    <div *ngIf="page == 3">
+      <h2>Cuentanos de tu educacion</h2>
+      <mat-form-field>
+        <mat-select
+          [formControl]="schoolLevel"
+          placeholder="¿Cual es tu nivel maximo de educación?"
+        >
+          <mat-option value="university">Universidad</mat-option>
+          <mat-option value="highschool">Preparatoria</mat-option>
+          <mat-option value="middleschool">Secundadaria</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        [disabled]="!schoolLevel.valid"
         id="sign-in-button"
         mat-flat-button
         style="width: 100%"
@@ -114,11 +212,12 @@
         Registrar
       </button>
     </div>
+
     <button
       id="sign-in-button"
       mat-flat-button
-      style="width: 100%; margin-top: 10px;"
-      routerLink="/auth"
+      style="width: 100%; margin-top: 10px"
+      (click)="return()"
       color="primary"
     >
       Regresar

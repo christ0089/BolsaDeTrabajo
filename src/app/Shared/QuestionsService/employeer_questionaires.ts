@@ -164,6 +164,24 @@ export const job_application_general_info_questionaire = () => {
         verfication: false,
         validators: [Validators.maxLength(40)],
       }),
+      new DropdownQuestion({
+        key: 'remote',
+        label: 'Remoto',
+        value: false,
+        required: true,
+        order: 0,
+        options: [
+          {
+            key: false,
+            value: 'Trabajo Presencial',
+          },
+          {
+            key: true,
+            value: 'Trabajo Remoto',
+          },
+        ],
+        verfication: false,
+      }),
       new TextboxQuestion({
         key: 'description',
         label: 'Descripción',
@@ -247,6 +265,45 @@ export const position_type = () => {
           },
           {
             key: 'Prácticas',
+            value: 'apprenticeship',
+          },
+        ],
+        verfication: false,
+      }),
+    ],
+  };
+};
+
+export const school_level = () => {
+  return {
+    title: 'Nivel de Educación',
+    subtitle: null,
+    questions: [
+      new RadioQuestion({
+        key: 'school_level',
+        label: '',
+        value: '',
+        required: true,
+        order: 0,
+        options: [
+          {
+            key: 'Maestría',
+            value: 'masters',
+          },
+          {
+            key: 'Licienciatura',
+            value: 'university',
+          },
+          {
+            key: 'Bachillerato',
+            value: 'highschool',
+          },
+          {
+            key: 'Secundaria',
+            value: 'middleschool',
+          },
+          {
+            key: 'Primaria',
             value: 'apprenticeship',
           },
         ],

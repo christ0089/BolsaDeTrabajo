@@ -24,12 +24,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PipesModule } from 'src/app/Pipes/pipes.module';
+import { DiscoverComponent } from '../discover/discover.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
     EmployeeListingComponent,
     EmployeeApplicationsComponent,
     EmployeerComponent,
+    DiscoverComponent,
     UserRolesComponent,
     ReportedApplicationsComponent,
   ],
@@ -46,6 +49,7 @@ import { PipesModule } from 'src/app/Pipes/pipes.module';
     MatDatepickerModule,
     MatTabsModule,
     MatButtonModule,
+    MatGridListModule,
     MatListModule,
     MatIconModule,
     MatChipsModule,
