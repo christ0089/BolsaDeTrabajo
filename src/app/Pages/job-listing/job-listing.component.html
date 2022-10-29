@@ -7,7 +7,7 @@
   />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-
+<app-job-listing-filter class="search-form" (onFilterChanges)="filterChanges($event)"></app-job-listing-filter>
 <mat-tab-group mat-stretch-tabs (focusChange)="changeList($event.index)">
   <mat-tab label="General"> </mat-tab>
   <mat-tab label="Favoritos"> </mat-tab>

@@ -17,26 +17,31 @@ import { MobileJobDescriptionComponent } from './mobile-job-description/mobile-j
 import { MatTabsModule } from '@angular/material/tabs';
 import { JobListingFilterComponent } from './job-listing-filter/job-listing-filter.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [JobListingComponent, MobileJobDescriptionComponent, JobListingFilterComponent],
+  declarations: [
+    JobListingComponent,
+    MobileJobDescriptionComponent,
+    JobListingFilterComponent,
+  ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     ComponentModule,
     JobListingRoutingModule,
     MatChipsModule,
     MatButtonModule,
     NgZorroAntdModule,
     MatIconModule,
-    ReactiveFormsModule,
-    FormsModule,
+    MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
     PipesModule,
     MatIconModule,
-    ComponentModule
   ],
-  providers: [CurrencyPipe]
+  providers: [CurrencyPipe],
 })
 export class JobListingModule {}

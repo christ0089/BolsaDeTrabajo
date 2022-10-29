@@ -90,8 +90,6 @@ export class RegistrationComponent implements OnInit {
     userData.skills = this.skills;
     userData.school_level = this.schoolLevel.value;
 
-    console.log(userData);
-
     this.authService
       .registerUser({ email, password }, userData)
       .then(() => {

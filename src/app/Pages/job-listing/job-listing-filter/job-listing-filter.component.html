@@ -1,3 +1,20 @@
-<mat-select *ngFor="let filter of filters">
-    <mat-option></mat-option>
-</mat-select>
+<div class="search-form">
+  <form [formGroup]="filterForm">
+    <mat-form-field
+      *ngFor="let filter of filters"
+     
+    >
+      <mat-select [placeholder]="filter.name"  [formControlName]="filter.filter">
+        <mat-option *ngFor="let val of filter.values; let i = index" [value]="filter.keys[i]">{{ val }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+<mat-chip-list #chipList>
+    <mat-chip  *ngFor="let filter of filtersChips" (removed)="removeFilter(filter)">{{filter}}
+        <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+    </mat-chip>
+</mat-chip-list>

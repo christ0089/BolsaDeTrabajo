@@ -1,46 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-job-listing-filter',
   templateUrl: './job-listing-filter.component.html',
-  styleUrls: ['./job-listing-filter.component.sass']
+  styleUrls: ['./job-listing-filter.component.sass'],
 })
 export class JobListingFilterComponent implements OnInit {
-
+  @Input('company') companies: string[] = [];
   filters = [
     {
-      name: "Educación",
+      name: 'Educación',
+      filter: 'school_level',
       selected: false,
-      values: [
-        "Secundaria", 
-      "Preparatiria",
-      "Bachillerato",
-      "Liciensatura",
-      ""
-    ]
+      values: ["Todos",'Secundaria', 'Preparatoria', 'Licienciatura', "Maestría"],
+      keys: ["","middleschool", "highschool", "university", "masters"]
     },
     {
-      name: "Industria",
-      values: [
-        
-      ]
+      name: 'Empresa',
+      filter: 'company',
+      values: [],
+      keys: []
     },
     {
-      name: "Remo",
-      values: ""
+      name: 'Salarios',
+      filter: 'salaries',
+      values: ["Todos",'+5 mil', '+10 mil', '+15 mil', '+25 mil'],
+      keys: [0,5000, 10000, 15000, 25000]
     },
-    {
-      name: "Educación",
-      values: ""
-    },
-    {
-      name: "Educación",
-      values: ""
-    },
-  ]
-  constructor() { }
+  ];
 
-  ngOnInit(): void {
+  @Output("onFilterChanges")onFilterChanges = new EventEmitter<string[]>();
+
+  filterForm: FormGroup = this.formBuilder.group({
+    school_level: [''],
+    company: [''],
+    salaries: [0],
+  });
+
+  filtersChips:string[] = []
+
+  constructor(private formBuilder: FormBuilder) {
+    this.filterForm.valueChanges.subscribe((val:any)=> {
+      console.log(this.filterForm.value)
+
+      this.filtersChips = []
+      Object.values<string | number>(this.filterForm.value).forEach((v,i) => {
+        if (v != '') {
+          this.filtersChips.push(this.filters[i].name)
+        }
+      })
+      this.onFilterChanges.emit(this.filterForm.value)
+    })
   }
 
+  ngOnInit(): void {}
+
+  removeFilter(filter: string) {
+    const index = this.filtersChips.indexOf(filter);
+
+    if (index >= 0) {
+      this.filtersChips.splice(index, 1);
+    }
+    this.filterForm.get(filter)?.setValue("Todos");
+   
+  }
 }

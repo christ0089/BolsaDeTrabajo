@@ -33,6 +33,8 @@ export class JobListingComponent implements OnInit {
   list$: BehaviorSubject<string> =
     new BehaviorSubject<string>("general");
 
+  filters$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   searchForm = new FormControl();
   destroy$: Subject<boolean> = new Subject<boolean>();
   isMobile = false;
@@ -57,10 +59,11 @@ export class JobListingComponent implements OnInit {
       this.jobApplied.jobApplications$,
       this.jobService.favoriteJobListing$,
       this.list$,
+      this.filters$,
     ])
       .pipe(
         takeUntil(this.destroy$),
-        tap(([jobListing, appliedJob, favoriteJob, state]) => {
+        tap(([jobListing, appliedJob, favoriteJob, state, filters]) => {
           jobListing.forEach((j) => {
             j.applied = false;
             appliedJob.forEach((b) => {
@@ -78,6 +81,22 @@ export class JobListingComponent implements OnInit {
               }
             });
           });
+
+          if (filters) {
+            if (filters['school_level'] != '') {
+               console.log(jobListing[0].school_level === filters['school_level'])
+             jobListing = jobListing.filter(j => j.school_level === filters['school_level'])
+            }
+
+            if (filters['company'] != '') {
+              jobListing = jobListing.filter(j => j.employer.company_name === filters['company'])
+            }
+
+            if (filters['salaries'] > 0 ) {
+              jobListing = jobListing.filter(j => j.payment_expectation[0] >= filters['salaries'])
+            }
+          }
+          
 
           if (state === "favorites") {
             jobListing = jobListing.filter(v => v.favorite === true)
@@ -115,6 +134,11 @@ export class JobListingComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  filterChanges(filters: any[]) {
+    console.log(filters);
+    this.filters$.next(filters)
+  }
 
   selectJob(job: IJobPosition) {
     this.selectedJob$.next(job);

@@ -19,6 +19,8 @@ export type PositionType =
   | 'tempory'
   | 'apprenticeship';
 
+export type School_Level_Type = "masters" | "university" | "highschool" | "middleschool" ;
+
 export type WorkHoursTypes =
   | '8_hours'
   | '10_hours'
@@ -65,6 +67,7 @@ export interface IJobPosition {
   compensations: string[];
   remote?: boolean;
   tags: string[];
+  school_level: School_Level_Type;
   closing_reason?: IClosureReason;
 }
 
@@ -90,6 +93,7 @@ export class JobPosition implements IJobPosition {
   workhours_type: WorkHoursTypes[];
   bonus_type: BonusTypes[];
   benefits: string[];
+  school_level: School_Level_Type;
   compensations: string[];
   tags: string[];
 
@@ -100,6 +104,7 @@ export class JobPosition implements IJobPosition {
     employer: IEmployer,
     address: IAddress,
     position_type: PositionType,
+    school_level: School_Level_Type,
     workhours_type: WorkHoursTypes[] = [],
     bonus_type: BonusTypes[] = [],
     benefits: string[] = [],
@@ -114,6 +119,7 @@ export class JobPosition implements IJobPosition {
     this.requirements = requirements;
     this.createdAt = createdAt;
     this.address = address;
+    this.school_level = school_level;
     this.description = description;
     this.bonus_type = bonus_type || [];
     this.payment_expectation = payment_expectation;

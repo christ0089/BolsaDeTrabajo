@@ -302,10 +302,6 @@ export const school_level = () => {
             key: 'Secundaria',
             value: 'middleschool',
           },
-          {
-            key: 'Primaria',
-            value: 'apprenticeship',
-          },
         ],
         verfication: false,
       }),
@@ -457,6 +453,7 @@ export const job_application = (): IQuestion[] => {
     job_application_general_info_questionaire(),
     position_type(),
     work_hours_type(),
+    school_level(),
     bonus_type(),
     benefits()
   ];
