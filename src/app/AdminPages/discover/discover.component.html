@@ -1,5 +1,5 @@
 <h2>Descubre Personal</h2>
-<mat-form-field class="search-form" appearance="fill" style="width: 100%;">
+<mat-form-field class="search-form" appearance="fill" style="width: 100%">
   <mat-label>Descubrir posibles candidatos </mat-label>
   <input
     matInput
@@ -9,20 +9,25 @@
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
-<mat-grid-list [cols]="breakpoint" rowHeight="2:0.5" (window:resize)="onResize($event)">
-    <mat-grid-tile *ngFor="let user of (users$ | async)" style="display: block">
-      <div style="display: block; padding: 10px;">
-        <h2>{{user.fname}} {{user.lname}}</h2>
-        <p *ngIf="user.nationality">Nacionalidad: {{user.nationality}}</p>
-        <p *ngIf="user.school_level">Eduacion: {{user.school_level}}</p>
-        <mat-chip-list style="width: 100%;">
-          <mat-chip *ngFor="let skill of user.skills">{{skill}}</mat-chip>
-        </mat-chip-list>
-        <button mat-button color="primary" style="width: 100%;">
-          Solicitar trabajo
-        </button>
-      </div>
-    
-    </mat-grid-tile>
-    
-  </mat-grid-list>
+<mat-grid-list
+  [cols]="breakpoint"
+  rowHeight="2:0.5"
+  (window:resize)="onResize($event)"
+>
+  <mat-grid-tile
+    *ngFor="let user of filtered_users$ | async"
+    style="display: block"
+  >
+    <div style="display: block; padding: 10px">
+      <h2>{{ user.fname }} {{ user.lname }}</h2>
+      <p *ngIf="user.nationality">Nacionalidad: {{ user.nationality }}</p>
+      <p *ngIf="user.school_level">Eduacion: {{ user.school_level }}</p>
+      <mat-chip-list style="width: 100%">
+        <mat-chip *ngFor="let skill of user.skills">{{ skill }}</mat-chip>
+      </mat-chip-list>
+      <button mat-button color="primary" style="width: 100%" (click)="upload(user)">
+        Solicitar trabajo
+      </button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -39,6 +39,8 @@ export class JobListingComponent implements OnInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
   isMobile = false;
 
+  companiesSet = new Set<string>();
+  
   constructor(
     private readonly jobService: JobPostionService,
     private readonly jobApplied: ListPostionService,
@@ -71,6 +73,7 @@ export class JobListingComponent implements OnInit {
                 j.applied = true;
               }
             });
+            this.companiesSet.add(j.employer.company_name)
           });
 
           jobListing.forEach((j) => {
@@ -116,6 +119,10 @@ export class JobListingComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
+  get companiesList(): string[] {
+    return [...this.companiesSet]
+  }
+
   async searchJob(search: string) {
     const searchTerm: string = search.toLowerCase();
     if (searchTerm == '' || this.jobListing$.value === []) {
@@ -136,7 +143,6 @@ export class JobListingComponent implements OnInit {
   ngOnInit(): void {}
 
   filterChanges(filters: any[]) {
-    console.log(filters);
     this.filters$.next(filters)
   }
 
