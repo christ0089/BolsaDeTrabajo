@@ -138,6 +138,7 @@ export class AuthService {
         {
           ...user_data,
           email: user_registration.email,
+          user_role: "-"
         },
         {
           merge: true,

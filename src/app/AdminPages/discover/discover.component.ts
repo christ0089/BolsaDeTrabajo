@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { collectionData, Firestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
-import { collection } from '@firebase/firestore';
+import { collection, query, where } from '@firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { IUserData } from 'src/app/Models/user';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
@@ -14,7 +14,7 @@ import { genericConverter } from 'src/app/Shared/job-postion.service';
 export class DiscoverComponent implements OnInit {
   searchForm = new FormControl('');
   breakpoint = 3;
-  user$ = new BehaviorSubject<IUserData[]>([])
+  users$ = new BehaviorSubject<IUserData[]>([])
 
   schoolLevelForm = new FormControl(''); 
   workHousrsForm = new FormControl(''); 
@@ -23,9 +23,13 @@ export class DiscoverComponent implements OnInit {
   constructor(
     private readonly afs: Firestore,
   ) {
-    const colRef = collection(this.afs, "users").withConverter(genericConverter<IUserData>());
+    const colRef = collection(this.afs, "users").withConverter<IUserData>(genericConverter<IUserData>());
 
 
+    const q = query(colRef, where("user_role", "==", "-"))
+    collectionData(q).subscribe((v) => {
+      this.users$.next(v);
+    })
   }
 
   ngOnInit(): void {}
