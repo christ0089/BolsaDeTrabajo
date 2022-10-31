@@ -12,7 +12,7 @@
 </div>
 
 <mat-chip-list #chipList>
-    <mat-chip  *ngFor="let filter of filtersChips" (removed)="removeFilter(filter)">{{filter}}
+    <mat-chip  *ngFor="let filter of filtersChips; " (removed)="removeFilter(filter)">{{filter}}
         <button matChipRemove>
             <mat-icon>cancel</mat-icon>
           </button>

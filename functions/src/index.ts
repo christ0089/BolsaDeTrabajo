@@ -9,8 +9,69 @@ import {firestore} from "firebase-admin";
 //   response.send("Hello from Firebase!");
 // });
 
-
 admin.initializeApp({credential: admin.credential.applicationDefault()});
+
+export const applicatonEmployeerCreate = functions.https.onCall(
+    async (data, context) => {
+      if (!context.auth?.uid) {
+        return {status: 400};
+      }
+
+      const uid = context.auth?.uid;
+      const {jobApplication, employer} = data;
+
+      if ((await isAdminRole(uid)) == false) {
+        logger("Not admin", "ERROR");
+        return {status: 400};
+      }
+
+      const userUid = jobApplication.personal_data.id;
+      let docRef = admin
+          .firestore()
+          .collection(`users/${userUid}/job_applications`)
+          .doc();
+
+      let id = docRef.id;
+
+      try {
+        if (jobApplication.id) {
+          id = jobApplication.id;
+          docRef = admin
+              .firestore()
+              .collection(`users/${userUid}/job_applications`)
+              .doc(id);
+        }
+
+        await docRef.set(jobApplication);
+
+        await admin
+            .firestore()
+            .collection(`employeers/${employer.id}/job_applications`)
+            .doc(id)
+            .set(jobApplication, {
+              merge: true,
+            });
+
+        await admin
+            .firestore()
+            .collection(`employeers/${employer.id}/general_applicants`)
+            .doc(id)
+            .set(jobApplication.personal_data, {
+              merge: true,
+            });
+
+        await admin
+            .firestore()
+            .doc(`job_listing/${jobApplication.job_position.id}`)
+            .update({applicants: firestore.FieldValue.increment(1)});
+
+        return {status: 200};
+      } catch (e: any) {
+        logger(e, "ERROR");
+        return {status: 400};
+      }
+    }
+);
 
 export const applicationUserCreate = functions.https.onCall(
     async (data, context) => {
@@ -83,7 +144,7 @@ export const applicationUserUpdate = functions.https.onCall(
 
       const employeeApplicationData = employeeApplicationRef.data();
 
-      if (employeeApplicationData?.personal_data.uid !== uid) {  // eslint-disable-line
+      if (employeeApplicationData?.personal_data.uid !== uid) { // eslint-disable-line
         return {status: 400};
       }
 
@@ -133,7 +194,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
 
       const adminUid = context.auth?.uid;
 
-      if (await isAdminRole(adminUid) == false) {
+      if ((await isAdminRole(adminUid)) == false) {
         logger("Not admin", "ERROR");
         return {status: 400};
       }
@@ -183,8 +244,8 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
     }
 );
 
-type ServerityLogger= "NOTICE" | "WARNING" | "ERROR"
-const logger = (message: any, severity: ServerityLogger ) => {
+type ServerityLogger = "NOTICE" | "WARNING" | "ERROR";
+const logger = (message: any, severity: ServerityLogger) => {
   const globalLogFields = {};
 
   const entry = Object.assign(
@@ -256,7 +317,7 @@ export const userPromotion = functions.https.onCall(async (data, context) => {
   }
   const adminData = adminSnap.data();
 
-  if (adminData?.user_role !== "admin") {    // eslint-disable-line
+  if (adminData?.user_role !== "admin") { // eslint-disable-line
     return {status: 400};
   }
 
@@ -345,7 +406,7 @@ export const employeerUpdate = functions.firestore
       await admin.firestore()
           .collection("users")
           .doc(afterJob.owner[0]).update({
-            "user_role": "employeer",
+        user_role: "employeer", // eslint-disable-line
           });
 
       return jobListings.then((docs) => {
@@ -367,7 +428,6 @@ export const employeerUpdate = functions.firestore
         return Promise.all(promises);
       });
     });
-
 
 async function isAdminRole(userUid: string): Promise<boolean> { // eslint-disable-line
   const adminSnap = await admin
@@ -395,9 +455,7 @@ export const applicationStatusReport = functions.https.onCall(
           .orderBy("closing_reason", "desc")
           .get();
 
-      const res = await Promise.all([
-        jobListingReport,
-      ]);
+      const res = await Promise.all([jobListingReport]);
 
       return res.map((docs) => {
         const data = docs.docs.map((doc) => {

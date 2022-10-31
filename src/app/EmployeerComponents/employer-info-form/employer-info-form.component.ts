@@ -72,7 +72,6 @@ export class EmployerInfoFormComponent implements OnInit {
     this.employeerService.selectedEmployeer$
       .pipe(
         tap((e) => {
-          console.log(e);
           if (!e) {
             return;
           }

@@ -23,7 +23,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   declarations: [
     JobListingComponent,
     MobileJobDescriptionComponent,
-    JobListingFilterComponent,
   ],
   imports: [
     CommonModule,

@@ -53,7 +53,6 @@ export class GeoQuestionComponent implements OnInit {
       )
       .subscribe((model) => {
         this.mapbox.search_word(model, (address: any) => {
-          console.log(address);
           this.autocompleteItems.next(address);
         });
       });
@@ -61,9 +60,7 @@ export class GeoQuestionComponent implements OnInit {
 
   chooseItem(item: any) {
     this.question.value = item.description;
-    console.log(item);
     this.mapbox.geoCode(item.description, (res: any) => {
-      console.log(res);
       this.geoLocation.emit(res);
       this.autocompleteItems.next([]);
     });

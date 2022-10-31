@@ -12,6 +12,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import CountryJson from './Country.json';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { skills } from '../skills';
 
 @Component({
   selector: 'app-registration',
@@ -40,28 +41,7 @@ export class RegistrationComponent implements OnInit {
   filteredSkills: Observable<string[]> = EMPTY;
   skills: string[] = [];
 
-  allSkills: string[] = [
-    'Escribir',
-    'Liderazgo',
-    'Etica',
-    'Comunicación',
-    'Iniciativa',
-    'Escuchar',
-    'Hablar',
-    'Negociar',
-    'Adminstracion de Tiempo',
-    'Adminstracion de Dinero',
-    'Reparar Equipo',
-    'Instalacion de Equipo',
-    'Plomeria',
-    'Mecanica',
-    'Creatividad',
-    'Diseño',
-    'Programar',
-    'Pintar',
-    'Dibujar',
-    'Carpintería',
-  ];
+  allSkills: string[] = skills;
 
   @ViewChild('skillsInput') skillsInput!: ElementRef<HTMLInputElement>;
 

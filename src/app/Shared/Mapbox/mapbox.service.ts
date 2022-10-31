@@ -47,17 +47,8 @@ export class MapboxService {
       },
       (predictions: any, status: any) => {
         _predictions(predictions);
-        console.log(_predictions);
       }
     );
-    // const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-    // return this.http
-    //   .get(
-    //     url + query + ".json?access_token=" + environment.mapBox+ "&autocomplete=true&country=mx&types=country%2Cregion%2Cdistrict%2Cpostcode%2Clocality%2Cneighborhood%2Caddress"
-    //   )
-    //   .pipe(map((res: MapboxOutput) => {
-    //     return res.features
-    //   }));
   }
 
   geoCode(address: string, res: any) {

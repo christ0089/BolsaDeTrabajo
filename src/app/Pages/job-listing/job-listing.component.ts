@@ -83,11 +83,10 @@ export class JobListingComponent implements OnInit {
                 j.favorite = b.active;
               }
             });
-          });
+          })
 
           if (filters) {
             if (filters['school_level'] != '') {
-               console.log(jobListing[0].school_level === filters['school_level'])
              jobListing = jobListing.filter(j => j.school_level === filters['school_level'])
             }
 
@@ -107,7 +106,7 @@ export class JobListingComponent implements OnInit {
           this.jobListing$.next(jobListing);
         })
       )
-      .subscribe(console.log);
+      .subscribe();
 
     this.searchForm.valueChanges.subscribe((userInput) => {
       this.searchJob(userInput);

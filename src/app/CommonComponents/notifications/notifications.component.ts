@@ -44,7 +44,6 @@ export class NotificationsComponent implements OnInit {
         return collectionData(q, {idField: "id"});
       })
     ).subscribe(n => {
-      console.log(n);
       this.notification$.next(n)
     });
   }

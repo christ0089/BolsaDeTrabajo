@@ -39,7 +39,6 @@ export class ApplicationStatusComponent implements OnInit {
     private functions: Functions,
     private snackBar: MatSnackBar
   ) {
-    console.log(data);
     this.job = data.job_position;
   }
 

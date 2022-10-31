@@ -39,6 +39,7 @@ import { ApplicationStatusComponent } from '../EmployeerComponents/application-s
 import { NotificationsComponent } from './notifications/notifications.component';
 import { PipesModule } from '../Pipes/pipes.module';
 import { HttpClientModule } from '@angular/common/http';
+import { JobListingFilterComponent } from '../Pages/job-listing/job-listing-filter/job-listing-filter.component';
 
 @NgModule({
   imports: [
@@ -82,6 +83,7 @@ import { HttpClientModule } from '@angular/common/http';
     JobDescriptionComponent,
     ApplicationStatusComponent,
     FavoriteComponent,
+    JobListingFilterComponent,
     NotificationsComponent,
   ],
   providers: [],
@@ -92,6 +94,7 @@ import { HttpClientModule } from '@angular/common/http';
     JobItemComponent,
     GeoQuestionComponent,
     ApplicationStatusComponent,
+    JobListingFilterComponent,
     EmployeerComponent,
     ApplicationInfoComponent,
     EmployerInfoFormComponent,

@@ -23,13 +23,9 @@ export class ApplicationInfoComponent implements OnInit {
     private readonly snackBar: MatSnackBar
   ) {
     this.job = data.job;
-
-    console.log(this.job);
-
     this.auth.auth$
       .pipe(
         tap((user) => {
-          console.log(user);
           if (user) {
             this.isAdmin$.next(this.auth.isAdmin);
           }

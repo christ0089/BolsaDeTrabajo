@@ -33,7 +33,7 @@ export class EmployeeListingComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
-    combineLatest(this.employeerService.selectedEmployeer$, this.list$)
+    combineLatest([this.employeerService.selectedEmployeer$, this.list$])
       .pipe(
         switchMap(([e, status]) => {
           if (!e) {
@@ -55,7 +55,6 @@ export class EmployeeListingComponent implements OnInit {
         })
       )
       .subscribe((j) => {
-        console.log(j);
         this.jobListing$.next(j);
       });
   }

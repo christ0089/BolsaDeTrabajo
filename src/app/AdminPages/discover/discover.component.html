@@ -8,7 +8,7 @@
   />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-
+<app-job-listing-filter class="search-form" [filters]="filters" [filterform]="filterForm" (onFilterChanges)="filterChanges($event)"></app-job-listing-filter>
 <mat-grid-list
   [cols]="breakpoint"
   rowHeight="2:0.5"

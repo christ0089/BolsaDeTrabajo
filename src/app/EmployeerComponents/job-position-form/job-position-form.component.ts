@@ -58,9 +58,6 @@ export class JobPositionFormComponent implements OnInit {
       jobPosition.id = this.data.id;
       jobPosition.expiration_date = this.data.expiration_date;
       const jobDataForm = jobPosition.positionInfo;
-
-      console.log(jobDataForm);
-
       this.questions.forEach((q, i) => {
         const questions = this.qcs.mapToQuestion(q.questions, jobDataForm[i]);
         this.forms[i] = this.qcs.toFormGroup(questions);

@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class JobListingFilterComponent implements OnInit, OnChanges {
   @Input('company') companies: string[] = [];
-  filters = [
+  @Input('filters') filters: any[] = [
     {
       name: 'Educación',
       filter: 'school_level',
@@ -32,8 +32,8 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
     {
       name: 'Empresa',
       filter: 'company',
-      values: [],
-      keys: [],
+      values: ["Todos"],
+      keys: [""],
     },
     {
       name: 'Salarios',
@@ -43,36 +43,41 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
     },
   ];
 
-  @Output('onFilterChanges') onFilterChanges = new EventEmitter<string[]>();
-
-  filterForm: FormGroup = this.formBuilder.group({
+  @Input('filterform') filterForm: FormGroup = this.formBuilder.group({
     school_level: [''],
     company: [''],
     salaries: [0],
   });
 
+  @Output('onFilterChanges') onFilterChanges = new EventEmitter<string[]>();
+
   filtersChips: string[] = [];
 
-  constructor(private formBuilder: FormBuilder) {
-    this.filterForm.valueChanges.subscribe((val: any) => {
-      console.log(this.filterForm.value);
-
-      this.filtersChips = [];
-      Object.values<string | number>(this.filterForm.value).forEach((v, i) => {
-        if (v != '') {
-          this.filtersChips.push(this.filters[i].name);
-        }
-      });
-      this.onFilterChanges.emit(this.filterForm.value);
-    });
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {}
 
   ngOnChanges() {
-    if (this.companies) {
-      this.filters[1].values = this.companies.concat("Todos");
-      this.filters[1].keys = this.companies.concat("");
+    if (this.companies.length > 0) {
+      this.filters[1].values = this.companies.concat('Todos');
+      this.filters[1].keys = this.companies.concat('');
+    }
+
+    if (this.filters) {
+    }
+
+    if (this.filterForm) {
+      this.filterForm.valueChanges.subscribe((val: any) => {
+        this.filtersChips = [];
+        Object.values<string | number>(this.filterForm.value).forEach(
+          (v, i) => {
+            if (v != '') {
+              this.filtersChips.push(this.filters[i].name);
+            }
+          }
+        );
+        this.onFilterChanges.emit(this.filterForm.value);
+      });
     }
   }
 
@@ -82,6 +87,14 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
     if (index >= 0) {
       this.filtersChips.splice(index, 1);
     }
-    this.filterForm.get(filter)?.setValue('Todos');
+
+    const filterIndex = this.filters.findIndex((v) => {
+      console.log(v.name);
+      return v.name === filter;
+    });
+
+    if (filterIndex > -1) {
+      this.filterForm.get(this.filters[filterIndex].filter)?.setValue('');
+    }
   }
 }

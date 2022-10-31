@@ -78,7 +78,6 @@ export class JobItemComponent implements OnInit {
   }
 
   viewApplicants(job_id: string = "") {
-    console.log(job_id);
    this.router.navigate([`/admin/job_applications/${job_id}`]) 
   }
 }

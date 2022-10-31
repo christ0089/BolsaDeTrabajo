@@ -83,8 +83,6 @@ export class EmployeerComponent implements OnInit {
   }
 
   navigateRoute(index: any) {
-    console.log(this.availableRoutes[index].path);
-
     this.router.navigate([`/admin/${this.availableRoutes[index].path}`]);
   }
 
