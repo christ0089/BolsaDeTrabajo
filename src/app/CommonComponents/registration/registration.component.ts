@@ -37,7 +37,7 @@ export class RegistrationComponent implements OnInit {
   page = 0;
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  
+
   filteredSkills: Observable<string[]> = EMPTY;
   skills: string[] = [];
 
@@ -65,6 +65,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   register() {
+    this.loading = true;
     const { email, password, ...userData } = this.registrationForm.value;
     userData.nationality = this.nationality.value;
     userData.skills = this.skills;
@@ -73,9 +74,12 @@ export class RegistrationComponent implements OnInit {
     this.authService
       .registerUser({ email, password }, userData)
       .then(() => {
+        this.loading = false;
         this.router.navigate(['/']);
       })
-      .catch((e) => {});
+      .catch((e) => {
+        this.loading = false;
+      });
   }
 
   next() {
@@ -86,7 +90,7 @@ export class RegistrationComponent implements OnInit {
 
   return() {
     if (this.page <= 0) {
-      this.router.navigate(["auth"])
+      this.router.navigate(['auth']);
     } else {
       this.page -= 1;
     }
@@ -118,13 +122,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue
+    const value = event.option.viewValue;
     if (this.skills.indexOf(value) > -1) {
       return;
     }
 
     if (this.skills.length >= 5) {
-      this.skills.pop()
+      this.skills.pop();
     }
 
     this.skills.push(value);

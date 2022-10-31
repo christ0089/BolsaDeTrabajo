@@ -9,9 +9,12 @@
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 <app-job-listing-filter class="search-form" [filters]="filters" [filterform]="filterForm" (onFilterChanges)="filterChanges($event)"></app-job-listing-filter>
-<mat-grid-list
-  [cols]="breakpoint"
-  rowHeight="2:0.5"
+<div style="padding: 10px; max-height: 50%; overflow-y: scroll;">
+  <mat-grid-list
+  [cols]="isMobile ? 1 : 2"
+  rowHeight="300px"
+  gutterSize="10px"
+ 
   (window:resize)="onResize($event)"
 >
   <mat-grid-tile
@@ -21,13 +24,15 @@
     <div style="display: block; padding: 10px">
       <h2>{{ user.fname }} {{ user.lname }}</h2>
       <p *ngIf="user.nationality">Nacionalidad: {{ user.nationality }}</p>
-      <p *ngIf="user.school_level">Eduacion: {{ user.school_level }}</p>
+      <p *ngIf="user.school_level">Educación: {{ user.school_level }}</p>
       <mat-chip-list style="width: 100%">
         <mat-chip *ngFor="let skill of user.skills">{{ skill }}</mat-chip>
       </mat-chip-list>
       <button mat-button color="primary" style="width: 100%" (click)="upload(user)">
-        Solicitar trabajo
+        Solicitar candidato
       </button>
     </div>
   </mat-grid-tile>
 </mat-grid-list>
+</div>
+

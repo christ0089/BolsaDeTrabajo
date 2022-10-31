@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { Functions } from '@angular/fire/functions';
@@ -19,7 +20,6 @@ import { genericConverter } from 'src/app/Shared/job-postion.service';
 })
 export class DiscoverComponent implements OnInit {
   searchForm = new FormControl();
-  breakpoint = 3;
   users$ = new BehaviorSubject<IUserData[]>([]);
   filtered_users$ = new BehaviorSubject<IUserData[]>([]);
   loading = false;
@@ -52,12 +52,14 @@ export class DiscoverComponent implements OnInit {
   });
 
   filteredChips$ = new BehaviorSubject<any>(null);
+  isMobile = false;
 
   constructor(
     private readonly afs: Firestore,
     private readonly auth: AuthService,
     private readonly functions: Functions,
     private readonly snackBar: MatSnackBar,
+    private readonly breakpointObserver: BreakpointObserver,
     private readonly formBuilder: FormBuilder,
     private readonly employeerService: EmployeerService
   ) {
@@ -65,6 +67,12 @@ export class DiscoverComponent implements OnInit {
       genericConverter<IUserData>()
     );
     const q = query(colRef, where('user_role', '==', '-'));
+
+    breakpointObserver
+    .observe([Breakpoints.Handset])
+    .subscribe((result) => {
+      this.isMobile = result.matches;
+    });
 
     combineLatest([collectionData(q), this.filteredChips$])
       .pipe(
@@ -124,7 +132,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   onResize(event: any) {
-    this.breakpoint = event.target.innerWidth <= 400 ? 1 : 3;
+    this.isMobile = event.target.innerWidth <= 400
   }
 
   viewUser() {}

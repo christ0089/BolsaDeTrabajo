@@ -1,5 +1,9 @@
 <div class="login">
   <div id="recaptcha-container"></div>
+  <mat-progress-bar
+    *ngIf="loading == true"
+    mode="indeterminate"
+  ></mat-progress-bar>
   <form
     [formGroup]="registrationForm"
     style="width: 100%; margin-left: auto; margin-right: auto"
@@ -156,7 +160,6 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        id="sign-in-button"
         mat-flat-button
         style="width: 100%"
         [disabled]="skills.length < 3"
@@ -181,7 +184,6 @@
       </mat-form-field>
       <button
         [disabled]="!schoolLevel.valid"
-        id="sign-in-button"
         mat-flat-button
         style="width: 100%"
         (click)="next()"
@@ -191,7 +193,7 @@
     </div>
 
     <div *ngIf="page == 3">
-      <h2>Cuentanos de tu educacion</h2>
+      <h2>Cuentanos de tu educación</h2>
       <mat-form-field>
         <mat-select
           [formControl]="schoolLevel"
@@ -214,7 +216,6 @@
     </div>
 
     <button
-      id="sign-in-button"
       mat-flat-button
       style="width: 100%; margin-top: 10px"
       (click)="return()"
