@@ -21,7 +21,6 @@ export class MobileJobDescriptionComponent implements OnInit {
   ngOnInit(): void {}
 
   close(): void {
-    console.log("close")
     this.dialogRef.close();
   }
 }

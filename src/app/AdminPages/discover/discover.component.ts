@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { Functions } from '@angular/fire/functions';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection, query, Timestamp, where } from '@firebase/firestore';
 import { httpsCallable } from '@firebase/functions';
@@ -12,6 +13,7 @@ import { IUserData } from 'src/app/Models/user';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
+import { UserApplicationsComponent } from './user-applications/user-applications.component';
 
 @Component({
   selector: 'app-discover',
@@ -61,6 +63,7 @@ export class DiscoverComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly formBuilder: FormBuilder,
+    private readonly matDialog: MatDialog,
     private readonly employeerService: EmployeerService
   ) {
     const colRef = collection(this.afs, 'users').withConverter<IUserData>(
@@ -139,68 +142,18 @@ export class DiscoverComponent implements OnInit {
 
   upload(user: IUserData) {
     this.loading = true;
-
-    const jobApplicationFuntion = httpsCallable<any, any>(
-      this.functions,
-      'applicatonEmployeerCreate'
-    );
-
-    const employee = this.employeerService.selectedEmployeer$.value;
-
-    jobApplicationFuntion({
-      jobApplication: {
-        active: true,
-        formData: [
-          {
-            resume_url: '',
-          },
-          {
-            prev_employer: '',
-            prev_position: '',
-          },
-        ],
-        personal_data: user,
-        createdAt: Timestamp.now(),
-        job_position: {
-          id: 'general',
-          name: 'Candidatos General',
-          employeer: {
-            id: employee?.id,
-            company_name: employee?.company_name,
-          },
-        },
-        employer: {
-          id: employee?.id,
-          company_name: employee?.company_name,
-        },
-        status: 'applied',
-      },
-      employer: {
-        id: employee?.id,
-        company_name: employee?.company_name,
-      },
+    this.matDialog.open(
+      UserApplicationsComponent, {
+      maxWidth: "600px",
+      height: "100%",
+      minWidth: "100%",
+      maxHeight: "600px",
+      data: {
+        user
+      }
     })
-      .then((result) => {
-        this.loading = false;
-        if (result.data.status == 200) {
-          this.snackBar.open('Se ha subido con exito tu aplicación', '', {
-            verticalPosition: 'top',
-            horizontalPosition: 'right',
-            panelClass: ['green-snackbar'],
-            duration: 2000,
-          });
-        } else {
-          throw new Error('No se actualizo con exito');
-        }
-      })
-      .catch((e) => {
-        this.loading = false;
-        return this.snackBar.open('No ha subido con exito tu aplicación', '', {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-          panelClass: ['red-snackbar'],
-          duration: 2000,
-        });
-      });
+   
+
+   
   }
 }

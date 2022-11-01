@@ -26,6 +26,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PipesModule } from 'src/app/Pipes/pipes.module';
 import { DiscoverComponent } from '../discover/discover.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { UserApplicationsComponent } from '../discover/user-applications/user-applications.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     EmployeeApplicationsComponent,
     EmployeerComponent,
     DiscoverComponent,
+    UserApplicationsComponent,
     UserRolesComponent,
     ReportedApplicationsComponent,
   ],
@@ -45,6 +48,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     NzGridModule,
     MatInputModule,
     NzLayoutModule,
+    NzCardModule,
     MatProgressBarModule,
     MatDatepickerModule,
     MatTabsModule,
