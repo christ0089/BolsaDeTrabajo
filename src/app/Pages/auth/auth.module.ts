@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PassRestComponent } from 'src/app/CommonComponents/pass_rest/pass_reset.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
     MatSnackBarModule,
     MatChipsModule,
     MatInputModule,
+    MatDatepickerModule,
     MatAutocompleteModule,
     MatGridListModule,
     MatSelectModule,

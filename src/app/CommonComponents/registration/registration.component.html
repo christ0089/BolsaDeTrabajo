@@ -191,7 +191,6 @@
         Siguiente
       </button>
     </div>
-
     <div *ngIf="page == 3">
       <h2>Cuentanos de tu educación</h2>
       <mat-form-field>
@@ -206,7 +205,45 @@
       </mat-form-field>
       <button
         [disabled]="!schoolLevel.valid"
-        id="sign-in-button"
+        mat-flat-button
+        style="width: 100%"
+        (click)="next()"
+      >
+        Siguiente
+      </button>
+    </div>
+    <div *ngIf="page == 4">
+      <form
+        [formGroup]="personalDataForm"
+        style="width: 100%; margin-left: auto; margin-right: auto"
+      >
+        <mat-form-field style="width: 100%">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Fecha de nacimiento"
+            formControlName="birth_date"
+            [max]="todaysDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select
+            formControlName="sex"
+            placeholder="¿Cual es tu sexo?"
+          >
+            <mat-option value="mujer">Mujer</mat-option>
+            <mat-option value="hombre">Hombre</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+
+      <button
+        [disabled]="!schoolLevel.valid"
         mat-flat-button
         style="width: 100%"
         (click)="register()"

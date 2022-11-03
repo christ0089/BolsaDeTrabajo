@@ -29,6 +29,12 @@ export class RegistrationComponent implements OnInit {
     country_code: ['+52', Validators.required],
     phone: ['', Validators.required],
   });
+  personalDataForm : FormGroup = this.formBuilder.group({
+    sex: ['', Validators.required],
+    birth_date: [new Date(Date.now()), Validators.required]
+  })
+
+  todaysDate = new Date(Date.now())
   skillsCtrl = new FormControl('');
   nationality = new FormControl('');
   schoolLevel = new FormControl('');
@@ -70,6 +76,8 @@ export class RegistrationComponent implements OnInit {
     userData.nationality = this.nationality.value;
     userData.skills = this.skills;
     userData.school_level = this.schoolLevel.value;
+    userData.sex = this.personalDataForm.get("sex")?.value || "";
+    userData.birth_date = this.personalDataForm.get("birth_date")?.value || "";
 
     this.authService
       .registerUser({ email, password }, userData)
@@ -83,7 +91,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   next() {
-    if (this.page < 4) {
+    if (this.page < 5) {
       this.page += 1;
     }
   }
