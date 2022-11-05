@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class JobListingFilterComponent implements OnInit, OnChanges {
   @Input('company') companies: string[] = [];
+  @Input('position_name') position_name: string[] = [];
   @Input('filters') filters: any[] = [
     {
       name: 'Educación',
@@ -37,6 +38,12 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
       keys: [""],
     },
     {
+      name: 'Puesto',
+      filter: 'position_name',
+      values: ["Todos"],
+      keys: [""],
+    },
+    {
       name: 'Salarios',
       filter: 'salaries',
       values: ['Todos', '+5 mil', '+10 mil', '+15 mil', '+25 mil'],
@@ -47,6 +54,7 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
   @Input('filterform') filterForm: FormGroup = this.formBuilder.group({
     school_level: [''],
     company: [''],
+    position_name: [''],
     salaries: [0],
   });
 
@@ -62,6 +70,10 @@ export class JobListingFilterComponent implements OnInit, OnChanges {
     if (this.companies.length > 0) {
       this.filters[1].values = this.companies.concat('Todos');
       this.filters[1].keys = this.companies.concat('');
+    }
+    if (this.position_name.length > 0) {
+      this.filters[2].values = this.position_name.concat('Todos');
+      this.filters[2].keys = this.position_name.concat('');
     }
 
     if (this.filters) {

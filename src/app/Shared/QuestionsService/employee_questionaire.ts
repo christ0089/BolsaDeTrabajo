@@ -26,6 +26,15 @@ export const user_info_questionaire = () => {
         verfication: false,
       }),
       new TextboxQuestion({
+        key: 'birth_date',
+        label: 'Fecha de Nacimiento',
+        value: '',
+        disabled: true,
+        order: 0,
+        options: [],
+        verfication: false,
+      }),
+      new TextboxQuestion({
         key: 'phone',
         label: 'Teléfono',
         value: 0,

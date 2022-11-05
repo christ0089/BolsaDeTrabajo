@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { filter } from 'd3-array';
 import {
   BehaviorSubject,
   combineLatest,
@@ -40,6 +41,7 @@ export class JobListingComponent implements OnInit {
   isMobile = false;
 
   companiesSet = new Set<string>();
+  positionSet = new Set<string>();
   
   constructor(
     private readonly jobService: JobPostionService,
@@ -74,6 +76,7 @@ export class JobListingComponent implements OnInit {
               }
             });
             this.companiesSet.add(j.employer.company_name)
+            this.positionSet.add(j.name)
           });
 
           jobListing.forEach((j) => {
@@ -92,6 +95,13 @@ export class JobListingComponent implements OnInit {
 
             if (filters['company'] != '') {
               jobListing = jobListing.filter(j => j.employer.company_name === filters['company'])
+            }
+
+            console.log(filters);
+
+            if (filters['position_name'] != '') {
+            
+              jobListing = jobListing.filter(j => j.name === filters['position_name'])
             }
 
             if (filters['salaries'] > 0 ) {
@@ -120,6 +130,10 @@ export class JobListingComponent implements OnInit {
 
   get companiesList(): string[] {
     return [...this.companiesSet]
+  }
+
+  get positionList(): string[] {
+    return [...this.positionSet]
   }
 
   async searchJob(search: string) {

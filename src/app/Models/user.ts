@@ -12,6 +12,8 @@ export interface IUserData {
   country_code?: string;
   user_role: Role;
   skills?: string[];
+  sex?: string;
+  birth_date?: string;
   school_level?: ISchoolLevel;
   nationality?: string;
 }
