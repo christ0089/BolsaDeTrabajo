@@ -129,6 +129,8 @@ export class ReportedApplicationsComponent implements OnInit {
         Estatus: job.status,
         'Nombre de usuario':
           job.personal_data.fname + job.personal_data.lname,
+        'Nivel de educacion' : job.personal_data.school_level || "",
+        'Nacionalidad': job.personal_data.nationality || "",
         Empresa: job.employer.company_name,
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
@@ -146,7 +148,7 @@ export class ReportedApplicationsComponent implements OnInit {
         'Email de contacto': position.employer.contact_email,
         'Teléfono de contacto': position.employer.contact_phone,
         'Descripción': position.description || '-',
-        Aplicantes: position.applicants,
+        "Numero de Aplicantes": position.applicants,
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
       };
