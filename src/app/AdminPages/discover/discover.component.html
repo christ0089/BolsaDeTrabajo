@@ -24,8 +24,8 @@
     <div style="display: block; padding: 10px">
       <h2>{{ user.fname }} {{ user.lname }}</h2>
       <p *ngIf="user.nationality">Nacionalidad: {{ user.nationality }}</p>
-      <p *ngIf="user.school_level">Educación: {{ user.school_level }}</p>
-      <p *ngIf="user.school_level">Fecha de nacimiento: {{ user.birth_date }}</p>
+      <p *ngIf="user.school_level">Educación: {{ user.school_level | school }}</p>
+      <p *ngIf="user.birth_date">Fecha de nacimiento: {{ user.birth_date }}</p>
       <mat-chip-list style="width: 100%">
         <mat-chip *ngFor="let skill of user.skills">{{ skill }}</mat-chip>
       </mat-chip-list>

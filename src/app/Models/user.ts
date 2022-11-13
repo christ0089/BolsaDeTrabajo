@@ -1,6 +1,7 @@
+import { School_Level_Type } from "./job_postition";
+
 export type Role = 'admin' | 'operator' | 'employeer';
 
-export type ISchoolLevel = "middleschool" | "highschool" | "univeristy" | "masters"
 
 export interface IUserData {
   uid: string;
@@ -14,7 +15,7 @@ export interface IUserData {
   skills?: string[];
   sex?: string;
   birth_date?: string;
-  school_level?: ISchoolLevel;
+  school_level?: School_Level_Type;
   nationality?: string;
 }
 

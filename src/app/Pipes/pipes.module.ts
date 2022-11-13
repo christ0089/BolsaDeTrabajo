@@ -5,6 +5,7 @@ import { BonusPipe } from './bonus.pipe';
 import { WorkHoursPipe } from './work-hours.pipe';
 import { StatusPipe } from './status.pipe';
 import { StatusChipPipe } from './status-chip.pipe';
+import { SchoolPipe } from './school.pipe';
 
 
 
@@ -14,7 +15,8 @@ import { StatusChipPipe } from './status-chip.pipe';
     BonusPipe,
     WorkHoursPipe,
     StatusPipe,
-    StatusChipPipe
+    StatusChipPipe,
+    SchoolPipe
   ],
   imports: [
     CommonModule
@@ -23,6 +25,7 @@ import { StatusChipPipe } from './status-chip.pipe';
     BonusPipe,
     StatusChipPipe,
     StatusPipe,
+    SchoolPipe,
     WorkHoursPipe
   ]
 })
