@@ -1,5 +1,5 @@
 <div style="margin: 30px">
-  <h2>Aplicanciones de Empleo</h2>
+  <h2>Aplicanciones de empleo</h2>
 
 
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
@@ -18,14 +18,14 @@
         <span class="example-spacer"></span>
         <mat-chip color="primary" *ngIf="job_application.status">{{job_application.status | statusChip}}</mat-chip>
         <button mat-button (click)="selectJob(job_application)">
-          Ver Applicación
+          Ver Aplicación
         </button>
         <button
           mat-button
           color="warn"
           (click)="removeJobApplication(job_application)"
         >
-          Retirar Applicación
+          Retirar Aplicación
         </button>
       </div>
     </mat-list-item>

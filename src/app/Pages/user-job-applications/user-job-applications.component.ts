@@ -74,7 +74,7 @@ export class UserJobApplicationsComponent implements OnInit {
         this.loading = false;
         if (result.data.status == 200) {
           return this.snackBar.open(
-            'Se ha actualizado correctamene la applicacion',
+            'Se ha actualizado correctamene la aplicación',
             '',
             {
               verticalPosition: 'top',
@@ -90,7 +90,7 @@ export class UserJobApplicationsComponent implements OnInit {
       .catch((e) => {
         this.loading = false;
         return this.snackBar.open(
-          'No se ha actualizado correctamene la applicacion',
+          'No se ha actualizado correctamene la aplicación',
           '',
           {
             verticalPosition: 'top',

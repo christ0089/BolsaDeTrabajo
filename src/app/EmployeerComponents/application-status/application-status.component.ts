@@ -67,7 +67,7 @@ export class ApplicationStatusComponent implements OnInit {
         this.loading = false;
         if (result.data.status == 200) {
           return this.snackBar.open(
-            'Se ha actualizado correctamente la applicacion',
+            'Se ha actualizado correctamente la aplicación',
             '',
             {
               verticalPosition: 'top',
@@ -84,7 +84,7 @@ export class ApplicationStatusComponent implements OnInit {
         this.loading = false;
         console.error(e);
         return this.snackBar.open(
-          'No se ha actualizado correctamente la applicacion',
+          'No se ha actualizado correctamente la aplicación',
           '',
           {
             verticalPosition: 'top',

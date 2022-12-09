@@ -75,7 +75,7 @@ export class ReportedApplicationsComponent implements OnInit {
       })
       .catch((e) => {
         this.snackBar.open(
-          'Se ha actualizado correctamente la applicacion',
+          'Se ha actualizado correctamente la aplicación',
           '',
           {
             verticalPosition: 'top',
