@@ -1,5 +1,10 @@
 <h2>Aplicantes de Trabajo</h2>
-
+<mat-tab-group mat-stretch-tabs (focusChange)="changeList($event.index)">
+  <mat-tab label="Completadas"></mat-tab>
+  <mat-tab label="Rechazadas"></mat-tab>
+  <mat-tab label="Abiertas"> </mat-tab>
+  <mat-tab label="Expiradas"> </mat-tab>
+</mat-tab-group>
 <mat-list>
   <mat-list-item
     role="listitem"
@@ -10,6 +15,8 @@
       {{ job_application.personal_data.lname }}
 
       <span class="example-spacer"></span>
+
+      <mat-chip style="background: red !important;" *ngIf="(list$ | async) == 'expired'">Expirados</mat-chip>
       <mat-chip color="primary" *ngIf="job_application.status">{{job_application.status | statusChip }}</mat-chip>
       <button mat-button (click)="selectJob(job_application)">
         Ver Aplicación

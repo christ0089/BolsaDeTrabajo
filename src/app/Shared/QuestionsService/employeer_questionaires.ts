@@ -196,7 +196,7 @@ export const job_application_general_info_questionaire = () => {
         key: 'payment_expectation_min',
         label: 'Pago Mínimo',
         value: '',
-        required: true,
+        required: false,
         order: 0,
         options: [],
         verfication: false,
@@ -205,7 +205,7 @@ export const job_application_general_info_questionaire = () => {
         key: 'payment_expectation_max',
         label: 'Pago Máximo',
         value: '',
-        required: true,
+        required: false,
         order: 0,
         options: [],
         verfication: false,
@@ -215,7 +215,7 @@ export const job_application_general_info_questionaire = () => {
         key: 'payment_expectation_max',
         label: 'Pago Maximo',
         value: '',
-        required: true,
+        required: false,
         order: 0,
         options: [],
         verfication: false,
@@ -244,7 +244,7 @@ export const position_type = () => {
         key: 'position_type',
         label: '',
         value: '',
-        required: true,
+        required: false,
         order: 0,
         options: [
           {
@@ -283,7 +283,7 @@ export const school_level = () => {
         key: 'school_level',
         label: '',
         value: '',
-        required: true,
+        required: false,
         order: 0,
         options: [
           {

@@ -152,8 +152,5 @@ export class DiscoverComponent implements OnInit {
         user
       }
     })
-   
-
-   
   }
 }

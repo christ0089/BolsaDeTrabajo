@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
+import { collectionData, Firestore, orderBy } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { collection, query, where } from '@firebase/firestore';
@@ -18,6 +18,8 @@ export class EmployeeApplicationsComponent implements OnInit {
   jobApplications$: BehaviorSubject<IJobApplication[]> = new BehaviorSubject<
     IJobApplication[]
   >([]);
+  list$: BehaviorSubject<string> = new BehaviorSubject<string>("contracted");
+
 
   selectedJob$: BehaviorSubject<IJobApplication | null> =
     new BehaviorSubject<IJobApplication | null>(null);
@@ -31,13 +33,28 @@ export class EmployeeApplicationsComponent implements OnInit {
 
     combineLatest([
       this.employeerService.selectedEmployeer$,
-      this.activatedRoute.paramMap
+      this.activatedRoute.paramMap,
+      this.list$
     ])
       .pipe(
-        switchMap(([e, params]) => {
+        switchMap(([e, params, list]) => {
           if (!e) {
             return of(null);
           }
+
+          // Create a Date object for the current date
+          const currentDate = new Date();
+
+          // Get the year and month of the current date
+          const year = currentDate.getFullYear();
+          const month = currentDate.getMonth();
+
+          // Calculate the start of the month
+          const startOfMonth = new Date(year, month, 1);
+
+          // Calculate the end of the month
+          const endOfMonth = new Date(year, month + 1, 0);
+  
 
           const collectionRef = collection(
             this.afs,
@@ -51,13 +68,39 @@ export class EmployeeApplicationsComponent implements OnInit {
             queries.push(where('job_position.id', '==', id));
           }
 
+          // if (list == true) {
+          //   queries.push(where('updated', '>=', startOfMonth));
+          //   queries.push(where('updated', '<=', endOfMonth));
+          // }
+
+          if (list == "expired") {
+            queries.push(where('updated', '<=', startOfMonth));
+          } 
+          if (list == "open") {
+            queries.push(orderBy('createdAt', "desc"));
+          }
+
+          if (list == "completed") {
+            queries.push(where('status', "==", "contracted"));
+          }
+
+          if (list == "dismissed") {
+            queries.push(where('status', "==", "dismissed"));
+          }
+
+
           const q = query(collectionRef,...queries );
           return collectionData(q, { idField: 'id' });
         })
       )
       .subscribe((j) => {
+        console.log(j)
         if (!j) {
           return;
+        }
+
+        if (this.list$.value == "expired" || this.list$.value == "open") {
+          j = j.filter(j => (j.status != "contracted" && j.status != "dismissed"))
         }
         this.jobApplications$.next(j);
       });
@@ -81,5 +124,10 @@ export class EmployeeApplicationsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
+  }
+
+  changeList(idx: number) {
+    const state = ["completed","dismissed", "open", "expired"];
+    this.list$.next(state[idx]);
   }
 }

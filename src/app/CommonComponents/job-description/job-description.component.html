@@ -9,10 +9,14 @@
       <img style="width: 60px; height: 60px; margin-right: 20px;"  [src]="selectedJob.employer.company_img">
       <h3 style="line-height: 60px; justify-content: center;">{{ selectedJob.employer.company_name }}</h3>
     </div>
-    <h3>
+    <h3 *ngIf="selectedJob.payment_expectation.length == 2">
       {{ selectedJob.employer.street }} •
       {{ selectedJob.payment_expectation[0] | currency }} a
       {{ selectedJob.payment_expectation[1] | currency }} / por mes
+    </h3>
+    <h3 *ngIf="selectedJob.payment_expectation.length == 1">
+      {{ selectedJob.employer.street }} •
+      {{ selectedJob.payment_expectation[0] | currency }} / por mes
     </h3>
     <button
       mat-flat-button

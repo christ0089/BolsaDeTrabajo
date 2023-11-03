@@ -3,6 +3,7 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IClosureReason, IJobPosition } from 'src/app/Models/job_postition';
+import { AuthService } from 'src/app/Shared/Auth/auth.service';
 
 @Component({
   selector: 'app-application-status',
@@ -36,7 +37,8 @@ export class ApplicationStatusComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private functions: Functions,
+    private readonly functions: Functions,
+    private readonly authService: AuthService,
     private snackBar: MatSnackBar
   ) {
     this.job = data.job_position;
@@ -53,7 +55,18 @@ export class ApplicationStatusComponent implements OnInit {
   }
 
   async save() {
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return 
+    }
     this.loading = true;
+
+
     const applicationUpdate$ = httpsCallable(
       this.functions,
       'jobListingEmployeerUpdate'

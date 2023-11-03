@@ -13,6 +13,7 @@ import CountryJson from './Country.json';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { skills } from '../skills';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-registration',
@@ -77,7 +78,7 @@ export class RegistrationComponent implements OnInit {
     userData.skills = this.skills;
     userData.school_level = this.schoolLevel.value;
     userData.sex = this.personalDataForm.get("sex")?.value || "";
-    userData.birth_date = this.personalDataForm.get("birth_date")?.value || "";
+    userData.birth_date = Timestamp.fromDate(this.personalDataForm.get("birth_date")?.value || "");
 
     this.authService
       .registerUser({ email, password }, userData)

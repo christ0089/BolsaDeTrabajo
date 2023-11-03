@@ -10,13 +10,15 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../Shared/Auth/auth.service';
+import { EmployeerService } from '../Shared/employeer.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployerGuard implements CanActivate {
   constructor(
-    private auth: AuthService,
+    private readonly auth: AuthService,
+    private readonly employerService: EmployeerService,
     private router: Router
   ) {}
 
@@ -30,11 +32,17 @@ export class EmployerGuard implements CanActivate {
     | UrlTree {
     if (!this.auth.isLoggedIn) {
       this.router.navigate(['auth']);
-      return this.auth.isAdmin;
+      return this.auth.isLoggedIn;
     }
-    if (!this.auth.isAdmin) {
-      this.router.navigate(['employeer_registration']);
+    if (this.auth.isNormalUser) {
+      this.router.navigate(['/']);
+      return false
     }
-    return this.auth.isAdmin;
+    if (this.auth.isBusinessAdmin) {
+      if (this.employerService.employeers$.value.length == 0) {
+        this.router.navigate(['employeer_registration']);
+      }
+    }
+    return true;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { Firestore, Timestamp } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -112,6 +112,17 @@ export class EmployerInfoFormComponent implements OnInit {
   }
 
   async save() {
+
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return 
+    }
+
     this.loading = true;
     const docBeforeRef = collection(this.afs, `employeers`);
 
@@ -129,6 +140,7 @@ export class EmployerInfoFormComponent implements OnInit {
           docRef,
           {
             ...employeer,
+            createdAt: Timestamp.now()
           },
           {
             merge: true,

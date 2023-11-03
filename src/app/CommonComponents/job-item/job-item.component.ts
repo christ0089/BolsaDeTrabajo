@@ -5,6 +5,7 @@ import { IElement } from '../chips/chips.component';
 
 import { WorkHoursPipe } from 'src/app/Pipes/work-hours.pipe';
 import { Router } from '@angular/router';
+import { N } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-job-item',
@@ -36,24 +37,37 @@ export class JobItemComponent implements OnInit {
       elements: [],
     },
   ];
-  constructor(private readonly cp: CurrencyPipe, private router: Router) {}
+  constructor(private readonly cp: CurrencyPipe, private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnChanges() {
     if (this.job) {
-      this.elements[0].elements = [
-        `${this.cp.transform(
+
+      let payment = "Sin datos de salario"
+      if (this.job.payment_expectation[0] != "" && this.job.payment_expectation[1] != "") {
+        payment = `${this.cp.transform(
           this.job.payment_expectation[0],
           'USD',
           'symbol',
           '1.2-2'
         )} a ${this.cp.transform(
+          this.job.payment_expectation[1],
+          'USD',
+          'symbol',
+          '1.2-2'
+        )}`
+      }
+      if (this.job.payment_expectation[0] != "" && this.job.payment_expectation[1] == "") {
+        payment = `${this.cp.transform(
           this.job.payment_expectation[0],
           'USD',
           'symbol',
           '1.2-2'
-        )}`,
+        )}`
+      }
+      this.elements[0].elements = [
+        payment
       ];
 
       if (this.job.workhours_type) {
@@ -78,6 +92,6 @@ export class JobItemComponent implements OnInit {
   }
 
   viewApplicants(job_id: string = "") {
-   this.router.navigate([`/admin/job_applications/${job_id}`]) 
+    this.router.navigate([`/admin/job_applications/${job_id}`])
   }
 }

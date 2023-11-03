@@ -59,7 +59,7 @@ export interface IJobPosition {
   expiration_date: Timestamp;
   applicants?: number;
   address: IAddress;
-  payment_expectation: number[];
+  payment_expectation: number[] | string[];
   position_type: PositionType;
   workhours_type: WorkHoursTypes[];
   bonus_type?: BonusTypes[];

@@ -97,7 +97,7 @@
             formControlName="contry_code"
             [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
           >
-            <mat-option *ngFor="let country of countryJson"
+            <mat-option *ngFor="let country of countryJson" value="{{ country.dial_code }} {{ country.code }}"
               >{{ country.dial_code }} {{ country.code }}
             </mat-option>
           </mat-select>

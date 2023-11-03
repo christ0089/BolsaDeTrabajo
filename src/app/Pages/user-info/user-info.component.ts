@@ -49,8 +49,6 @@ export class UserInfoComponent implements OnInit {
   }
 
   async save() {
-    const docBeforeRef = collection(this.afs, `users`);
-
     const formData = this.forms.flatMap((f) => f.value);
     const user = Object.assign({}, ...formData);
 

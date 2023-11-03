@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from '@angular/fire/auth';
 import { doc, Firestore } from '@angular/fire/firestore';
 import {
   ApplicationVerifier,
@@ -73,10 +73,22 @@ export class AuthService {
   }
 
   get isLoggedIn() {
-    if (this.user.value == null) {
+    if (this.userData$.value == null) {
       return false;
     } else {
       return true;
+    }
+  }
+
+  get isNormalUser() {
+    const user = this.userData$.value;
+    if (user === null) {
+      return false;
+    }
+    if (user.user_role === '-') {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -97,7 +109,7 @@ export class AuthService {
     if (user === null) {
       return false;
     }
-    if (this.isSuperAdmin || this.isBusinessAdmin) {
+    if (this.isSuperAdmin  || this.isBusinessAdmin) {
       return true;
     } else {
       return false;
@@ -109,7 +121,18 @@ export class AuthService {
     if (user === null) {
       return false;
     }
-    if (user.user_role === 'admin') {
+    if (user.user_role === 'admin' || user.user_role == "operator") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  get isOperator() {
+    const user = this.userData$.value;
+    if (user === null) {
+      return false;
+    }
+    if (user.user_role === 'operator') {
       return true;
     } else {
       return false;
@@ -132,7 +155,11 @@ export class AuthService {
       user_registration.email,
       user_registration.password
     ).then((user) => {
+      sendEmailVerification(user.user)
+      return user
+    }).then((user) => {
       const docRef = doc(this.afs, `users/${user.user.uid}`);
+
       return setDoc(
         docRef,
         {
@@ -144,7 +171,14 @@ export class AuthService {
           merge: true,
         }
       );
+    }).then(() => {
+      return this.signOut()
     });
+  }
+  
+
+  sendVerificationEmail(user: User) {
+    return sendEmailVerification(user)
   }
 
   phoneAuth(phone: string, captcha: ApplicationVerifier) {

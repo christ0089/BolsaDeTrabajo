@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Functions } from '@angular/fire/functions';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,7 +6,9 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { httpsCallable } from '@firebase/functions';
 import * as json2csv from 'json2csv';
 import { IEmployer } from 'src/app/Models/employer';
+import { IJobApplication } from 'src/app/Models/job_application';
 import { IJobPosition } from 'src/app/Models/job_postition';
+import { Timestamp } from '@firebase/firestore';
 
 @Component({
   selector: 'app-reported-applications',
@@ -62,6 +64,10 @@ export class ReportedApplicationsComponent implements OnInit {
       this.functions,
       'employeerCreationReport'
     );
+
+   
+
+
     await report({
       min_date: this.campaignOne.get('start')?.value,
       max_date: this.campaignOne.get('end')?.value,
@@ -97,8 +103,11 @@ export class ReportedApplicationsComponent implements OnInit {
       max_date: this.campaignOne.get('end')?.value,
     })
       .then((res: any) => {
-        console.log(res.data[0]);
-        this.link = this.statusToFlat(res.data[0]);
+        const flattenedArray = [].concat.apply([], res.data);
+
+        console.log(flattenedArray);
+        
+        this.link = this.statusToFlat(flattenedArray);
         if (!this.link) {
           throw new Error('No data');
         }
@@ -121,8 +130,16 @@ export class ReportedApplicationsComponent implements OnInit {
   }
 
   statusToFlat(data: any[]) {
-    const res = data.map((job) => {
-      console.log(job);
+    console.log(data);
+    const res = data.map((job: IJobApplication) => {
+
+      let jsDate = "" 
+      if (job.contractDate) {
+        const milliseconds = job.contractDate._seconds * 1000 + job.contractDate._nanoseconds / 100000;
+        console.log(milliseconds)
+        jsDate = new Date(+milliseconds).toDateString()
+      } 
+      
       return {
         Id: job.id,
         'Nombre del trabajo': job.job_position.name,
@@ -131,6 +148,7 @@ export class ReportedApplicationsComponent implements OnInit {
           job.personal_data.fname + job.personal_data.lname,
         'Nivel de educacion' : job.personal_data.school_level || "",
         'Nacionalidad': job.personal_data.nationality || "",
+        'Fecha de Decision': jsDate || "",
         Empresa: job.employer.company_name,
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
@@ -158,6 +176,13 @@ export class ReportedApplicationsComponent implements OnInit {
 
   companyToFlat(data: IEmployer[]) {
     const res = data.map((employer: IEmployer) => {
+      let jsDate = "" 
+      if (employer.createdAt) {
+        const milliseconds = employer.createdAt._seconds * 1000 + employer.createdAt._nanoseconds / 100000;
+        console.log(milliseconds)
+        jsDate = new Date(+milliseconds).toDateString()
+      } 
+
       return {
         Id: employer.id,
         Estatus: employer.status,
@@ -166,7 +191,7 @@ export class ReportedApplicationsComponent implements OnInit {
         'Teléfono de contacto': employer.contact_phone,
         'Descripción': employer.description || '-',
         Direccion: employer.street,
-        // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
+        "Fecha de Creacion": jsDate || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
       };
     });

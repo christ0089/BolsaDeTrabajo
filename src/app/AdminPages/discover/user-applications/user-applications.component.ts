@@ -14,6 +14,7 @@ import { IJobApplication } from 'src/app/Models/job_application';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { IUserData } from 'src/app/Models/user';
 import { UserJobApplicationsComponent } from 'src/app/Pages/user-job-applications/user-job-applications.component';
+import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
@@ -29,9 +30,10 @@ export class UserApplicationsComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: any,
-    private employeerService: EmployeerService,
+    private readonly employeerService: EmployeerService,
+    private readonly functions: Functions,
+    private readonly authService: AuthService,
     private afs: Firestore,
-    private functions: Functions,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UserJobApplicationsComponent>
   ) {
@@ -67,6 +69,15 @@ export class UserApplicationsComponent implements OnInit {
   ngOnInit(): void {}
 
   upload(job: IJobPosition) {
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return 
+    }
     const jobApplicationFuntion = httpsCallable<any, any>(
       this.functions,
       'applicatonEmployeerCreate'

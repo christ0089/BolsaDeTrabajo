@@ -48,15 +48,22 @@ export const applicatonEmployeerCreate = functions.https.onCall(
             .firestore()
             .collection(`employeers/${employer.id}/job_applications`)
             .doc(id)
-            .set(jobApplication, {
+            .set({
+              ...jobApplication,
+              updateDate: firestore.Timestamp.now(),
+            }, {
               merge: true,
             });
 
-        await admin
+        // eslint-disable-next-line
+      await admin
             .firestore()
             .collection(`employeers/${employer.id}/general_applicants`)
             .doc(id)
-            .set(jobApplication.personal_data, {
+            .set({
+              ...jobApplication.personal_data,
+              updateDate: firestore.Timestamp.now(),
+            }, {
               merge: true,
             });
 
@@ -144,7 +151,7 @@ export const applicationUserUpdate = functions.https.onCall(
 
       const employeeApplicationData = employeeApplicationRef.data();
 
-      if (employeeApplicationData?.personal_data.uid !== uid) { // eslint-disable-line
+    if (employeeApplicationData?.personal_data.uid !== uid) { // eslint-disable-line
         return {status: 400};
       }
 
@@ -185,7 +192,7 @@ export const applicationUserUpdate = functions.https.onCall(
 
 export const jobApplicationEmployeerUpdate = functions.https.onCall(
     async (data, context) => {
-      const {employeerId, jobApplication, status} = data;
+      const {employeerId, contractDate, jobApplication, status} = data;
 
       if (!context.auth?.uid) {
         logger("Not logged in", "ERROR");
@@ -208,6 +215,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
               components: [companyName],
               status: status,
               viewed: false,
+              contractDate: contractDate,
               createdAt: firestore.Timestamp.now(),
             });
         await admin
@@ -217,6 +225,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
             .set(
                 {
                   status,
+                  contractDate: contractDate,
                   updated: firestore.Timestamp.now(),
                 },
                 {
@@ -230,6 +239,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
             .set(
                 {
                   status,
+                  contractDate: contractDate,
                   updated: firestore.Timestamp.now(),
                 },
                 {
@@ -340,7 +350,7 @@ export const userPromotion = functions.https.onCall(async (data, context) => {
 
 export const deactivateAccount = functions.https.onCall(
     async (data, context) => {
-      const {userUid, active} = data;
+      const {user_uid} = data;  // eslint-disable-line
 
       if (!context.auth?.uid) {
         return;
@@ -354,30 +364,33 @@ export const deactivateAccount = functions.https.onCall(
           .doc(adminUid)
           .get();
 
-      const userSnap = await admin.firestore().collection("users").doc(userUid);
+      const userSnap = await admin.firestore().collection("users").doc(user_uid); // eslint-disable-line
 
       if (!adminSnap.exists) {
         return {status: 400};
       }
       const adminData = adminSnap.data();
 
-      if (adminData?.user_role !== "admin") { // eslint-disable-line
+    if (adminData?.user_role !== "admin") { // eslint-disable-line
         return {status: 400};
       }
 
       try {
-        await admin.auth().updateUser(userUid, {
-          disabled: active,
+        const user = await admin.auth().getUser(user_uid);
+        await admin.auth().updateUser(user_uid, {
+          disabled: !user.disabled,
         });
 
         await userSnap.set(
             {
-              disabled: active,
+              disabled: !user.disabled,
             },
             {
               merge: true,
             }
         );
+
+        // TODO: update all companies the user is owner to inactive
 
         return {status: 200};
       } catch (e) {
@@ -389,13 +402,15 @@ export const deactivateAccount = functions.https.onCall(
 
 export const employeerUpdate = functions.firestore
     .document("employeers/{id}")
-    .onUpdate(async (data, context) => {
+    .onUpdate(async (res, context) => {
       const employerId = context.params.id;
 
-      if (!data.after.exists) {
+      if (!res.after.exists) {
         return;
       }
-      const afterJob = data.after.data();
+
+      console.log(res.after.data());
+      const afterJob = res.after.data();
 
       const jobListings = admin
           .firestore()
@@ -403,11 +418,6 @@ export const employeerUpdate = functions.firestore
           .where("employer.id", "==", employerId)
           .get();
 
-      await admin.firestore()
-          .collection("users")
-          .doc(afterJob.owner[0]).update({
-        user_role: "employeer", // eslint-disable-line
-          });
 
       return jobListings.then((docs) => {
         const promises = docs.docs.map((doc) => {
@@ -416,7 +426,7 @@ export const employeerUpdate = functions.firestore
               {
                 active: docData.active == false ? false : afterJob.active,
                 employer: {
-                  company_name: afterJob.name,
+                  company_name: afterJob.company_name,
                   id: employerId,
                 },
               },
@@ -429,7 +439,13 @@ export const employeerUpdate = functions.firestore
       });
     });
 
-async function isAdminRole(userUid: string): Promise<boolean> { // eslint-disable-line
+/**
+ * Checks wether a user has the ability to edit data
+ *
+ * @param {string} userUid - Description of the parameter.
+ * @return {boolean} Description of the return value.
+ */
+async function isAdminRole(userUid: string): Promise<boolean> {
   const adminSnap = await admin
       .firestore()
       .collection("users")
@@ -441,7 +457,11 @@ async function isAdminRole(userUid: string): Promise<boolean> { // eslint-disabl
   }
   const adminData = adminSnap.data();
 
-  if (adminData?.user_role == "employeer" || adminData?.user_role == "admin") { // eslint-disable-line
+  // eslint-disable-next-line
+  const isAdmin = adminData?.user_role == "admin";
+  // eslint-disable-next-line
+  const isEmployer = adminData?.user_role == "employeer";
+  if (isAdmin || isEmployer) {
     return true;
   }
   return false;
@@ -449,10 +469,15 @@ async function isAdminRole(userUid: string): Promise<boolean> { // eslint-disabl
 
 export const applicationStatusReport = functions.https.onCall(
     async (data, context) => {
+      const minDate = data.min_date;
+      const maxDate = data.max_date;
+
       const jobListingReport = await admin
           .firestore()
           .collection("job_listing")
-          .orderBy("closing_reason", "desc")
+          .orderBy("createdAt", "desc")
+          .where("createdAt", ">=", new Date(minDate))
+          .where("createdAt", "<=", new Date(maxDate))
           .get();
 
       const res = await Promise.all([jobListingReport]);
@@ -497,13 +522,31 @@ export const employeerCreationReport = functions.https.onCall(
 );
 
 export const hiringReport = functions.https.onCall(async (data, context) => {
+  const minDate = data.min_date;
+  const maxDate = data.max_date;
+
   const jobApplicationContracted = admin
       .firestore()
       .collectionGroup("job_applications")
       .where("status", "==", "contracted")
+      .where("contractDate", ">=", new Date(minDate))
+      .where("contractDate", "<=", new Date(maxDate))
       .get();
 
-  const res = await Promise.all([jobApplicationContracted]);
+  const jobApplicationDismissed = admin
+      .firestore()
+      .collectionGroup("job_applications")
+      .where("status", "==", "dismissed")
+      .where("contractDate", ">=", new Date(minDate))
+      .where("contractDate", "<=", new Date(maxDate))
+      .get();
+
+  const promise = [jobApplicationContracted, jobApplicationDismissed];
+
+
+  const res = await Promise.all(promise);
+  console.log(res[0].docs.length);
+  console.log(res[1].docs.length);
   return res.map((docs) => {
     const data = docs.docs.map((doc) => {
       const job = doc.data();

@@ -19,6 +19,7 @@ export class UserRolesViewComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private readonly authService: AuthService,
     private readonly snackBar: MatSnackBar,
     private readonly functions: Functions
   ) {
@@ -34,6 +35,15 @@ export class UserRolesViewComponent implements OnInit {
   }
 
   async changeRole() {
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return 
+    }
     const userRoleFunc$ = httpsCallable<any, any>(
       this.functions,
       'userPromotion'
@@ -79,7 +89,7 @@ export class UserRolesViewComponent implements OnInit {
     );
 
     await userRoleFunc$({
-      user_uid,
+      user_uid
     })
       .then((result) => {
         if (result.data == 200) {

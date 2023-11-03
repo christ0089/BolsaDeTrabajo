@@ -10,6 +10,7 @@ export interface IEmployer {
   contact_phone: string;
   contact_email: string;
   active: boolean;
+  createdAt? : any
   description: string;
   address: IAddress;
   street: string;

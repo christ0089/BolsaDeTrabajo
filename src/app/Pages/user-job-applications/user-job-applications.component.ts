@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore, query } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { Functions } from '@angular/fire/functions';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { collection, where } from '@firebase/firestore';
 import { httpsCallable } from '@firebase/functions';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
 import { IJobApplication } from 'src/app/Models/job_application';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
-import { genericConverter } from 'src/app/Shared/job-postion.service';
 import { ListPostionService } from 'src/app/Shared/list-postion.service';
 
 @Component({

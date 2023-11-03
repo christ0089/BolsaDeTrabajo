@@ -86,10 +86,10 @@ export class JobPositionFormComponent implements OnInit {
     let benefits = this.forms[4].value;
     benefits = Object.keys(benefits).filter((k) => benefits[k]);
 
-    const employer = this.employeerService.employeers$.value[0];
+    const employer = this.employeerService.selectedEmployeer$.value;
 
     const jobListing = {
-      active: true,
+      active: employer?.active,
       name,
       description,
       payment_expectation,

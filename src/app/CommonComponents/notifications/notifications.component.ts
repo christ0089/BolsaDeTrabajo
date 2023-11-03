@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, doc, Firestore } from '@angular/fire/firestore';
+import { collectionData, doc, Firestore, limit } from '@angular/fire/firestore';
 import { collection, orderBy, query, Timestamp, updateDoc, where } from '@firebase/firestore';
 
 import { BehaviorSubject, of, switchMap, takeUntil, tap } from 'rxjs';
@@ -39,7 +39,7 @@ export class NotificationsComponent implements OnInit {
         const q = query(
           collectionRef,
           orderBy('createdAt', 'desc'),
-          where('viewed', '==', false)
+          limit(10)
         );
         return collectionData(q, {idField: "id"});
       })

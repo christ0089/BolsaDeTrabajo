@@ -1,6 +1,7 @@
+import { Timestamp } from "@angular/fire/firestore";
 import { School_Level_Type } from "./job_postition";
 
-export type Role = 'admin' | 'operator' | 'employeer';
+export type Role =  "-" |'admin' | 'operator' | 'employeer';
 
 
 export interface IUserData {
@@ -14,7 +15,7 @@ export interface IUserData {
   user_role: Role;
   skills?: string[];
   sex?: string;
-  birth_date?: string;
+  birth_date?: Timestamp;
   school_level?: School_Level_Type;
   nationality?: string;
 }

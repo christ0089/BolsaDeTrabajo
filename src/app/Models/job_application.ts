@@ -27,5 +27,7 @@ export interface IJobApplication {
   status: JobStatus;
   id: string;
   formData: any;
+  updated: any;
+  contractDate: any,
   createdAt: Timestamp;
 }

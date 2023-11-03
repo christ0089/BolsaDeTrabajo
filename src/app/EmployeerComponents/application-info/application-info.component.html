@@ -1,14 +1,27 @@
 <h1>Aplicación: #{{ job.id }}</h1>
-<mat-progress-bar
-  *ngIf="loading == true"
-  mode="indeterminate"
-></mat-progress-bar>
+<mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 <button mat-icon-button style="float: right" mat-dialog-close>
   <mat-icon>close</mat-icon>
 </button>
 <mat-chip color="primary" *ngIf="job.status">{{
   job.status | statusChip
-}}</mat-chip>
+  }}</mat-chip>
+
+<span *ngIf="job.status == 'contracted'" style="font-weight: bolder; color: rgb(0, 107, 57)">
+  ¡Fue Contratado!
+  <p *ngIf="job.contractDate">Fecha de contratacion: {{(job.contractDate?.seconds * 1000) | date: "dd/MM/YYYY" }}</p>
+</span>
+
+<span *ngIf="job.status == 'dismissed'" style="font-weight: bolder; color: rgb(107, 0, 0)">
+  Fue Rechazado
+</span>
+
+<h2>Información de Empresa</h2>
+<p>Empresa {{ job.employer.company_name }}</p>
+
+<h2>Información de Puesto</h2>
+<p>Puesto: {{ job.job_position.name }}</p>
+
 <h2>Información de Contacto</h2>
 <p>{{ job.personal_data.fname }} {{ job.personal_data.lname }}</p>
 <p>
@@ -16,22 +29,19 @@
   {{ job.personal_data.phone }}
 </p>
 <p>Correo: {{ job.personal_data.email }}</p>
-<p *ngIf="job.personal_data.birth_date">Fecha de nacimiento: {{job.personal_data.birth_date}}</p>
+<p *ngIf="job.personal_data.birth_date">Fecha de nacimiento: {{(job.personal_data.birth_date.seconds * 1000) | date:
+  "dd/MM/YYYY" }}</p>
 
 <p>Hablidades</p>
 <mat-chip-list *ngIf="job.personal_data.skills">
   <mat-chip *ngFor="let skill of job.personal_data.skills">{{
     skill
-  }}</mat-chip>
+    }}</mat-chip>
 </mat-chip-list>
 
 
 <h2>Curriculum</h2>
-<button
-  mat-button
-  color="primary"
-  (click)="download(job.formData[0].resume_url)"
->
+<button mat-button color="primary" (click)="download(job.formData[0].resume_url)">
   Descargar CV
 </button>
 
@@ -39,42 +49,37 @@
 <p>{{ job.formData[1].prev_position }}</p>
 <p>{{ job.formData[1].prev_employer }}</p>
 
-<div *ngIf="(isAdmin$ | async) == true">
-  <button
-    mat-button
-    *ngIf="job.status == 'applied'"
-    (click)="updateStatus('notified')"
-  >
-    Notificar candidato
-  </button>
-  <button
-    mat-button
-    *ngIf="job.status == 'notified'"
-    (click)="updateStatus('contracted')"
-  >
-    Se contrato al candidato
-  </button>
-  <button
-    mat-button
-    *ngIf="job.status !== 'contracted'"
-    (click)="updateStatus('dismissed')"
-    color="warn"
-  >
-    Cancelar aplicación
-  </button>
-  <span
-    *ngIf="job.status == 'contracted'"
-    style="font-weight: bolder; color: rgb(0, 107, 57)"
-  >
-    ¡Fue Contratado!
-  </span>
 
-  <span
-    *ngIf="job.status == 'dismissed'"
-    style="font-weight: bolder; color: rgb(107, 0, 0)"
-  >
-    Fue Rechazado
-  </span>
+<div *ngIf="(isAdmin$ | async) == true">
+  <form [formGroup]="registrationForm" style="width: 100%; margin-left: auto; margin-right: auto">
+
+    <mat-form-field style="width: 40%;" class="date_picker">
+      <mat-label>Fecha de Contratacion</mat-label>
+      <input matInput [matDatepicker]="picker" [max]="todaysDate" formControlName="contractDate">
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+    <mat-form-field style="width: auto;">
+      <mat-label>Estatus de Contratacion</mat-label>
+      <mat-select formControlName="status" [ngClass]="{ 'is-invalid': f['status'].errors }">
+        <mat-option value="notified">Notificar Candidato
+        </mat-option>
+        <mat-option value="contracted">Contratar
+        </mat-option>
+        <mat-option value="dismissed">Rechazar
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button type="submit" [disabled]="!registrationForm.valid" mat-flat-button style="width: 100%" color="primary"
+      (click)="save()">
+      Guardar
+    </button>
+  </form>
+
+
 </div>
 
 <!-- <nz-steps [nzCurrent]="1" nzDirection="vertical">

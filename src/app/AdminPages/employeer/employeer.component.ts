@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { map } from 'd3-array';
 import { EMPTY, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { IEmployer } from 'src/app/Models/employer';
+import { IUserData } from 'src/app/Models/user';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 
@@ -35,7 +36,7 @@ export class EmployeerComponent implements OnInit {
 
     this.auth.auth$
       .pipe(
-        tap((user) => {
+        tap((user: IUserData) => {
           this.availableRoutes = [
             {
               name: 'Mi Empresa',
@@ -55,7 +56,7 @@ export class EmployeerComponent implements OnInit {
             },
           ];
 
-          if (user.user_role === 'admin') {
+          if (user.user_role === 'admin' || user.user_role == "operator") {
             this.availableRoutes = this.availableRoutes.concat([
               {
                 path: 'reports',

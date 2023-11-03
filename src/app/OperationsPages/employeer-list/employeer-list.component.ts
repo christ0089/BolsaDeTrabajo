@@ -11,6 +11,7 @@ import { collection, updateDoc } from '@firebase/firestore';
 import { active } from 'd3-transition';
 import { BehaviorSubject, EMPTY, map, Observable, switchMap } from 'rxjs';
 import { IEmployer } from 'src/app/Models/employer';
+import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
 export type EmployeerStatus = 'approved' | 'pending' | 'disabled';
@@ -25,7 +26,10 @@ export class EmployeerListComponent implements OnInit {
 
   employeerPending$: Observable<IEmployer[]> = EMPTY;
 
-  constructor(private afs: Firestore, private snackBar: MatSnackBar) {
+  constructor(
+    private readonly afs: Firestore,
+    private readonly authService: AuthService,
+    private snackBar: MatSnackBar) {
     const collectionRef = collection(
       this.afs,
       'employeers'
@@ -37,9 +41,19 @@ export class EmployeerListComponent implements OnInit {
     this.employeerPending$ = collectionData(q_2, { idField: 'id' });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   deactivate(id: string, active: boolean) {
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return
+    }
+
     const docRef = doc(this.afs, `employeers/${id}`);
 
     updateDoc(docRef, {
@@ -63,6 +77,15 @@ export class EmployeerListComponent implements OnInit {
 
   approveEmployeer(id: string) {
     const docRef = doc(this.afs, `employeers/${id}`);
+    if (this.authService.isOperator) {
+      this.snackBar.open('No tienes permisos de editar', '', {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackbar'],
+        duration: 2000,
+      });
+      return
+    }
 
     updateDoc(docRef, {
       status: 'approved',

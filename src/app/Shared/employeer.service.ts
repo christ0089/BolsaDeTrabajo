@@ -32,7 +32,7 @@ export class EmployeerService {
           return [];
         }
 
-        if (!user.user_role) {
+        if (user.user_role === "-") {
           return [];
         }
 

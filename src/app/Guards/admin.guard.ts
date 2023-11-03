@@ -28,7 +28,7 @@ export class AdminGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (!this.auth.isSuperAdmin) {
+    if (this.auth.isBusinessAdmin || this.auth.isNormalUser) {
       this.snackBar.open('No tienes permisos para navegar', 'cerrar', {
         politeness: 'assertive',
         verticalPosition: "top",
