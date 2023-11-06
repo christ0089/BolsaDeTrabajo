@@ -96,6 +96,7 @@ export const applicationUserCreate = functions.https.onCall(
 
       let id = docRef.id;
 
+
       try {
         if (jobApplication.id) {
           id = jobApplication.id;
@@ -203,10 +204,28 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
 
       if ((await isAdminRole(adminUid)) == false) {
         logger("Not admin", "ERROR");
-        return {status: 400};
+        return {status: 400, message: "No se tiene privelegio"};
       }
 
+    const date = new firestore.Timestamp(contractDate.seconds, contractDate.nanoseconds) // eslint-disable-line
       try {
+        const job = await admin
+            .firestore()
+            .doc(`employeers/${jobApplication.employer.id}`)
+            .get();
+
+        const jobData = job.data();
+
+        if (!jobData) {
+          return {status: 400};
+        }
+
+      if (((jobData.owner as string[]).indexOf(adminUid) > -1 && await isEmployeerRole(adminUid)) || await isSuperAdmin(adminUid)) { // eslint-disable-line
+        } else {
+          return {status: 400, message: "No se tiene privelegio"};
+        }
+
+
         const companyName = jobApplication.employer.company_name;
         await admin
             .firestore()
@@ -215,8 +234,9 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
               components: [companyName],
               status: status,
               viewed: false,
-              contractDate: contractDate,
+          contractDate: date, // eslint-disable-line
               createdAt: firestore.Timestamp.now(),
+              updated: firestore.Timestamp.now(),
             });
         await admin
             .firestore()
@@ -225,7 +245,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
             .set(
                 {
                   status,
-                  contractDate: contractDate,
+                  contractDate: date,
                   updated: firestore.Timestamp.now(),
                 },
                 {
@@ -239,7 +259,7 @@ export const jobApplicationEmployeerUpdate = functions.https.onCall(
             .set(
                 {
                   status,
-                  contractDate: contractDate,
+                  contractDate: date,
                   updated: firestore.Timestamp.now(),
                 },
                 {
@@ -350,7 +370,7 @@ export const userPromotion = functions.https.onCall(async (data, context) => {
 
 export const deactivateAccount = functions.https.onCall(
     async (data, context) => {
-      const {user_uid} = data;  // eslint-disable-line
+    const { user_uid } = data;  // eslint-disable-line
 
       if (!context.auth?.uid) {
         return;
@@ -364,14 +384,16 @@ export const deactivateAccount = functions.https.onCall(
           .doc(adminUid)
           .get();
 
-      const userSnap = await admin.firestore().collection("users").doc(user_uid); // eslint-disable-line
+    const userSnap = await admin.firestore().collection("users").doc(user_uid); // eslint-disable-line
 
       if (!adminSnap.exists) {
+        logger("Admin does not exist", "ERROR");
         return {status: 400};
       }
       const adminData = adminSnap.data();
 
     if (adminData?.user_role !== "admin") { // eslint-disable-line
+        logger("Is not and Admin user", "ERROR");
         return {status: 400};
       }
 
@@ -462,6 +484,53 @@ async function isAdminRole(userUid: string): Promise<boolean> {
   // eslint-disable-next-line
   const isEmployer = adminData?.user_role == "employeer";
   if (isAdmin || isEmployer) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks wether a user has the ability to edit data
+ *
+ * @param {string} userUid - Description of the parameter.
+ * @return {boolean} Description of the return value.
+ */
+async function isSuperAdmin(userUid: string): Promise<boolean> {
+  const adminSnap = await admin
+      .firestore()
+      .collection("users")
+      .doc(userUid)
+      .get();
+
+  if (!adminSnap.exists) {
+    return false;
+  }
+  const adminData = adminSnap.data();
+
+  // eslint-disable-next-line
+  const isAdmin = adminData?.user_role == "admin";
+  return isAdmin;
+}
+/**
+ * Checks wether a user has the ability to edit data
+ *
+ * @param {string} userUid - Description of the parameter.
+ * @return {boolean} Description of the return value.
+ */
+async function isEmployeerRole(userUid: string): Promise<boolean> {
+  const adminSnap = await admin
+      .firestore()
+      .collection("users")
+      .doc(userUid)
+      .get();
+
+  if (!adminSnap.exists) {
+    return false;
+  }
+  const adminData = adminSnap.data();
+
+  const isEmployer = adminData?.user_role == "employeer"; // eslint-disable-line
+  if (isEmployer) {
     return true;
   }
   return false;

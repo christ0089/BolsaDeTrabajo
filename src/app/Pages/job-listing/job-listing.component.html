@@ -21,13 +21,14 @@
   <div
     nz-col
     nzSpan="8"
-    style="padding: 10px; background: rgba(255, 255, 255, 0)"
+    style="padding: 10px; background: rgba(255, 255, 255, 0); height: 60vh; overflow: scroll;"
   >
     <app-job-item
       *ngFor="let job of jobListing$ | async"
       [job]="job"
       (click)="selectJob(job)"
       class="animate"
+     
     >
     </app-job-item>
   </div>
@@ -38,6 +39,7 @@
     style="background: rgba(255, 255, 255, 0); padding: 20px"
     *ngIf="selectedJob$ | async; let selectedJob"
     class="animate"
+    
   >
     <app-job-description
       [selectedJob]="selectedJob"
@@ -48,7 +50,7 @@
 
 <ng-template #mobileLayout>
   <div nz-row nzJustify="center" style="padding: 20px">
-    <div nz-col style="padding: 10px; background: rgba(255, 255, 255, 0)">
+    <div nz-col style="padding: 10px; background: rgba(255, 255, 255, 0); height: 100%; overflow: scroll;">
       <app-job-item
         *ngFor="let job of jobListing$ | async"
         [job]="job"

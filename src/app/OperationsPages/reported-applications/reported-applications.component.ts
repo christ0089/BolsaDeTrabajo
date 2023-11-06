@@ -36,7 +36,7 @@ export class ReportedApplicationsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async applicationStatusReport() {
     this.loading = true;
@@ -65,7 +65,7 @@ export class ReportedApplicationsComponent implements OnInit {
       'employeerCreationReport'
     );
 
-   
+
 
 
     await report({
@@ -106,7 +106,7 @@ export class ReportedApplicationsComponent implements OnInit {
         const flattenedArray = [].concat.apply([], res.data);
 
         console.log(flattenedArray);
-        
+
         this.link = this.statusToFlat(flattenedArray);
         if (!this.link) {
           throw new Error('No data');
@@ -131,22 +131,31 @@ export class ReportedApplicationsComponent implements OnInit {
 
   statusToFlat(data: any[]) {
     console.log(data);
-    const res = data.map((job: IJobApplication) => {
 
-      let jsDate = "" 
+    const uniqueArray = [];
+    const seen: any = {};
+    for (const item of data) {
+      if (!seen[item.id]) {
+        seen[item.id] = true;
+        uniqueArray.push(item);
+      }
+    }
+    const res = uniqueArray.map((job: IJobApplication) => {
+
+      let jsDate = ""
       if (job.contractDate) {
         const milliseconds = job.contractDate._seconds * 1000 + job.contractDate._nanoseconds / 100000;
         console.log(milliseconds)
         jsDate = new Date(+milliseconds).toDateString()
-      } 
-      
+      }
+
       return {
         Id: job.id,
         'Nombre del trabajo': job.job_position.name,
         Estatus: job.status,
         'Nombre de usuario':
           job.personal_data.fname + job.personal_data.lname,
-        'Nivel de educacion' : job.personal_data.school_level || "",
+        'Nivel de educacion': job.personal_data.school_level || "",
         'Nacionalidad': job.personal_data.nationality || "",
         'Fecha de Decision': jsDate || "",
         Empresa: job.employer.company_name,
@@ -176,12 +185,12 @@ export class ReportedApplicationsComponent implements OnInit {
 
   companyToFlat(data: IEmployer[]) {
     const res = data.map((employer: IEmployer) => {
-      let jsDate = "" 
+      let jsDate = ""
       if (employer.createdAt) {
         const milliseconds = employer.createdAt._seconds * 1000 + employer.createdAt._nanoseconds / 100000;
         console.log(milliseconds)
         jsDate = new Date(+milliseconds).toDateString()
-      } 
+      }
 
       return {
         Id: employer.id,

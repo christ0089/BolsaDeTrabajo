@@ -11,6 +11,7 @@ import { IQuestion } from 'src/app/Models/question';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { EmployeerService } from 'src/app/Shared/employeer.service';
 import { QuestionControlService } from 'src/app/Shared/QuestionsService/question-control-service';
+import { StorageService } from 'src/app/Shared/Storage/storage.service';
 
 export interface AddressComponents {
   long_name: string;
@@ -55,10 +56,11 @@ export class EmployerInfoFormComponent implements OnInit {
     private afs: Firestore,
     private readonly qcs: QuestionControlService,
     private readonly employeerService: EmployeerService,
+    private readonly storageService: StorageService,
     private readonly authService: AuthService,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const role = this.authService.userData$.value?.user_role || 'operator';
@@ -93,6 +95,26 @@ export class EmployerInfoFormComponent implements OnInit {
       .subscribe();
   }
 
+  async setFormPdf(event: any) {
+    try {
+      const downloadUrl = await this.storageService.postBlob(
+        event.file as File,
+        `employeers/${this.authService.userData$.value?.uid}/`,
+        `employeer_${event.question_key}`
+      );
+
+      console.log(downloadUrl)
+
+      this.forms[0].get(event.question_key)?.setValue(downloadUrl);
+      // this.questions[this.idx].questions[
+      //   event.question_index
+      // ].options[0].value = true; // Sets uploaded state to true;
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+
   locationSelected(address: AddressComponents[]) {
     address.forEach((element) => {
       if (element.types.indexOf('route') > -1) {
@@ -120,7 +142,7 @@ export class EmployerInfoFormComponent implements OnInit {
         panelClass: ['red-snackbar'],
         duration: 2000,
       });
-      return 
+      return
     }
 
     this.loading = true;
@@ -151,6 +173,7 @@ export class EmployerInfoFormComponent implements OnInit {
 
       await addDoc(docBeforeRef, {
         ...employeer,
+        createdAt: Timestamp.now(),
         status: 'pending',
         active: false,
       });

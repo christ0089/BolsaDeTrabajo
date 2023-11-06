@@ -45,6 +45,7 @@ export class UserRolesComponent implements OnInit {
 
   searchUser(search: string) {
     const searchTerm: string = search.toLowerCase();
+
   }
 
   async changeRole(user: IUserData) {

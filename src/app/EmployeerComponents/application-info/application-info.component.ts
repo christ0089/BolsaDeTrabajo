@@ -2,11 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, takeUntil, tap } from 'rxjs';
-import { IJobApplication, JobStatus } from 'src/app/Models/job_application';
+import { BehaviorSubject, tap } from 'rxjs';
+import { IJobApplication } from 'src/app/Models/job_application';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 
 @Component({
@@ -55,8 +54,6 @@ export class ApplicationInfoComponent implements OnInit {
       const milliseconds = this.job.contractDate.seconds * 1000 + this.job.contractDate.nanoseconds / 100000;
       console.log(milliseconds)
       jsDate = new Date(+milliseconds).toDateString()
-
-
       this.registrationForm.controls['contractDate'].setValue(jsDate);
     }
 
@@ -96,7 +93,7 @@ export class ApplicationInfoComponent implements OnInit {
 
     const { status, contractDate } = this.registrationForm.value;
     const contractTimestamp = Timestamp.fromDate(contractDate);
-
+    console.log(contractDate)
 
     updateStatus$({
       status,

@@ -83,7 +83,7 @@ export class UserRolesViewComponent implements OnInit {
       });
   }
   async deactivateAccount(user_uid: string) {
-    const userRoleFunc$ = httpsCallable<any, number>(
+    const userRoleFunc$ = httpsCallable<any, any>(
       this.functions,
       'deactivateAccount'
     );
@@ -92,7 +92,8 @@ export class UserRolesViewComponent implements OnInit {
       user_uid
     })
       .then((result) => {
-        if (result.data == 200) {
+        console.log(result)
+        if (result.data.status == 200) {
           return this.snackBar.open(
             'Se ha actualizado correctamene el rol',
             '',
@@ -108,6 +109,7 @@ export class UserRolesViewComponent implements OnInit {
         }
       })
       .catch((e) => {
+        console.log(e)
         return this.snackBar.open('No se ha descativado la cuenta', '', {
           verticalPosition: 'top',
           horizontalPosition: 'right',

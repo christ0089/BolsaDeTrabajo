@@ -3,7 +3,7 @@
 </h2>
 <button mat-icon-button style="float: right" mat-dialog-close>
     <mat-icon>close</mat-icon>
-  </button>
+</button>
 
 <p>Nombre: {{user.fname}} {{user.lname}}</p>
 <p>Correo: {{user.email}}</p>
@@ -17,8 +17,12 @@
     </mat-select>
 </mat-form-field>
 
-<button mat-button color="primary" (click)="deactivateAccount(user.uid)">
+<button mat-button *ngIf="user.disabled == null || user?.disabled == false" color="primary" (click)="deactivateAccount(user.uid)">
     Desactivar Cuenta
+</button>
+
+<button mat-button *ngIf="user.disabled == true " color="primary" (click)="deactivateAccount(user.uid)">
+    Activar Cuenta
   </button>
 
 <button mat-button (click)="changeRole()">Guardar</button>

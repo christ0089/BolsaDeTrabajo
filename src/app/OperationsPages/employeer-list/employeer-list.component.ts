@@ -66,6 +66,7 @@ export class EmployeerListComponent implements OnInit {
         duration: 2000,
       });
     }).catch(e => {
+      console.log(e)
       this.snackBar.open('No se ha desactivado correctamente la empresa', '', {
         verticalPosition: 'top',
         horizontalPosition: 'right',

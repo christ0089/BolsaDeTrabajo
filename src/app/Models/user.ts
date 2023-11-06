@@ -14,6 +14,7 @@ export interface IUserData {
   country_code?: string;
   user_role: Role;
   skills?: string[];
+  disabled?: boolean
   sex?: string;
   birth_date?: Timestamp;
   school_level?: School_Level_Type;
@@ -27,6 +28,7 @@ export class User implements IUserData {
   email!: string;
   phone!: string;
   user_role!: Role;
+  disabled?: boolean
 
   constructor(
     uid: string,
@@ -34,6 +36,7 @@ export class User implements IUserData {
     fname: string,
     email: string,
     phone: string,
+    disabled: boolean,
     user_role: Role
   ) {
     this.uid = uid;
@@ -42,6 +45,7 @@ export class User implements IUserData {
     this.email = email;
     this.user_role = user_role;
     this.phone! = phone;
+    this.disabled = disabled
   }
 
   get fullName() {

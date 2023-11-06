@@ -42,6 +42,8 @@ export class ApplicationStatusComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.job = data.job_position;
+
+    
   }
 
   compareObjects(o1: any, o2: any): boolean {

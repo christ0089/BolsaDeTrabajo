@@ -89,10 +89,12 @@ export class JobApplicationComponent implements OnInit {
         `${this.job.id}_${event.question_key}`
       );
 
+      console.log(downloadUrl)
+
       this.forms[this.idx].get(event.question_key)?.setValue(downloadUrl);
-      this.questions[this.idx].questions[
-        event.question_index
-      ].options[0].value = true; // Sets uploaded state to true;
+      // this.questions[this.idx].questions[
+      //   event.question_index
+      // ].options[0].value = true; // Sets uploaded state to true;
     } catch (e: any) {
       console.error(e)
     }
@@ -100,7 +102,7 @@ export class JobApplicationComponent implements OnInit {
 
   upload() {
     this.loading = true;
-    const { ...questions } = this.forms.flatMap((m) => {
+    const questions = this.forms.flatMap((m) => {
       return m.value;
     });
 
@@ -108,21 +110,23 @@ export class JobApplicationComponent implements OnInit {
       this.functions,
       'applicationUserCreate'
     );
-
-    jobApplicationFuntion({
-      jobApplication: {
-        active: true,
-        formData: questions,
-        personal_data: this.auth.userData$.value,
-        createdAt: Timestamp.now(),
-        job_position: {
-          id: this.job.id,
-          name: this.job.name,
-          employeer: this.job.employer,
-        },
-        employer: this.job.employer,
-        status: "applied"
+    const application = {
+      active: true,
+      formData: questions,
+      personal_data: this.auth.userData$.value,
+      createdAt: Timestamp.now(),
+      job_position: {
+        id: this.job.id,
+        name: this.job.name,
+        employeer: this.job.employer,
       },
+      employer: this.job.employer,
+      status: "applied"
+    }
+
+    console.log(application)
+    jobApplicationFuntion({
+      jobApplication: application,
       employer: this.job.employer,
     })
       .then((result) => {

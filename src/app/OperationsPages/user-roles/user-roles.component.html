@@ -7,11 +7,18 @@
       {{ user.lname }}
 
       <span class="example-spacer"></span>
-      <mat-chip color="primary" style="background-color: rgba(0, 162, 255, 0.582); color: white;" *ngIf="user.user_role">{{
+
+      <mat-chip color="primary" style="background-color: rgba(0, 162, 255, 0.582);  margin-right: 20px; color: white;"
+        *ngIf="user.user_role != '-'">{{
         user.user_role
-      }}</mat-chip>
+        }}</mat-chip>
+
+      <mat-chip color="primary" style="background-color: rgba(0, 162, 255, 0.582) !important; color: white;"
+        *ngIf="user?.disabled && user.disabled == true">
+        Desactivado
+      </mat-chip>
       <button mat-button (click)="changeRole(user)" color="primary">Ver</button>
-     
+
     </div>
   </mat-list-item>
 </mat-list>

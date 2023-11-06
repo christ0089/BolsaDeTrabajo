@@ -34,19 +34,19 @@ export class LoginComponent implements OnInit {
 
   login() {
     const user = this.loginForm.value;
-    this.auth.emailAuth(user.email, user.password).then((user) => {
-
+    this.auth.emailAuth(user.email, user.password).then(async (user) => {
       console.log(user.user.emailVerified)
       if (user.user.emailVerified == true) {
         this.router.navigateByUrl("/")
-      } else {
-        this.auth.sendVerificationEmail(user.user)
-        this.snackbar
-          .open(
-            "Te enviamos un correo para que verifiques tu cuenta"
-          )
-          ._dismissAfter(3000);
-      }
+        return 
+      } 
+      this.auth.sendVerificationEmail(user.user)
+      this.auth.signOut()
+      this.snackbar
+        .open(
+          "Te enviamos un correo para que verifiques tu cuenta"
+        )
+        ._dismissAfter(3000);
     }).catch((e) => {
       this.snackbar
         .open(e.message)
