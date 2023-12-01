@@ -1,16 +1,9 @@
-import { query } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore, where } from '@angular/fire/firestore';
+import { Firestore, Timestamp } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { collection, doc, setDoc } from '@firebase/firestore';
-import { BehaviorSubject, switchMap } from 'rxjs';
-import { ApplicationInfoComponent } from 'src/app/EmployeerComponents/application-info/application-info.component';
-import { IJobApplication } from 'src/app/Models/job_application';
+import { doc, setDoc } from '@firebase/firestore';
 import { IQuestion } from 'src/app/Models/question';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
-import { EmployeerService } from 'src/app/Shared/employeer.service';
-import { genericConverter } from 'src/app/Shared/job-postion.service';
 import { QuestionControlService } from 'src/app/Shared/QuestionsService/question-control-service';
 
 @Component({

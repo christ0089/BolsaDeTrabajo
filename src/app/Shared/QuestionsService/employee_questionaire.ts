@@ -1,3 +1,4 @@
+import { DatePickerQuestion } from 'src/app/Models/Forms/datePicker';
 import { TextboxQuestion } from 'src/app/Models/Forms/textbox';
 import { UploadFileQuestion } from 'src/app/Models/Forms/upload_file';
 import { IQuestion } from 'src/app/Models/question';
@@ -25,7 +26,7 @@ export const user_info_questionaire = () => {
         options: [],
         verfication: false,
       }),
-      new TextboxQuestion({
+      new DatePickerQuestion({
         key: 'birth_date',
         label: 'Fecha de Nacimiento',
         value: '',

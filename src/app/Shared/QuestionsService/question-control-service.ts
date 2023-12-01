@@ -76,11 +76,15 @@ export class QuestionControlService {
   }
 
   mapToQuestion(
-    questions: QuestionBase<string | number | boolean | Date>[],
+    questions: QuestionBase<string | number | boolean | Date | Timestamp>[],
     data: any
   ) {
     questions.forEach((question) => {
-      question.value = data[question.key];
+      question.value = data[question.key]; 
+      
+      if (question.value instanceof Timestamp) {
+        question.value =  (question.value as Timestamp).toDate() 
+      }
       question.options = data['options'] || question.options;
     });
     return questions;
