@@ -3,6 +3,7 @@ import {
   collectionData,
   doc,
   Firestore,
+  orderBy,
   query,
   where,
 } from '@angular/fire/firestore';
@@ -34,10 +35,9 @@ export class EmployeerListComponent implements OnInit {
       this.afs,
       'employeers'
     ).withConverter<IEmployer>(genericConverter<IEmployer>());
-    const q_1 = query(collectionRef, where('status', '==', 'approved'));
-    const q_2 = query(collectionRef, where('status', '==', 'pending'));
+    const q_1 = query(collectionRef, where('status', '==', 'approved'), orderBy("createdAt", "desc"));
+    const q_2 = query(collectionRef, where('status', '==', 'pending'),  orderBy("createdAt", "desc"));
     this.employeerApproved$ = collectionData(q_1, { idField: 'id' });
-
     this.employeerPending$ = collectionData(q_2, { idField: 'id' });
   }
 
