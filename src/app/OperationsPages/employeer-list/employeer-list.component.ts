@@ -24,7 +24,6 @@ export type EmployeerStatus = 'approved' | 'pending' | 'disabled';
 })
 export class EmployeerListComponent implements OnInit {
   employeerApproved$: Observable<IEmployer[]> = EMPTY;
-
   employeerPending$: Observable<IEmployer[]> = EMPTY;
 
   constructor(
