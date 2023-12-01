@@ -1,5 +1,9 @@
-<h2>Adminstrar Usuarios</h2>
-
+<h2>Administrar Usuarios</h2>
+<mat-form-field class="search-form" appearance="fill">
+  <mat-label>Buscar empleo</mat-label>
+  <input matInput placeholder="Buscar usuario" [formControl]="searchForm" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
 <mat-list>
   <mat-list-item role="listitem" *ngFor="let user of users$ | async">
     <div style="width: 100%; display: inline-flex; line-height: 36px">

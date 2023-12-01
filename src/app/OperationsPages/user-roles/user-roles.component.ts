@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
+import { collectionData, Firestore, orderBy, query } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { genericConverter } from 'src/app/Shared/job-postion.service';
 })
 export class UserRolesComponent implements OnInit {
   users$: BehaviorSubject<IUserData[]> = new BehaviorSubject<IUserData[]>([]);
+  unfiltered_users$: BehaviorSubject<IUserData[]> = new BehaviorSubject<IUserData[]>([]);
   filters = [];
 
   searchForm = new FormControl();
@@ -32,20 +33,38 @@ export class UserRolesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userRef = collection(this.afs, 'users').withConverter<IUserData>(
+    const userCol = collection(this.afs, 'users').withConverter<IUserData>(
       genericConverter<IUserData>()
     );
+    const q = query(
+      userCol,
+      orderBy('createdAt', 'desc'),
+    );
 
-    collectionData(userRef, {
+    collectionData(q, {
       idField: 'uid',
     }).subscribe((users) => {
+      this.unfiltered_users$.next(users);
       this.users$.next(users);
     });
   }
 
   searchUser(search: string) {
     const searchTerm: string = search.toLowerCase();
-
+    if (searchTerm == '' || this.users$.value.length == 0) {
+      this.users$.next(this.unfiltered_users$.value);
+    } else {
+      let jobs = this.unfiltered_users$.value;
+      Object.keys(jobs).forEach((key) => {
+        jobs = jobs.filter((v) => {
+          const hasFName = v.fname.toLowerCase().includes(searchTerm);
+          const hasLName = v.lname.toLowerCase().includes(searchTerm);
+          const hasEmail = v.email.toLowerCase().includes(searchTerm);
+          return hasFName || hasEmail || hasLName;
+        });
+      });
+      this.users$.next(jobs);
+    }
   }
 
   async changeRole(user: IUserData) {
@@ -61,5 +80,5 @@ export class UserRolesComponent implements OnInit {
     });
   }
 
-  
+
 }

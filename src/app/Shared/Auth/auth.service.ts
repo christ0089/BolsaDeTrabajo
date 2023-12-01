@@ -1,6 +1,6 @@
 import { Injectable, Optional } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from '@angular/fire/auth';
-import { doc, Firestore } from '@angular/fire/firestore';
+import { doc, Firestore, Timestamp } from '@angular/fire/firestore';
 import {
   ApplicationVerifier,
   signInWithEmailAndPassword,
@@ -165,7 +165,8 @@ export class AuthService {
         {
           ...user_data,
           email: user_registration.email,
-          user_role: "-"
+          user_role: "-",
+          createdAt: Timestamp.now()
         },
         {
           merge: true,

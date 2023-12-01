@@ -138,7 +138,7 @@ export class JobListingComponent implements OnInit {
 
   async searchJob(search: string) {
     const searchTerm: string = search.toLowerCase();
-    if (searchTerm == '' || this.jobListing$.value === []) {
+    if (searchTerm == '' || this.jobListing$.value.length == 0) {
       this.jobListing$.next(this.jobService.jobListing$.value);
     } else {
       let jobs = this.jobListing$.value;
