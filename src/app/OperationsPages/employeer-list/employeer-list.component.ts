@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  Firestore,
   collectionData,
   doc,
-  Firestore,
   orderBy,
   query,
   where,
 } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection, updateDoc } from '@firebase/firestore';
-import { active } from 'd3-transition';
-import { BehaviorSubject, EMPTY, map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IEmployer } from 'src/app/Models/employer';
 import { AuthService } from 'src/app/Shared/Auth/auth.service';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
@@ -23,8 +23,12 @@ export type EmployeerStatus = 'approved' | 'pending' | 'disabled';
   styleUrls: ['./employeer-list.component.sass'],
 })
 export class EmployeerListComponent implements OnInit {
-  employeerApproved$: Observable<IEmployer[]> = EMPTY;
-  employeerPending$: Observable<IEmployer[]> = EMPTY;
+  employeerApproved$: BehaviorSubject<IEmployer[]> = new BehaviorSubject<IEmployer[]>([]);
+  employeerPending$: BehaviorSubject<IEmployer[]> = new BehaviorSubject<IEmployer[]>([]);
+  employeerUnfilteredApproved$: BehaviorSubject<IEmployer[]> = new BehaviorSubject<IEmployer[]>([]);
+  employeerUnfilteredPending$: BehaviorSubject<IEmployer[]> = new BehaviorSubject<IEmployer[]>([]);
+  searchForm = new FormControl();
+
 
   constructor(
     private readonly afs: Firestore,
@@ -35,12 +39,49 @@ export class EmployeerListComponent implements OnInit {
       'employeers'
     ).withConverter<IEmployer>(genericConverter<IEmployer>());
     const q_1 = query(collectionRef, where('status', '==', 'approved'), orderBy("createdAt", "desc"));
-    const q_2 = query(collectionRef, where('status', '==', 'pending'),  orderBy("createdAt", "desc"));
-    this.employeerApproved$ = collectionData(q_1, { idField: 'id' });
-    this.employeerPending$ = collectionData(q_2, { idField: 'id' });
+    const q_2 = query(collectionRef, where('status', '==', 'pending'), orderBy("createdAt", "desc"));
+    collectionData(q_1, { idField: 'id' }).subscribe((jobs => {
+      this.employeerApproved$.next(jobs)
+      this.employeerUnfilteredApproved$.next(jobs)
+    }))
+    collectionData(q_2, { idField: 'id' }).subscribe((jobs => {
+      this.employeerPending$.next(jobs)
+      this.employeerUnfilteredPending$.next(jobs)
+    }))
+
+    this.searchForm.valueChanges.subscribe((userInput) => {
+      this.searchUser(userInput);
+    });
   }
 
   ngOnInit(): void { }
+
+  searchUser(search: string = "") {
+    const searchTerm: string = search.toLowerCase();
+    if (searchTerm == '' || this.employeerApproved$.value.length == 0) {
+      this.employeerApproved$.next(this.employeerUnfilteredApproved$.value);
+      this.employeerPending$.next(this.employeerUnfilteredApproved$.value);
+    } else {
+      let jobsApproved = this.employeerUnfilteredApproved$.value;
+      let jobsPending = this.employeerPending$.value;
+      Object.keys(jobsApproved).forEach((key) => {
+        jobsApproved = jobsApproved.filter((v) => {
+          const hasName = v.company_name.toLowerCase().includes(searchTerm);
+          const hasIndustry = (v.industry || "").toLowerCase().includes(searchTerm);
+          return hasName || hasIndustry
+        });
+      });
+      Object.keys(jobsPending).forEach((key) => {
+        jobsPending = jobsPending.filter((v) => {
+          const hasName = v.company_name.toLowerCase().includes(searchTerm);
+          const hasIndustry =  (v.industry || "").toLowerCase().includes(searchTerm);
+          return hasName || hasIndustry
+        });
+      });
+      this.employeerPending$.next(jobsPending);
+      this.employeerApproved$.next(jobsApproved);
+    }
+  }
 
   deactivate(id: string, active: boolean) {
     if (this.authService.isOperator) {

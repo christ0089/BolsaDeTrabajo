@@ -1,4 +1,9 @@
 <h2>Administrar Empresas</h2>
+<mat-form-field class="search-form" appearance="fill">
+  <mat-label>Buscar empresa</mat-label>
+  <input matInput placeholder="Buscar empresa" [formControl]="searchForm" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
 <mat-tab-group>
   <mat-tab label="Aprobadas">
     <mat-list>

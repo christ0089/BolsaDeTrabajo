@@ -9,7 +9,7 @@
 
 <span *ngIf="job.status == 'contracted'" style="font-weight: bolder; color: rgb(0, 107, 57)">
   ¡Fue Contratado!
-  <p *ngIf="job.contractDate">Fecha de contratacion: {{(job.contractDate?.seconds * 1000) | date: "dd/MM/YYYY" }}</p>
+  <p *ngIf="job.contractDate">Fecha de Contratación: {{(job.contractDate?.seconds * 1000) | date: "dd/MM/YYYY" }}</p>
 </span>
 
 <span *ngIf="job.status == 'dismissed'" style="font-weight: bolder; color: rgb(107, 0, 0)">
@@ -54,7 +54,7 @@
   <form [formGroup]="registrationForm" style="width: 100%; margin-left: auto; margin-right: auto">
 
     <mat-form-field style="width: 40%;" class="date_picker">
-      <mat-label>Fecha de Contratacion</mat-label>
+      <mat-label>Fecha de Contratación</mat-label>
       <input matInput [matDatepicker]="picker" [max]="todaysDate" formControlName="contractDate">
       <mat-hint>DD/MM/YYYY</mat-hint>
       <mat-datepicker #picker></mat-datepicker>
@@ -62,7 +62,7 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 
     <mat-form-field style="width: auto;">
-      <mat-label>Estatus de Contratacion</mat-label>
+      <mat-label>Estatus de Contratación</mat-label>
       <mat-select formControlName="status" [ngClass]="{ 'is-invalid': f['status'].errors }">
         <mat-option value="notified">Notificar Candidato
         </mat-option>

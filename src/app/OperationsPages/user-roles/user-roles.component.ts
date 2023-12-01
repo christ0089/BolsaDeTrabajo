@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { collectionData, Firestore, orderBy, query } from '@angular/fire/firestore';
-import { Functions, httpsCallable } from '@angular/fire/functions';
+import { Firestore, collectionData, orderBy, query } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { collection } from '@firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { UserRolesViewComponent } from 'src/app/EmployeerComponents/user-roles-view/user-roles.component';
-import { IUserData, Role } from 'src/app/Models/user';
-import { EmployeerService } from 'src/app/Shared/employeer.service';
+import { IUserData } from 'src/app/Models/user';
 import { genericConverter } from 'src/app/Shared/job-postion.service';
 
 @Component({

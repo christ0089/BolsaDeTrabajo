@@ -126,10 +126,10 @@
       </div>
     </div>
     <div *ngIf="page == 1">
-      <h2>¿Que hablidades tienes?</h2>
+      <h2>¿Que Hablidades tienes?</h2>
       <mat-form-field class="example-chip-list" appearance="fill">
         <mat-label>Tus mejores 5 Habilidades</mat-label>
-        <mat-chip-list #chipList aria-label="Seleccion de 5 hablidades">
+        <mat-chip-list #chipList aria-label="Seleccion de 5 Hablidades">
           <mat-chip *ngFor="let skill of skills" (removed)="remove(skill)">
             {{ skill }}
             <button matChipRemove>
