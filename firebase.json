@@ -28,7 +28,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "dist/bolsa-de-trabajo/index.html"
+        "destination": "/index.html"
       }
     ]
   },

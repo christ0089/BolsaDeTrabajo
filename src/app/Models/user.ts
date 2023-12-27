@@ -18,6 +18,7 @@ export interface IUserData {
   sex?: string;
   birth_date?: Timestamp;
   school_level?: School_Level_Type;
+  createdAt?: Timestamp,
   nationality?: string;
 }
 
@@ -28,7 +29,8 @@ export class User implements IUserData {
   email!: string;
   phone!: string;
   user_role!: Role;
-  disabled?: boolean
+  disabled?: boolean;
+  createdAt?: Timestamp;
 
   constructor(
     uid: string,

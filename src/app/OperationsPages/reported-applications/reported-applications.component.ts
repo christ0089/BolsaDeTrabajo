@@ -9,6 +9,7 @@ import { IEmployer } from 'src/app/Models/employer';
 import { IJobApplication } from 'src/app/Models/job_application';
 import { IJobPosition } from 'src/app/Models/job_postition';
 import { Timestamp } from '@firebase/firestore';
+import { IUserData } from 'src/app/Models/user';
 
 @Component({
   selector: 'app-reported-applications',
@@ -53,6 +54,18 @@ export class ReportedApplicationsComponent implements OnInit {
       if (!this.link) {
         throw new Error('No data');
       }
+    }).catch(e => {
+      this.snackBar.open(
+        'No se genero el reporte',
+        '',
+        {
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+          panelClass: ['red-snackbar'],
+          duration: 2000,
+        }
+      );
+      console.error(e);
     });
 
     this.loading = false;
@@ -65,15 +78,16 @@ export class ReportedApplicationsComponent implements OnInit {
       'employeerCreationReport'
     );
 
-
-
-
     await report({
       min_date: this.campaignOne.get('start')?.value,
       max_date: this.campaignOne.get('end')?.value,
     })
       .then((res: any) => {
         console.log(res);
+        if (!res.data || res.data.length == 0) {
+          throw new Error("No data")
+        }
+
         this.link = this.companyToFlat(res.data[0]);
         if (!this.link) {
           throw new Error('No data');
@@ -81,7 +95,7 @@ export class ReportedApplicationsComponent implements OnInit {
       })
       .catch((e) => {
         this.snackBar.open(
-          'Se ha actualizado correctamente la aplicación',
+          'No se genero el reporte',
           '',
           {
             verticalPosition: 'top',
@@ -94,6 +108,47 @@ export class ReportedApplicationsComponent implements OnInit {
       });
     this.loading = false;
   }
+
+  async userCreationReport() {
+    this.loading = true;
+    this.link = null;
+    const report = httpsCallable<any>(
+      this.functions,
+      'userCreationReport'
+    );
+
+    await report({
+      min_date: this.campaignOne.get('start')?.value,
+      max_date: this.campaignOne.get('end')?.value,
+    })
+      .then((res: any) => {
+        console.log(res);
+        if (!res.data || res.data.length == 0) {
+          throw new Error("No data")
+        }
+
+        this.link = this.userToFlat(res.data[0]);
+        if (!this.link) {
+          throw new Error('No data');
+        }
+      })
+      .catch((e) => {
+        this.snackBar.open(
+          'No se genero el reporte',
+          '',
+          {
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['red-snackbar'],
+            duration: 2000,
+          }
+        );
+        console.error(e);
+      });
+    this.loading = false;
+  }
+
+
   async hiringReport() {
     this.loading = true;
     this.link = null;
@@ -179,6 +234,22 @@ export class ReportedApplicationsComponent implements OnInit {
         // "Fecha de Creacion": (job.job.createdAt as Timestamp).toDate().toUTCString() || "-",
         // "Fecha de Actualizacion":  (job.job.updated as Timestamp).toDate().toUTCString() || "-",
       };
+    });
+    return this.objectToCSV(res);
+  }
+
+  userToFlat(data: IUserData[]) {
+    const res = data.map((user: IUserData) => {
+      return {
+        "Nombre" : user.fname + " " + user.lname,
+        "Sexo": user.sex || "",
+        "Correo": user.email,
+        "Fecha": user.birth_date,
+        "Nacionalidad": user.nationality,
+        "Nivel de Educacion": user.school_level,
+        "Fecha de Creacion": user.createdAt || ""
+      }
+        
     });
     return this.objectToCSV(res);
   }

@@ -2,17 +2,11 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <mat-form-field class="example-form-field" appearance="fill">
   <mat-label>Rago de Fechas</mat-label>
-  <mat-date-range-input
-    [formGroup]="campaignOne"
-    [rangePicker]="campaignOnePicker"
-  >
+  <mat-date-range-input [formGroup]="campaignOne" [rangePicker]="campaignOnePicker">
     <input matStartDate placeholder="Start date" formControlName="start" />
     <input matEndDate placeholder="End date" formControlName="end" />
   </mat-date-range-input>
-  <mat-datepicker-toggle
-    matSuffix
-    [for]="campaignOnePicker"
-  ></mat-datepicker-toggle>
+  <mat-datepicker-toggle matSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
   <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
 </mat-form-field>
 <mat-list>
@@ -30,6 +24,13 @@
       Generar
     </button>
   </mat-list-item>
+  <mat-list-item>
+    Reporte de registros
+    <span class="example-spacer"></span>
+    <button mat-button color="primary" (click)="userCreationReport()">
+      Generar
+    </button>
+  </mat-list-item>
   <mat-list-item role="listitem">
     Reporte de Contrataciónes
     <span class="example-spacer"></span>
@@ -39,4 +40,4 @@
   </mat-list-item>
 </mat-list>
 <div style="height: 1px; width: 100%; background-color: lightgray;"></div>
-<a *ngIf="link" [href]="link" download="reporte.csv"  style="margin: 10px;">Descargar</a>
+<a *ngIf="link" [href]="link" download="reporte.csv" style="margin: 10px;">Descargar</a>

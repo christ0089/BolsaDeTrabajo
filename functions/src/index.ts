@@ -568,6 +568,13 @@ export const employeerCreationReport = functions.https.onCall(
     async (data, context) => {
       const minDate = data.min_date;
       const maxDate = data.max_date;
+
+
+      if (!context.auth) {
+        return [];
+      }
+
+
       const employeers = admin
           .firestore()
           .collection("employeers")
@@ -590,9 +597,49 @@ export const employeerCreationReport = functions.https.onCall(
     }
 );
 
+export const userCreationReport = functions.https.onCall(
+    async (data, context) => {
+      const minDate = data.min_date;
+      const maxDate = data.max_date;
+
+
+      if (!context.auth) {
+        return [];
+      }
+
+
+      const employeers = admin
+          .firestore()
+          .collection("users")
+          .orderBy("createdAt", "desc")
+          .where("createdAt", ">=", new Date(minDate))
+          .where("createdAt", "<=", new Date(maxDate))
+          .get();
+
+      const res = await Promise.all([employeers]);
+      return res.map((docs) => {
+        const data = docs.docs.map((doc) => {
+          const job = doc.data();
+          return {
+            id: doc.id,
+            ...job,
+          };
+        });
+        return data;
+      });
+    }
+);
+
+
 export const hiringReport = functions.https.onCall(async (data, context) => {
   const minDate = data.min_date;
   const maxDate = data.max_date;
+
+
+  if (!context.auth) {
+    return [];
+  }
+
 
   const jobApplicationContracted = admin
       .firestore()
